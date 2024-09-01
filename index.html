@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet" />
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   </head>
   <body>
@@ -33,6 +34,21 @@
             <a class="navbar-item">
               About
             </a>
+          <div class="navbar-item" x-data="auth()">
+            <template x-if="!user">
+              <button @click="$store.auth.showLoginModal()" class="button is-light">
+                Login
+              </button>
+            </template>
+            <template x-if="user">
+              <div class="is-flex is-align-items-center">
+                <span x-text="user.email" class="mr-2"></span>
+                <button @click="logout" class="button is-light">
+                  Logout
+                </button>
+              </div>
+            </template>
+          </div>
           <div class="navbar-item">
             <a class="button is-primary" href="https://forms.gle/x4kEuvwEoJ5qsP3y7" target="_blank">
               <strong>Submit a Proposal</strong>
@@ -128,11 +144,90 @@
       </div>
     </main>
 
+    <!-- Login Modal -->
+    <div x-data="auth()" x-show="$store.auth.loginModal" class="modal" x-cloak :class="{ 'is-active': $store.auth.loginModal}">
+      <div class="modal-background" @click="$store.auth.hideLoginModal()"></div>
+      <div class="modal-content">
+        <div class="box">
+          <h2 class="title">Login</h2>
+          <form @submit.prevent="login">
+            <div class="field">
+              <label class="label">Email</label>
+              <div class="control">
+                <input class="input" type="email" x-model="email" required>
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <button type="submit" class="button is-primary" :class="{ 'is-loading': loading }">
+                  Send Magic Link
+                </button>
+              </div>
+            </div>
+          </form>
+          <p x-show="message" x-text="message" :class="messageClass"></p>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="$store.auth.hideLoginModal()"></button>
+    </div>
+
     <script>
+      // Initialize Supabase client
+      const supabase_client = supabase.createClient('https://xcbjpfjmycdeawzmhvxk.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjYmpwZmpteWNkZWF3em1odnhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUxNzc5NjAsImV4cCI6MjA0MDc1Mzk2MH0.n_Kj2pYgVebMgoUube3VBJ3rdHtHsfDT8-7Ma23bk_M');
+        document.addEventListener('alpine:init', () => {
+          Alpine.store('auth', {
+            loginModal: false,
+
+            showLoginModal() {
+              this.loginModal = true
+            },
+            hideLoginModal() {
+              this.loginModal = false
+            }
+          })
+        })
+
+      function auth() {
+        return {
+          user: null,
+          email: '',
+          loading: false,
+          message: '',
+          messageClass: '',
+
+          init() {
+            supabase_client.auth.getSession().then(({ data: { session } }) => {
+              this.user = session?.user ?? null;
+            });
+
+            supabase_client.auth.onAuthStateChange((event, session) => {
+              this.user = session?.user ?? null;
+            });
+          },
+
+          async login() {
+            this.loading = true;
+            this.message = '';
+            const { error } = await supabase_client.auth.signInWithOtp({ email: this.email });
+            this.loading = false;
+            if (error) {
+              this.message = error.message;
+              this.messageClass = 'has-text-danger';
+            } else {
+              this.message = 'Check your email for the login link!';
+              this.messageClass = 'has-text-success';
+            }
+          },
+
+          async logout() {
+            await supabase_client.auth.signOut();
+          }
+        }
+      }
+
       function proposalsData() {
         return {
-          proposals: [
-            {
+          proposals: [{
               id: 1,
               title: "Rammed earth technology and impact of climate change",
               speakers: [
@@ -175,18 +270,15 @@
               ],
               tags: ["Education", "Bootcamp", "Impact"],
               interestedCount: 42
-            }
-            // ... add more proposals as needed
-          ],
+            }],
           shuffledProposals: [],
           init() {
             // fetch('proposals.json')
             //   .then(response => response.json())
             //   .then(data => {
             //     this.proposals = data.proposals;
-            //     this.shuffleProposals();
-            //   });
-            this.shuffleProposals()
+                this.shuffleProposals();
+              // });
           },
           shuffleProposals() {
             this.shuffledProposals = [...this.proposals]
