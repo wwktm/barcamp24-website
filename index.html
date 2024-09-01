@@ -8,11 +8,12 @@
     <title>Barcamp Kathmandu 2024</title>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style.css?v=1"/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet" />
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   </head>
   <body>
     <main class="container">
@@ -53,123 +54,51 @@
         </main>
       </div>
 
-      <div class="proposals">
+      <div class="proposals" x-data="proposalsData()">
         <main class="container">
-
-        <div class="proposal">
-          <h2> Suggested Proposals </h2>
-          <div class="is-flex">
-            <div class="avatar">
-              <img src="https://pbs.twimg.com/profile_images/1413647704161275904/1tTdl4v9_400x400.jpg" />
-            </div>
-            <div class="is-flex-grow-1">
-              <h3>Maps, beyond navigation – visualizing the city</h3>
-              <div>Proposal by <a href="https://twitter.com/sahil_dhakal">Sahil Dhakal</a></div>
-              <div class="tags">
-                <span class="tag">Maps</span>
-                <span class="tag">Visualization</span>
-                <span class="tag">City</span>
+          <h2>Suggested Proposals</h2>
+          <template x-for="proposal in shuffledProposals" :key="proposal.id">
+            <div class="proposal">
+              <div class="is-flex">
+                <div :class="proposal.speakers.length > 1 ? 'avatars' : 'avatar'">
+                  <template x-for="speaker in proposal.speakers" :key="speaker.name">
+                    <img :src="speaker.avatar" :alt="speaker.name" />
+                  </template>
+                </div>
+                <div class="is-flex-grow-1">
+                  <h3 x-text="proposal.title"></h3>
+                  <div>
+                    Proposal by 
+                    <template x-for="(speaker, index) in proposal.speakers" :key="speaker.name">
+                      <span>
+                        <a :href="speaker.link" x-text="speaker.name"></a>
+                        <template x-if="index < proposal.speakers.length - 1">
+                          <span> and </span>
+                        </template>
+                      </span>
+                    </template>
+                  </div>
+                  <div class="tags">
+                    <template x-for="tag in proposal.tags" :key="tag">
+                      <span class="tag" x-text="tag"></span>
+                    </template>
+                  </div>
+                </div>
+                <div class="interested">
+                  <div class="interested-arrow">▲</div>
+                  <div class="interested-count" x-text="proposal.interestedCount"></div>
+                </div>
               </div>
             </div>
-            <div class="interested">
-              <div class="interested-arrow">▲</div>
-              <div class="interested-count">15</div>
-            </div>
-          </div>
-        </div>
+          </template>
 
-        <div class="proposal">
-          <div class="is-flex">
-            <div class="avatar">
-              <img src="https://pbs.twimg.com/profile_images/1751983430496337920/Xl80qYh5_400x400.jpg" />
-            </div>
-            <div class="is-flex-grow-1">
-              <h3>Murphyjitsu - how to get work done under uncertainty</h3>
-              <div>Proposal by Baibhav Bista</div>
-              <div class="tags">
-                <span class="tag">Uncertainty</span>
-                <span class="tag">Productivity</span>
-                <span class="tag">Work</span>
-              </div>
-            </div>
-            <div class="interested">
-              <div class="interested-arrow">▲</div>
-              <div class="interested-count">200</div>
-            </div>
+          <div align="center" class="mt-5 mb-5">
+            <a class="button is-primary" href="https://forms.gle/x4kEuvwEoJ5qsP3y7" target="_blank">
+              <strong>Submit your proposal</strong>
+            </a>
           </div>
-        </div>
-
-        <div class="proposal">
-          <div class="is-flex">
-            <div class="avatar">
-              <img src="https://pbs.twimg.com/profile_images/1138687318712184832/S2FFNYrj_400x400.png" />
-            </div>
-            <div class="is-flex-grow-1">
-              <h3>Design for Non-Designers, or why developers shouldn't try it at home</h3>
-              <div>Proposal by Subash Dharel</div>
-              <div class="tags">
-                <span class="tag">Design</span>
-                <span class="tag">Engineers</span>
-                <span class="tag">Sarcasm</span>
-              </div>
-            </div>
-            <div class="interested">
-              <div class="interested-arrow">▲</div>
-              <div class="interested-count">5K</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="proposal">
-          <div class="is-flex">
-            <div class="avatar">
-              <img src="https://pbs.twimg.com/profile_images/1292101698429702146/BiGcLXyG_400x400.jpg" />
-            </div>
-            <div class="is-flex-grow-1">
-              <h3>Why standup is more fulfilling than looking at your computer screen</h3>
-              <div>Proposal by Ayush Shrestha</div>
-              <div class="tags">
-                <span class="tag">Standup</span>
-                <span class="tag">Life</span>
-                <span class="tag">Priorities</span>
-              </div>
-            </div>
-            <div class="interested">
-              <div class="interested-arrow">▲</div>
-              <div class="interested-count">5K</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="proposal">
-          <div class="is-flex">
-            <div class="avatars">
-              <img src="https://pbs.twimg.com/profile_images/1292101698429702146/BiGcLXyG_400x400.jpg" />
-              <img src="https://pbs.twimg.com/profile_images/1292101698429702146/BiGcLXyG_400x400.jpg" />
-            </div>
-            <div class="is-flex-grow-1">
-              <h3>Collaborative AI: The Future of Human-AI Interaction</h3>
-              <div>Proposal by <a href="#">Jane Doe</a> and <a href="#">John Smith</a></div>
-              <div class="tags">
-                <span class="tag">AI</span>
-                <span class="tag">Collaboration</span>
-                <span class="tag">Future</span>
-              </div>
-            </div>
-            <div class="interested">
-              <div class="interested-arrow">▲</div>
-              <div class="interested-count">42</div>
-            </div>
-          </div>
-        </div>
-
-        <div align="center" class="mt-5 mb-5">
-          <a class="button is-primary" href="https://forms.gle/x4kEuvwEoJ5qsP3y7" target="_blank">
-            <strong>Submit your proposal</strong>
-          </a>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
 
       <main class="container">
         <div class="faq">
@@ -198,6 +127,74 @@
 
       </div>
     </main>
+
+    <script>
+      function proposalsData() {
+        return {
+          proposals: [
+            {
+              id: 1,
+              title: "Rammed earth technology and impact of climate change",
+              speakers: [
+                {
+                  name: "Narayan Acharya",
+                  avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfK7hNMWPxVymdUKcKrjNBDxlXyvom8XjCNQ&s",
+                  link: "#"
+                }
+              ],
+              tags: ["Sustainability", "Climate Change"],
+              interestedCount: 75
+            },
+            {
+              id: 2,
+              title: "Murphyjitsu - how to get work done under uncertainty",
+              speakers: [
+                {
+                  name: "Baibhav Bista",
+                  avatar: "https://pbs.twimg.com/profile_images/1751983430496337920/Xl80qYh5_400x400.jpg",
+                  link: "#"
+                }
+              ],
+              tags: ["Uncertainty", "Productivity", "Work"],
+              interestedCount: 33
+            },
+            {
+              id: 3,
+              title: "How can software engineers be better (colleges and beyond)",
+              speakers: [
+                {
+                  name: "Topraj Gurung",
+                  avatar: "https://www.tejcenter.org/images/topraj_gurung.jpeg",
+                  link: "#"
+                },
+                {
+                  name: "Rushil Shakya",
+                  avatar: "https://www.tejcenter.org/images/rushil-shakya.jpeg",
+                  link: "#"
+                }
+              ],
+              tags: ["Education", "Bootcamp", "Impact"],
+              interestedCount: 42
+            }
+            // ... add more proposals as needed
+          ],
+          shuffledProposals: [],
+          init() {
+            // fetch('proposals.json')
+            //   .then(response => response.json())
+            //   .then(data => {
+            //     this.proposals = data.proposals;
+            //     this.shuffleProposals();
+            //   });
+            this.shuffleProposals()
+          },
+          shuffleProposals() {
+            this.shuffledProposals = [...this.proposals]
+              .sort(() => Math.random() - 0.5);
+          }
+        }
+      }
+    </script>
   </body>
 </html>
 
