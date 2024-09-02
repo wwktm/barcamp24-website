@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700,900&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@layer base {
+  .font-montserrat {
+    font-family: "Montserrat", sans-serif;
+  }
+  a {
+    @apply text-orange-400;
+  }
+}
+
+body {
+  @apply bg-white text-gray-600 font-montserrat font-normal;
+}
+
+.container {
+  @apply w-full max-w-screen-xl mx-auto py-6;
+}
+
+.highlighted {
+  @apply text-orange-400 font-semibold;
+}
+
+.proposals {
+  @apply mt-5 border-gray-400 border-b-8;
+}
+
+.proposal {
+  @apply border-b border-gray-200 py-5;
+}
+
+.proposal a {
+  @apply text-orange-400;
+}
+
+.proposal .tags {
+  @apply mb-0 mt-1;
+}
+
+.proposal h3 {
+  @apply text-lg font-bold;
+}
+
+.avatars {
+  @apply flex mr-1;
+}
+
+.proposal .avatar {
+  @apply mr-5;
+}
+
+.proposal .avatar img {
+  @apply w-24 rounded-full border-4 border-gray-200;
+}
+
+.avatars img {
+  @apply w-16 h-16 rounded-full border-4 border-gray-300 object-cover;
+}
+
+.avatars img:not(:first-child) {
+  @apply -ml-1.5;
+}
+
+.proposal .interested {
+  @apply flex flex-col items-center justify-center w-16 h-16 border-2 border-gray-300 text-xs font-bold bg-gray-200;
+}
+
+.proposal .interested-arrow {
+  @apply text-2xl leading-none mb-0.5 mt-0.5 font-thin;
+}
+
+.rounded-button {
+  @apply text-orange-500 border-2 border-orange-500 rounded-full p-3 hover:bg-orange-500 hover:text-white;
+}
