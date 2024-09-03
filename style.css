@@ -2,6 +2,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+[x-cloak] { display: none !important; }
 
 body{
   margin: 0;
@@ -66,8 +67,6 @@ a.navbar-item {
 
 .proposals{
     margin-top:-20px;   
-    border-top:2px solid #aaa;
-    border-bottom:10px solid #eee;
 }
 .proposal {
     border-bottom: 1px solid #eee;
@@ -112,13 +111,22 @@ a.navbar-item {
     font-weight: 200;
     margin-top: 3px;
 }
+
+.faq div.active > h3{
+    font-weight: bold;
+}
+.faq p{
+    padding: 20px 0;
+    font-size: 1.25rem;
+}
 .faq h2 {
     margin: 30px 0;
 }
 .faq h3 {
     font-size: 1.25rem;
-    font-weight: 500;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
 }
 .faq > div {
     margin-bottom: 20px;
@@ -139,6 +147,27 @@ a.navbar-item {
 
 .avatars img:not(:first-child) {
     margin-left: -15px;
+}
+
+.organizers-and-supporters {
+    background-color: #eee;
+    padding: 20px 0;
+}
+.organizers-and-supporters > main > div {
+    text-align: center;
+}
+.organizers-and-supporters h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.organizers-and-supporters h5 {
+    color: #555;
+    font-size:1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 @media only screen and (max-width: 800px) {

@@ -100,27 +100,42 @@
         </main>
       </div>
 
+        <div class="organizers-and-supporters">
+      <main class="container">
+          <h2>Supporters</h2>
+          <div class="managed-by">
+            <h5 class="small-title">Managed By</h5>
+            <img src="https://wwktm.com/img-2018/Logos-02.png" width="130px"/>
+          </div>
+      </main>
+        </div>
+
       <main class="container">
         <div class="faq">
           <h2>Frequently Asked Questions</h2>
-          <div>
-            <h3>What is Barcamp Kathmandu?</h3>
-            <p>Barcamp Kathmandu is an unconference - an ad hoc gathering born from the desire for people to share and learn in an open environment.</p>
+          <div x-data="dropdown" :class="open ? 'active' : ''">
+            <h3 @click="toggle">What is Barcamp Kathmandu?</h3>
+            <p x-cloak x-show="open">Barcamp Kathmandu is an unconference - an ad hoc gathering born from the desire for people to share and learn in an open environment.</p>
           </div>
 
-          <div>
-            <h3>Who should attend BarCamp?</h3>
-            <p>Everyone. Barcamp Kathmandu is open to the community.</p>
+          <div x-data="dropdown" :class="open ? 'active' : ''">
+            <h3 @click="toggle">Who should attend BarCamp?</h3>
+            <p x-cloak x-show="open">Everyone. Barcamp Kathmandu is open to the community.</p>
           </div>
 
-          <div>
-            <h3>How are topics chosen?</h3>
-            <p>Most session topics are scheduled the morning of the event and are provided by the attendees. </p>
+          <div x-data="dropdown" :class="open ? 'active' : ''">
+            <h3 @click="toggle">How are topics chosen?</h3>
+            <p x-cloak x-show="open">Most session topics are scheduled the morning of the event and are provided by the attendees. </p>
           </div>
 
-          <div>
-            <h3>Does BarCamp have something to do with bars and alcohol?</h3>
-            <p>No, it doesn't. Its actually a hacker reference to FooBar which is typically used as a placeholder name when describing something in software code. BarCamp arose as an open to the public alternative to Foo Camp, which is an invitation-only conference.</p>
+          <div x-data="dropdown" :class="open ? 'active' : ''">
+            <h3 @click="toggle">Does BarCamp have something to do with bars and alcohol?</h3>
+            <p x-cloak x-show="open">No, it doesn't. Its actually a hacker reference to FooBar which is typically used as a placeholder name when describing something in software code. BarCamp arose as an open to the public alternative to Foo Camp, which is an invitation-only conference.</p>
+          </div>
+
+          <div x-data="dropdown" :class="open ? 'active' : ''">
+            <h3 @click="toggle">Who is organizing this?</h3>
+            <p x-cloak x-show="open">Well, this is an unconference, so all attendees (yes, YOU!) will play an important role in organizing it, selecting talks, etc. But, the event will be managed by the team behind Web Weekend Kathmandu.</p>
           </div>
 
         </div>
@@ -129,6 +144,15 @@
     </main>
 
     <script>
+        document.addEventListener('alpine:init', () => {
+          Alpine.data('dropdown', () => ({
+            open: false,
+
+            toggle() {
+              this.open = !this.open
+            },
+          }))
+        })
       function proposalsData() {
         return {
           proposals: [
