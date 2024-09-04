@@ -1,15 +1,29 @@
 import { Link } from "@remix-run/react";
+import { useCallback } from "react";
 import { Database } from "~/types/database.types";
 
 export default function Proposals({
   proposals,
   userId,
   upVotedProposals,
+  handleUpvoteChange,
 }: {
   proposals: Database["public"]["Tables"]["proposals"]["Row"][];
   upVotedProposals: number[];
   userId?: string;
+  handleUpvoteChange: (proposaslId: number) => void;
 }) {
+  const getUpvoteText = useCallback(
+    (currentProposalId: number) => {
+      if (!userId) return "Please login to upvote";
+
+      if (upVotedProposals?.includes(currentProposalId)) return "Upvoted";
+
+      return "Upvote";
+    },
+    [userId, upVotedProposals]
+  );
+
   return (
     <div className="proposals">
       <main className="container">
@@ -65,7 +79,11 @@ export default function Proposals({
                   upVotedProposals.includes(proposal.id) ? "has-voted" : ""
                 }`}
                 disabled={!userId}
-                title={userId ? "Upvote" : "Please login to upvote"}
+                title={getUpvoteText(proposal.id)}
+                onClick={() => {
+                  if (!userId) return;
+                  handleUpvoteChange(proposal.id);
+                }}
               >
                 <div className="interested-arrow">▲</div>
                 <div className="interested-count">{proposal.upvotes}</div>

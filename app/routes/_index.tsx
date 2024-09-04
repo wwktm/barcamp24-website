@@ -1,5 +1,10 @@
-import { MetaFunction, LoaderFunction, json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import {
+  MetaFunction,
+  LoaderFunction,
+  json,
+  ActionFunction,
+} from "@remix-run/node";
+import { useLoaderData, useSubmit } from "@remix-run/react";
 import EventDescription from "~/components/homepage/EventDescription";
 import EventManagement from "~/components/homepage/EventManagement";
 import Faq from "~/components/homepage/Faq";
@@ -41,15 +46,17 @@ export const loader: LoaderFunction = async ({ request }) => {
     .order("upvotes", { ascending: false });
 
   const userData = await supabaseClient.auth.getUser();
-  const upVotedProposals = [];
+  const upVotedProposals: number[] = [];
   if (userData.data.user) {
-    const { data } = await supabaseClient
+    const { data: proposalUpVoteData } = await supabaseClient
       .from("proposal_upvotes")
       .select("proposal_id")
       .eq("user_id", userData.data.user.id);
 
-    if (data) {
-      upVotedProposals.push(...data.map((vote) => vote.proposal_id));
+    if (proposalUpVoteData) {
+      upVotedProposals.push(
+        ...proposalUpVoteData.map((vote) => vote.proposal_id)
+      );
     }
   }
 
@@ -66,9 +73,61 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 };
 
+export const action: ActionFunction = async ({ request }) => {
+  const { supabaseClient, headers } = createSupabaseServerClient(request);
+
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  const proposalId = formData.get("proposal_id") as string;
+  const userData = await supabaseClient.auth.getUser();
+  if (proposalId && userData.data.user) {
+    if (intent === "upvote") {
+      const { error } = await supabaseClient.from("proposal_upvotes").insert({
+        proposal_id: parseInt(proposalId, 10),
+        user_id: userData.data.user.id,
+      });
+
+      if (!error) {
+        return json({ intent, proposalId, success: true }, { headers });
+      }
+    }
+
+    if (intent === "remove_upvote") {
+      const { error } = await supabaseClient
+        .from("proposal_upvotes")
+        .delete()
+        .eq("proposal_id", parseInt(proposalId, 10))
+        .eq("user_id", userData.data.user.id);
+
+      if (!error) {
+        return json({ intent, proposalId, success: true }, { headers });
+      }
+    }
+  }
+
+  return json({ intent, success: false }, { headers });
+};
+
 export default function Index() {
   const { proposals, userId, upVotedProposals } =
     useLoaderData<typeof loader>();
+  const submit = useSubmit();
+
+  const handleUpvoteChange = (proposalId: number) => {
+    if (!userId) return;
+
+    const formData = new FormData();
+    if (upVotedProposals.includes(proposalId)) {
+      formData.append("intent", "remove_upvote");
+    } else {
+      formData.append("intent", "upvote");
+    }
+
+    formData.append("proposal_id", proposalId.toString());
+    submit(formData, { method: "post" });
+  };
+
   return (
     <>
       <EventDescription />
@@ -76,6 +135,7 @@ export default function Index() {
         proposals={proposals}
         userId={userId}
         upVotedProposals={upVotedProposals}
+        handleUpvoteChange={handleUpvoteChange}
       />
       <EventManagement />
       <Faq />

@@ -68,7 +68,7 @@ body {
 }
 
 .proposal .interested.has-voted {
-  @apply bg-orange-400;
+  @apply bg-orange-400 text-white;
 }
 
 .proposal .interested-arrow {
@@ -76,7 +76,7 @@ body {
 }
 
 .proposal .has-voted .interested-arrow {
-  @apply text-orange-500;
+  @apply text-white;
 }
 
 .rounded-button {
