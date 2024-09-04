@@ -3,8 +3,12 @@ import { Database } from "~/types/database.types";
 
 export default function Proposals({
   proposals,
+  userId,
+  upVotedProposals,
 }: {
   proposals: Database["public"]["Tables"]["proposals"]["Row"][];
+  upVotedProposals: number[];
+  userId?: string;
 }) {
   return (
     <div className="proposals">
@@ -56,15 +60,20 @@ export default function Proposals({
                   ))}
                 </div>
               </div>
-
-              <div className="interested">
+              <button
+                className={`interested ${
+                  upVotedProposals.includes(proposal.id) ? "has-voted" : ""
+                }`}
+                disabled={!userId}
+                title={userId ? "Upvote" : "Please login to upvote"}
+              >
                 <div className="interested-arrow">▲</div>
                 <div className="interested-count">{proposal.upvotes}</div>
-              </div>
+              </button>
             </div>
           </div>
         ))}
-        <div className="mt-5 mb-5 text-center">
+        <div className="mt-10 mb-5 text-center">
           <Link className="rounded-button" to="/request-proposal">
             Submit your Proposal
           </Link>

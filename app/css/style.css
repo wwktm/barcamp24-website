@@ -67,8 +67,16 @@ body {
   @apply flex flex-col items-center justify-center w-16 h-16 border-2 border-gray-300 text-xs font-bold bg-gray-200;
 }
 
+.proposal .interested.has-voted {
+  @apply bg-orange-400;
+}
+
 .proposal .interested-arrow {
   @apply text-2xl leading-none mb-0.5 mt-0.5 font-thin;
+}
+
+.proposal .has-voted .interested-arrow {
+  @apply text-orange-500;
 }
 
 .rounded-button {

@@ -8,8 +8,16 @@ export const meta: MetaFunction = () => {
   return [
     { title: "Request Proposal - BarCamp Kathmandu 2024" },
     {
+      property: "og:title",
+      content: "Request Proposal - BarCamp Kathmandu 2024",
+    },
+    {
       name: "description",
       content: "Request a proposal for BarCamp Kathmandu 2024",
+    },
+    {
+      property: "og:image",
+      content: "https://barcamp.wwktm.com/barcamp-og.png",
     },
   ];
 };
