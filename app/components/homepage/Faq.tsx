@@ -25,6 +25,11 @@ const faqs: Array<{ question: string; answer: string }> = [
     answer:
       "No, it doesn't. Its actually a hacker reference to FooBar which is typically used as a placeholder name when describing something in software code. BarCamp arose as an open to the public alternative to Foo Camp, which is an invitation-only conference.",
   },
+  {
+    question: "Who is organizing this?",
+    answer:
+      "Well, this is an unconference, so all attendees (yes, YOU!) will play an important role in organizing it, selecting talks, etc. But, the event will be managed by the team behind Web Weekend Kathmandu.",
+  },
 ];
 
 export default function Faq() {

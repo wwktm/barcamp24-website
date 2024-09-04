@@ -1,20 +1,18 @@
+import { Link } from "@remix-run/react";
 import Logo from "~/images/logo.svg";
 
 export default function Header() {
   return (
     <header className="container">
       <nav className="flex items-stretch">
-        <img className="max-w-56" src={Logo} alt="BarCamp Kathmandu 2024" />
+        <Link className="flex w-auto h-20" to="/">
+          <img src={Logo} alt="BarCamp Kathmandu 2024" />
+        </Link>
         <div className="justify-end ms-auto">
           <div className="flex justify-center self-end line-height-10">
-            <a
-              className="rounded-button"
-              href="https://forms.gle/x4kEuvwEoJ5qsP3y7"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <Link className="rounded-button" to="/request-proposal">
               <strong>Submit a Proposal</strong>
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
