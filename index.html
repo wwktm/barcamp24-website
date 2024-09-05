@@ -9,6 +9,7 @@
     <meta property="og:title" content="Barcamp Kathmandu 2024" />
     <meta property="og:description"
       content="Barcamp Kathmandu is an unconference - an ad hoc gathering born from the desire for people to share and learn in an open environment.  It is an opportunity for people to come together to learn, network, and discuss great ideas in person." />
+    <meta property="og:image" content="https://barcamp.wwktm.com/barcamp-og.png" />
     <title>Barcamp Kathmandu 2024</title>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" crossorigin="anonymous" />
@@ -142,6 +143,11 @@
             <p x-cloak x-show="open">Well, this is an unconference, so all attendees (yes, YOU!) will play an important role in organizing it, selecting talks, etc. But, the event will be managed by the team behind Web Weekend Kathmandu.</p>
           </div>
 
+          <div x-data="dropdown" :class="open ? 'active' : ''">
+            <h3 @click="toggle">How can we contact you?</h3>
+            <p x-cloak x-show="open">Send us an email at barcamp@wwktm.com OR DM us on twitter @weekend_web</p>
+          </div>
+
         </div>
 
       </div>
@@ -202,6 +208,21 @@
                 }
               ],
               tags: ["Education", "Bootcamp", "Impact"],
+              interestedCount: 42
+            },
+            {
+              id: 4,
+              title: "And I Stopped Doing Hourly Freelancing",
+              speakers: [
+                {
+                  name: "Raju Dawadi",
+                  avatar: "raju.png",
+                  link: "https://twitter.com/dwdraju",
+                  about: "Raju is a DevOps Engineer exploring the SRE domain, with experience leading projects for service and product-based companies in Kathmandu and globally. He specializes in container technologies, microservices, and serverless environments, with a passion for cloud-native practices, automation, and building resilient infrastructure for startups. Raju is also actively involved in growing the DevOps community in Kathmandu."
+                },
+              ],
+              tags: ["Freelancing"],
+              description: "With over 7+ years of experience as a DevOps and SRE professional, I've worked on multiple side projects of varying scales, primarily bootstrapping and managing cloud infrastructure through hourly freelance engagements. In this talk, I'll share my journey of realizing the limitations of hourly freelancing, the pivotal moments that led me to transition, and how this shift transformed my career. Attendees will know my practical experience and insights which could help them in refining their freelancing strategies, while hiring managers will learn to better assess DevOps freelancers - both for long-term success.",
               interestedCount: 42
             }
             // ... add more proposals as needed
