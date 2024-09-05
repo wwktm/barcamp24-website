@@ -36,7 +36,7 @@ export default function Faq() {
   return (
     <div className="my-10">
       <div className="container">
-        <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
+        <div className="mx-auto max-w-6xl divide-y divide-gray-900/10">
           <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
             Frequently asked questions
           </h2>

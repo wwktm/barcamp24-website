@@ -7,52 +7,50 @@
     font-family: "Montserrat", sans-serif;
   }
   a {
-    @apply text-orange-400;
+    @apply text-orange-500;
   }
 }
 
 body {
-  @apply bg-white text-gray-600 font-montserrat font-normal;
+  @apply font-montserrat bg-white text-stone-900 font-normal;
 }
-
+p {
+  @apply font-montserrat text-stone-900;
+}
 .container {
-  @apply w-full max-w-screen-xl mx-auto py-6;
+  @apply px-4 max-w-6xl mx-auto;
 }
 
 .highlighted {
-  @apply text-orange-400 font-semibold;
+  @apply text-orange-500;
 }
 
 .proposals {
-  @apply mt-5 border-gray-400 border-b-8;
+  /* @apply mt-5 border-gray-400 border-b-8; */
 }
 
 .proposal {
-  @apply border-b border-gray-200 py-5;
+  /* @apply border-b border-gray-200 py-5; */
 }
 
 .proposal a {
-  @apply text-orange-400;
+  @apply text-orange-500;
 }
 
 .proposal .tags {
   @apply mb-0 mt-1;
 }
 
-.proposal h3 {
-  @apply text-lg font-bold;
-}
-
 .avatars {
-  @apply flex mr-1;
+  @apply flex flex-row self-stretch flex-wrap items-center;
 }
 
 .proposal .avatar {
-  @apply mr-5;
+  @apply mr-3;
 }
 
 .proposal .avatar img {
-  @apply w-24 rounded-full border-4 border-gray-200;
+  @apply w-20 rounded-full border-4 border-gray-200;
 }
 
 .avatars img {
@@ -64,19 +62,19 @@ body {
 }
 
 .proposal .interested {
-  @apply flex flex-col items-center justify-center w-16 h-16 border-2 border-gray-300 text-xs font-bold bg-gray-200;
+  /* @apply flex flex-col items-center justify-center w-10 h-10 border-2 border-gray-300 text-xs font-bold bg-gray-200; */
 }
 
 .proposal .interested.has-voted {
-  @apply bg-orange-400 text-white;
+  @apply bg-orange-500 text-white;
 }
 
 .proposal .interested-arrow {
-  @apply text-2xl leading-none mb-0.5 mt-0.5 font-thin;
+  /* @apply text-2xl leading-none mb-0.5 mt-0.5 font-thin; */
 }
 
 .proposal .has-voted .interested-arrow {
-  @apply text-white;
+  /* @apply text-white; */
 }
 
 .rounded-button {
@@ -88,5 +86,5 @@ body {
 }
 
 .tag {
-  @apply bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-xs;
+  @apply bg-gray-200 text-gray-800 py-1 px-3 rounded-full text-xs font-medium;
 }

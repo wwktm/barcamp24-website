@@ -101,7 +101,7 @@ export default function Header({
                         name="intent"
                         value="login"
                         type="submit"
-                        className="inline-flex w-full justify-center rounded-md bg-orange-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 disabled:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400"
+                        className="inline-flex w-full justify-center rounded-md bg-orange-500 px-7 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 disabled:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400"
                       >
                         Send Link
                       </button>
@@ -113,22 +113,50 @@ export default function Header({
           </div>
         </div>
       </Dialog>
-      <header className="container">
-        <nav className="flex items-stretch">
-          <Link className="flex w-auto h-20" to="/">
-            <img src={Logo} alt="BarCamp Kathmandu 2024" />
-          </Link>
-          <div className="justify-end ms-auto">
-            <div className="flex gap-2 justify-center self-end line-height-10">
-              <button onClick={handleLoginLogout} className="rounded-button">
-                {isLoggedIn ? "Logout" : "Login"}
-              </button>
-              <Link className="rounded-button" to="/request-proposal">
-                <strong>Submit a Proposal</strong>
+      <header className="">
+        <div className="container">
+          <nav className="flex w-full items-center justify-between">
+            <Link className="flex w-auto h-20 py-2" to="/">
+              <img src={Logo} alt="BarCamp Kathmandu 2024" />
+            </Link>
+            <div className="menu relative mx-auto hidden grow items-center justify-center space-x-8 px-4 lg:flex">
+              <Link
+                className="text-base font-semibold text-gray-900 transition hover:underline"
+                to="/"
+              >
+                Home
+              </Link>
+              <Link
+                className="text-base font-semibold text-gray-900 transition hover:underline"
+                to="/"
+              >
+                About
+              </Link>
+              <Link
+                className="text-base font-semibold text-gray-900 transition hover:underline"
+                to="/"
+              >
+                Faq
               </Link>
             </div>
-          </div>
-        </nav>
+            <div className="ms-auto">
+              <div className="flex gap-2 justify-center self-end line-height-10">
+                <button
+                  onClick={handleLoginLogout}
+                  className="bg-orange-500 inline-flex items-center justify-center rounded-full border border-transparent px-6 py-2 text-base font-medium text-white transition hover:bg-orange-700 focus-visible:outline"
+                >
+                  {isLoggedIn ? "Logout" : "Login"}
+                </button>
+                <Link
+                  className="inline-flex items-center justify-center rounded-full border border-stone-900 bg-transparent px-5 py-3 text-base font-medium text-stone-700 transition hover:bg-orange-700 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+                  to="/request-proposal"
+                >
+                  <strong>Submit a Proposal</strong>
+                </Link>
+              </div>
+            </div>
+          </nav>
+        </div>
       </header>
     </>
   );
