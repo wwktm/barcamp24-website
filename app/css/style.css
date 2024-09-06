@@ -1,10 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @layer base {
   .font-montserrat {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Lora", serif;
   }
   a {
     @apply text-orange-500;
@@ -86,5 +87,5 @@ p {
 }
 
 .tag {
-  @apply bg-gray-200 text-gray-800 py-1 px-3 rounded-full text-xs font-medium;
+  @apply bg-gray-100 text-black py-2 px-3 rounded-full text-xs font-normal;
 }

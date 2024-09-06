@@ -68,9 +68,11 @@ export default function RequestProposal() {
   const data = useActionData<typeof action>();
   return (
     <>
-      <section className="text-xl leading-loose bg-gray-200 border-b-2 border-orange-400 rotate-1">
+      <section className="py-20 bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">
         <div className="container">
-          <h1 className="text-3xl font-bold">Request a Proposal</h1>
+          <h1 className="sm:text-3xl text-3xl font-bold mb-0 text-center">
+            Request a Proposal
+          </h1>
         </div>
       </section>
 

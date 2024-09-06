@@ -59,11 +59,11 @@ export default function ProposalForm({
   }, [isSuccess]);
 
   return (
-    <div className="container">
+    <div className="container my-20">
       <Form
         ref={form}
         method="post"
-        className="flex flex-col gap-4 max-w-lg mx-auto mt-4 p-4 bg-white shadow-md rounded-md"
+        className="flex flex-col gap-4 max-w-3xl m-auto mt-4 p-4"
       >
         {isSuccess ? (
           <div className="rounded-md bg-green-50 p-4">
@@ -100,24 +100,24 @@ export default function ProposalForm({
           </div>
         ) : null}
         <Field>
-          <Label className="block text-gray-700 font-bold mb-2">
+          <Label className="block text-gray-900 font-semibold mb-3">
             Topic Title
           </Label>
           <Input
             type="text"
             name="title"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none"
+            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
             required
           />
         </Field>
         <Field>
-          <Label className="block text-gray-700 font-bold mb-2">
+          <Label className="block text-gray-900 font-semibold mb-3">
             Topic Tags
           </Label>
           <Input
             type="text"
             name="tags"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none"
+            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
             placeholder="Comma separated tags"
             required
           />
@@ -128,7 +128,7 @@ export default function ProposalForm({
           </Label>
           <Textarea
             name="description"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none"
+            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
             rows={3}
             required
           />
@@ -148,7 +148,7 @@ export default function ProposalForm({
                 placeholder="Speaker Name"
                 value={speaker.name}
                 onChange={(e) => handleSpeakerChange(index, "name", e)}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none"
+                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
                 required
               />
               <Input
@@ -157,7 +157,7 @@ export default function ProposalForm({
                 placeholder="Photo URL"
                 value={speaker.photoUrl}
                 onChange={(e) => handleSpeakerChange(index, "photoUrl", e)}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none"
+                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
               />
               <Input
                 type="url"
@@ -165,7 +165,7 @@ export default function ProposalForm({
                 placeholder="Profile Link"
                 value={speaker.profileLink}
                 onChange={(e) => handleSpeakerChange(index, "profileLink", e)}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none"
+                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
               />
               {index > 0 && (
                 <button

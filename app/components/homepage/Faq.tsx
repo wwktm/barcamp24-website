@@ -34,18 +34,18 @@ const faqs: Array<{ question: string; answer: string }> = [
 
 export default function Faq() {
   return (
-    <div className="my-10">
+    <div className="py-14">
       <div className="container">
-        <div className="mx-auto max-w-6xl divide-y divide-gray-900/10">
-          <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
             Frequently asked questions
           </h2>
-          <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
+          <dl className="mt-10 space-y-8 divide-y divide-gray-300">
             {faqs.map((faq) => (
               <Disclosure key={faq.question} as="div" className="pt-6">
                 <dt>
-                  <DisclosureButton className="group flex w-full items-start justify-between text-left text-gray-900">
-                    <span className="text-base font-semibold leading-7">
+                  <DisclosureButton className="group flex w-full items-start justify-between text-left text-black">
+                    <span className="text-lg font-medium leading-7">
                       {faq.question}
                     </span>
                     <span className="ml-6 flex h-7 items-center">
@@ -61,7 +61,7 @@ export default function Faq() {
                   </DisclosureButton>
                 </dt>
                 <DisclosurePanel as="dd" className="mt-2 pr-12">
-                  <p className="text-base leading-7 text-gray-600">
+                  <p className="text-base leading-7 text-gray-800">
                     {faq.answer}
                   </p>
                 </DisclosurePanel>
