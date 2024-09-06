@@ -62,20 +62,8 @@ p {
   @apply -ml-1.5;
 }
 
-.proposal .interested {
-  /* @apply flex flex-col items-center justify-center w-10 h-10 border-2 border-gray-300 text-xs font-bold bg-gray-200; */
-}
-
 .proposal .interested.has-voted {
   @apply bg-orange-500 text-white;
-}
-
-.proposal .interested-arrow {
-  /* @apply text-2xl leading-none mb-0.5 mt-0.5 font-thin; */
-}
-
-.proposal .has-voted .interested-arrow {
-  /* @apply text-white; */
 }
 
 .rounded-button {
@@ -88,11 +76,6 @@ p {
 
 .tag {
   @apply bg-gray-100 text-black py-2 px-3 rounded-full text-xs font-normal;
-}
-.artwork {
-  /* width: 60%; */
-  /* margin: auto; */
-  /* margin-top: -100px; */
 }
 
 .w-middle {

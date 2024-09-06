@@ -27,6 +27,13 @@ export const action: ActionFunction = async ({ request }) => {
   const title = formData.get("title") as string;
   const tags = formData.get("tags") as string;
   const description = formData.get("description") as string;
+  const email = formData.get("email") as string;
+  const duration = formData.get("duration") as string;
+  let session_category = formData.get("session_category") as string;
+  const category_other = formData.get("category_other") as string;
+  if (session_category === "Other") {
+    session_category = category_other.trim() || session_category;
+  }
 
   const speakers: Json[] = [];
 
@@ -39,7 +46,12 @@ export const action: ActionFunction = async ({ request }) => {
 
         // Ensure the speakers array has an object for the current index
         if (!speakers[idx])
-          speakers[idx] = { name: "", photoUrl: "", profileLink: "" };
+          speakers[idx] = {
+            name: "",
+            photoUrl: "",
+            profileLink: "",
+            introduction: "",
+          };
 
         // Assign the value to the appropriate field of the speaker
         speakers[idx][field as keyof Json] = value as never;
@@ -50,6 +62,9 @@ export const action: ActionFunction = async ({ request }) => {
   const { supabaseClient } = createSupabaseServerClient(request);
 
   const { error } = await supabaseClient.from("proposals").insert({
+    email,
+    duration,
+    session_category,
     title,
     tags: tags.split(",").map((tag) => tag.trim()),
     description,

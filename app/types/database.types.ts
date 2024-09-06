@@ -58,6 +58,9 @@ export type Database = {
           upvotes: number;
         };
         Insert: {
+          email?: string | null;
+          duration?: string | null;
+          session_category?: string | null;
           created_at?: string | null;
           description: string;
           hall?: string | null;

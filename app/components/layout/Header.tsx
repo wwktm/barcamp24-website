@@ -32,19 +32,23 @@ export default function Header({
   actionSuccess?: boolean;
 }) {
   const submit = useSubmit();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigation = useNavigation();
   const action = searchParams.get("action");
 
   const form = useRef<HTMLFormElement>(null);
-  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(
-    action === "login" ? true : false
-  );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const redirectToLogin = () => {
+    setSearchParams((prevParams) => {
+      prevParams.set("action", "login");
+      return prevParams;
+    });
+  };
 
   const handleLoginLogout = () => {
     if (!isLoggedIn) {
-      setShowLoginPopup(true);
+      redirectToLogin();
     } else {
       const formData = new FormData();
       formData.append("intent", "logout");
@@ -67,8 +71,13 @@ export default function Header({
   return (
     <>
       <Dialog
-        open={showLoginPopup}
-        onClose={setShowLoginPopup}
+        open={action == "login" && !isLoggedIn}
+        onClose={() =>
+          setSearchParams((prevParams) => {
+            prevParams.delete("action", "login");
+            return prevParams;
+          })
+        }
         className="relative z-10"
       >
         <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
@@ -164,7 +173,7 @@ export default function Header({
             )}
           </button>
 
-          <div className="hidden lg:flex space-x-8 items-center">
+          {/* <div className="hidden lg:flex space-x-8 items-center">
             <Link
               className="text-base font-semibold text-black hover:underline"
               to="/"
@@ -183,7 +192,7 @@ export default function Header({
             >
               FAQ
             </Link>
-          </div>
+          </div> */}
 
           <div className="hidden lg:flex gap-2 items-center">
             <button

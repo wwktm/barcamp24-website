@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, useSearchParams } from "@remix-run/react";
 import { useCallback } from "react";
 import { Database } from "~/types/database.types";
 
@@ -13,6 +13,7 @@ export default function Proposals({
   userId?: string;
   handleUpvoteChange: (proposaslId: number) => void;
 }) {
+  const [, setUrlSearchParams] = useSearchParams();
   const getUpvoteText = useCallback(
     (currentProposalId: number) => {
       if (!userId) return "Please login to upvote";
@@ -85,16 +86,21 @@ export default function Proposals({
                   </div>
                   <div className="my-2 text-center ms-3">
                     <button
-                      className={`interested rounded-full bg-white border border-gray-300 px-4 py-1 h-12 w-12 mb-2${
+                      className={`interested rounded-full bg-white border border-gray-300 px-4 py-1 h-12 w-12 mb-2 ${
                         upVotedProposals.includes(proposal.id)
                           ? "has-voted"
                           : ""
                       }`}
-                      disabled={!userId}
                       title={getUpvoteText(proposal.id)}
                       onClick={() => {
-                        if (!userId) return;
-                        handleUpvoteChange(proposal.id);
+                        if (!userId) {
+                          setUrlSearchParams((prevParams) => {
+                            prevParams.set("action", "login");
+                            return prevParams;
+                          });
+                        } else {
+                          handleUpvoteChange(proposal.id);
+                        }
                       }}
                     >
                       <span className="interested-arrow leading-none">▲</span>

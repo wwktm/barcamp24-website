@@ -7,7 +7,10 @@ import {
   Input,
   Label,
   Legend,
+  Select,
   Textarea,
+  RadioGroup,
+  Radio,
 } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 
@@ -15,10 +18,29 @@ export interface SpeakerProfile {
   name: string;
   photoUrl: string;
   profileLink: string;
+  introduction?: string;
 }
 
 const initalSpeakersValue: SpeakerProfile[] = [
-  { name: "", photoUrl: "", profileLink: "" },
+  { name: "", photoUrl: "", profileLink: "", introduction: "" },
+];
+
+const sessionCategories = [
+  "Information Technology",
+  "Music",
+  "Design",
+  "Arts",
+  "Philosophy",
+  "Life and Lifestyle",
+  "AI",
+  "Blockchain",
+  "Futuristic",
+  "Nostalgia",
+  "Standup Comedy",
+  "Deep Dive",
+  "Education and Training",
+  "Health and Fitness",
+  "Other",
 ];
 
 export default function ProposalForm({
@@ -34,6 +56,8 @@ export default function ProposalForm({
   const [speakers, setSpeakers] =
     useState<SpeakerProfile[]>(initalSpeakersValue);
 
+  const [sessionCategory, setSessionCategory] = useState<string>();
+
   const addSpeaker = () => {
     setSpeakers([...speakers, { name: "", photoUrl: "", profileLink: "" }]);
   };
@@ -45,7 +69,7 @@ export default function ProposalForm({
   const handleSpeakerChange = (
     index: number,
     field: keyof SpeakerProfile,
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const updatedSpeakers = speakers.map((speaker, i) =>
       i === index ? { ...speaker, [field]: event.target.value } : speaker
@@ -56,7 +80,9 @@ export default function ProposalForm({
   useEffect(() => {
     if (isSuccess) {
       form.current?.reset();
+      form.current?.scrollIntoView();
       setSpeakers(initalSpeakersValue);
+      setSessionCategory(undefined);
     }
   }, [isSuccess]);
 
@@ -109,6 +135,65 @@ export default function ProposalForm({
             </div>
           </div>
         ) : null}
+        <Field>
+          <Label className="block text-gray-900 font-semibold">
+            Contact Email
+          </Label>
+          <div className="text-sm text-gray-500 mb-3">
+            We will use this to contact you
+          </div>
+          <Input
+            type="email"
+            name="email"
+            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
+            required
+          />
+        </Field>
+        <Field>
+          <Label className="block text-gray-900 font-semibold mb-3">
+            Session length
+          </Label>
+          <Select
+            name="duration"
+            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
+            required
+          >
+            <option value="regular">Regular: 20mins</option>
+            <option value="lightning">Lightning: 5mins</option>
+          </Select>
+        </Field>
+        <Fieldset>
+          <Legend className="block text-gray-900 font-semibold mb-3">
+            Session Category
+          </Legend>
+          <RadioGroup
+            name="session_category"
+            value={sessionCategory}
+            onChange={setSessionCategory}
+            aria-label="Session Category"
+            className="flex flex-col gap-2"
+          >
+            {sessionCategories.map((category) => (
+              <Field key={category} className="flex items-center gap-2">
+                <Radio
+                  value={category}
+                  className="group flex size-5 items-center justify-center rounded-full border bg-white data-[checked]:bg-blue-400"
+                >
+                  <span className="invisible size-2 rounded-full bg-white group-data-[checked]:visible" />
+                </Radio>
+                <Label className=" font-medium">{category}</Label>
+              </Field>
+            ))}
+          </RadioGroup>
+          {sessionCategory === "Other" ? (
+            <Input
+              name="category_other"
+              type="text"
+              placeholder="Please specify"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none mt-3"
+            />
+          ) : null}
+        </Fieldset>
         <Field>
           <Label className="block text-gray-900 font-semibold mb-3">
             Topic Title
@@ -175,6 +260,13 @@ export default function ProposalForm({
                 placeholder="Profile Link"
                 value={speaker.profileLink}
                 onChange={(e) => handleSpeakerChange(index, "profileLink", e)}
+                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
+              />
+              <Textarea
+                name={`speakers[${index}][introduction]`}
+                placeholder="About you / Introduction"
+                value={speaker?.introduction}
+                onChange={(e) => handleSpeakerChange(index, "introduction", e)}
                 className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
               />
               {index > 0 && (
