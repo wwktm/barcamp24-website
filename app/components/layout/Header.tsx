@@ -1,5 +1,11 @@
-import { useRef, useState } from "react";
-import { Form, Link, useSearchParams, useSubmit } from "@remix-run/react";
+import { useCallback, useRef, useState } from "react";
+import {
+  Form,
+  Link,
+  useNavigation,
+  useSearchParams,
+  useSubmit,
+} from "@remix-run/react";
 import {
   Dialog,
   DialogBackdrop,
@@ -27,6 +33,7 @@ export default function Header({
 }) {
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
+  const navigation = useNavigation();
   const action = searchParams.get("action");
 
   const form = useRef<HTMLFormElement>(null);
@@ -41,13 +48,21 @@ export default function Header({
     } else {
       const formData = new FormData();
       formData.append("intent", "logout");
-      submit(formData, { method: "post" });
+      submit(formData, { method: "post", action: "/" });
     }
   };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  const getEmailButtonLinkText = useCallback(() => {
+    if (actionIntent === "login" && actionSuccess) return "Link Sent";
+
+    if (navigation.state === "submitting") return "Sending Link...";
+
+    return "Send Link";
+  }, [actionIntent, actionSuccess, navigation.state]);
 
   return (
     <>
@@ -111,13 +126,17 @@ export default function Header({
                         </div>
                       </Field>
                       <button
-                        disabled={actionIntent === "login" && actionSuccess}
+                        disabled={
+                          (actionIntent === "login" && actionSuccess) ||
+                          navigation.state === "submitting" ||
+                          isLoggedIn
+                        }
                         name="intent"
                         value="login"
                         type="submit"
                         className="inline-flex w-full justify-center rounded-md bg-orange-500 px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-orange-700 disabled:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400"
                       >
-                        Send Link
+                        {getEmailButtonLinkText()}
                       </button>
                     </Form>
                   </div>

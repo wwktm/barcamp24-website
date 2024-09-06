@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Form } from "@remix-run/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Form, useNavigation } from "@remix-run/react";
 import {
   Button,
   Field,
@@ -29,6 +29,8 @@ export default function ProposalForm({
   hasError?: boolean;
 }) {
   const form = useRef<HTMLFormElement>(null);
+  const navigation = useNavigation();
+
   const [speakers, setSpeakers] =
     useState<SpeakerProfile[]>(initalSpeakersValue);
 
@@ -57,6 +59,14 @@ export default function ProposalForm({
       setSpeakers(initalSpeakersValue);
     }
   }, [isSuccess]);
+
+  const getSubmitButtonText = useCallback(() => {
+    if (isSuccess) return "Submitted";
+
+    if (navigation.state === "submitting") return "Submitting...";
+
+    return "Submit";
+  }, [isSuccess, navigation.state]);
 
   return (
     <div className="container my-20">
@@ -187,11 +197,11 @@ export default function ProposalForm({
           </button>
         </Fieldset>
         <Button
-          disabled={isSuccess}
+          disabled={isSuccess || navigation.state === "submitting"}
           type="submit"
           className="bg-orange-400 text-white px-4 py-2 rounded-md hover:bg-orange-500 disabled:bg-slate-100 disabled:text-slate-400"
         >
-          Submit
+          {getSubmitButtonText()}
         </Button>
       </Form>
     </div>
