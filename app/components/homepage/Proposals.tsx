@@ -83,9 +83,9 @@ export default function Proposals({
                       ))}
                     </div>
                   </div>
-                  <div className="my-2">
+                  <div className="my-2 text-center ms-3">
                     <button
-                      className={`interested rounded-full p-0 h-12 w-12 ms-3${
+                      className={`interested rounded-full bg-white border border-gray-300 px-4 py-1 h-12 w-12 mb-2${
                         upVotedProposals.includes(proposal.id)
                           ? "has-voted"
                           : ""
@@ -97,9 +97,11 @@ export default function Proposals({
                         handleUpvoteChange(proposal.id);
                       }}
                     >
-                      <div className="interested-arrow">▲</div>
-                      <div className="interested-count">{proposal.upvotes}</div>
+                      <span className="interested-arrow leading-none">▲</span>
                     </button>
+                    <div className="interested-count leading-none">
+                      {proposal.upvotes}
+                    </div>
                   </div>
                 </div>
               </div>

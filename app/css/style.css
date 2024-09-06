@@ -39,7 +39,7 @@ p {
 }
 
 .proposal .tags {
-  @apply mb-0 mt-1;
+  @apply mb-0 mt-2;
 }
 
 .avatars {
@@ -88,4 +88,154 @@ p {
 
 .tag {
   @apply bg-gray-100 text-black py-2 px-3 rounded-full text-xs font-normal;
+}
+.artwork {
+  /* width: 60%; */
+  /* margin: auto; */
+  /* margin-top: -100px; */
+}
+
+.w-middle {
+  animation: opacity-easeInOutBounce 1000ms linear 0s 1 both running;
+}
+
+@keyframes opacity-easeInOutBounce {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+.w-middle-mask {
+  fill: none;
+  stroke: rgba(0, 0, 0, 4%);
+  stroke-width: 5px;
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 0;
+}
+
+.w-side-masks {
+  animation: side-masks 3s ease-in forwards;
+}
+
+.w-middle-mask {
+  animation: middle-mask 3s ease-in forwards;
+}
+
+.cls-4 {
+  fill: #8d82d4;
+}
+
+.cls-4 {
+  animation: middle-mask 3s ease-in forwards;
+}
+
+.cls-5 {
+  animation: side-mask 3s ease-in forwards;
+}
+
+.cls-6 {
+  animation: side-mask 3s ease-in forwards;
+}
+
+.w-sides,
+.w-middle {
+  opacity: 0;
+  animation: image 3s ease-in forwards;
+}
+
+.Shape1 {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: -1000;
+  animation: dashbackward 1s ease-out forwards;
+}
+
+.Shape2 {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 1000;
+  animation: dashforward 1s ease-out forwards;
+}
+
+.Shape3 {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: -2000;
+  animation: dashbackward 2s ease-out forwards;
+}
+
+.Shape4 {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 2000;
+  animation: dashforward 2s ease-out forwards;
+}
+
+.Shape5 {
+  stroke-dasharray: 3000;
+  stroke-dashoffset: -3000;
+  animation: dashbackward 2s ease-out forwards;
+}
+
+@keyframes dashforward {
+  from {
+    stroke-dashoffset: 3000;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes dashbackward {
+  from {
+    stroke-dashoffset: -3000;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes side-masks {
+  0% {
+    stroke-dashoffset: 3000;
+  }
+
+  50% {
+    fill: #fff;
+    stroke-width: 5;
+  }
+
+  100% {
+    stroke-width: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes middle-mask {
+  0% {
+    stroke-dashoffset: 3000;
+    fill: #fff;
+  }
+
+  50% {
+    fill: #c9c9c9;
+    stroke-width: 5;
+  }
+
+  100% {
+    stroke-width: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes image {
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
 }
