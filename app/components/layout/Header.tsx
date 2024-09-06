@@ -130,7 +130,7 @@ export default function Header({
 
       <header className="bg-white shadow">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-          <Link className="flex w-auto sm:h-20 h-16 py-2" to="/">
+          <Link className="flex w-auto h-16 sm:h-20  py-2" to="/">
             <img src={Logo} alt="BarCamp Kathmandu 2024" />
           </Link>
 
