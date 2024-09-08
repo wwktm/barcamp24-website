@@ -117,7 +117,7 @@ export default function Proposals({
         <div className="mt-14 mb-5 text-center">
           <Link
             className="bg-orange-500 inline-flex items-center justify-center rounded-full border border-transparent px-6 py-4 text-base font-medium text-white transition hover:bg-orange-700 focus-visible:outline"
-            to="/request-proposal"
+            to="/submit-proposal"
           >
             Submit your Proposal
           </Link>

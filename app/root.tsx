@@ -16,7 +16,8 @@ import {
 } from "@remix-run/react";
 import stylesheet from "~/css/style.css?url";
 import Header from "~/components/layout/Header";
-import { createSupabaseServerClient } from "./utils/supabase.server";
+import { createSupabaseServerClient } from "~/utils/supabase.server";
+import Footer from "~/components/layout/Footer";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -91,6 +92,7 @@ export default function App() {
         />
         <Outlet />
         <ScrollRestoration />
+        <Footer />
         <Scripts />
       </body>
     </html>

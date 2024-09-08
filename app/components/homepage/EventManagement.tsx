@@ -1,6 +1,9 @@
 export default function EventManagement() {
   return (
-    <div className="py-14  bg-gradient-to-l from-sky-100 to-orange-50 bg-gray-10">
+    <div
+      id="supporters"
+      className="py-14  bg-gradient-to-l from-sky-100 to-orange-50 bg-gray-10"
+    >
       <div className="container">
         <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
           Supporters

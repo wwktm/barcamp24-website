@@ -7,13 +7,13 @@ import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
 const faqs: Array<{ question: string; answer: string }> = [
   {
-    question: "What is Barcamp Kathmandu?",
+    question: "What is BarCamp Kathmandu?",
     answer:
-      "Barcamp Kathmandu is an unconference - an ad hoc gathering born from the desire for people to share and learn in an open environment.",
+      "BarCamp Kathmandu is an unconference - an ad hoc gathering born from the desire for people to share and learn in an open environment.",
   },
   {
     question: "Who should attend BarCamp?",
-    answer: "Everyone. Barcamp Kathmandu is open to the community.",
+    answer: "Everyone. BarCamp Kathmandu is open to the community.",
   },
   {
     question: "How are topics chosen?",
@@ -34,7 +34,7 @@ const faqs: Array<{ question: string; answer: string }> = [
 
 export default function Faq() {
   return (
-    <div className="py-14">
+    <div id="faq" className="py-14">
       <div className="container">
         <div className="mx-auto max-w-6xl">
           <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
@@ -45,7 +45,7 @@ export default function Faq() {
               <Disclosure key={faq.question} as="div" className="pt-6">
                 <dt>
                   <DisclosureButton className="group flex w-full items-start justify-between text-left text-black">
-                    <span className="text-lg font-medium leading-7">
+                    <span className="text-lg font-semibold leading-7">
                       {faq.question}
                     </span>
                     <span className="ml-6 flex h-7 items-center">

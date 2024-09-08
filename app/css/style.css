@@ -1,22 +1,28 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sora|Inter:ital,wght@0,400..700;1,400..700&display=swap");
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @layer base {
-  .font-montserrat {
-    font-family: "Lora", serif;
+  .font-sora {
+    font-family: "Sora", sans-serif;
+  }
+  .font-inter {
+    font-family: "Inter", sans-serif;
   }
   a {
     @apply text-orange-500;
   }
+  .text-paragraph {
+    color: #262a41;
+  }
 }
 
 body {
-  @apply font-montserrat bg-white text-stone-900 font-normal;
+  @apply font-sora bg-white text-stone-900 font-normal;
 }
 p {
-  @apply font-montserrat text-stone-900;
+  @apply font-inter text-paragraph;
 }
 .container {
   @apply px-4 max-w-6xl mx-auto;
@@ -24,14 +30,6 @@ p {
 
 .highlighted {
   @apply text-orange-500;
-}
-
-.proposals {
-  /* @apply mt-5 border-gray-400 border-b-8; */
-}
-
-.proposal {
-  /* @apply border-b border-gray-200 py-5; */
 }
 
 .proposal a {

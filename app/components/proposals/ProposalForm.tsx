@@ -240,7 +240,7 @@ export default function ProposalForm({
               <Input
                 type="text"
                 name={`speakers[${index}][name]`}
-                placeholder="Speaker Name"
+                placeholder="Your Name"
                 value={speaker.name}
                 onChange={(e) => handleSpeakerChange(index, "name", e)}
                 className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
@@ -249,7 +249,7 @@ export default function ProposalForm({
               <Input
                 type="url"
                 name={`speakers[${index}][photoUrl]`}
-                placeholder="Photo URL"
+                placeholder="Your Photo URL"
                 value={speaker.photoUrl}
                 onChange={(e) => handleSpeakerChange(index, "photoUrl", e)}
                 className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
@@ -257,7 +257,7 @@ export default function ProposalForm({
               <Input
                 type="url"
                 name={`speakers[${index}][profileLink]`}
-                placeholder="Profile Link"
+                placeholder="Social Media / Website Link"
                 value={speaker.profileLink}
                 onChange={(e) => handleSpeakerChange(index, "profileLink", e)}
                 className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
@@ -285,7 +285,7 @@ export default function ProposalForm({
             onClick={addSpeaker}
             className=" text-orange-500 hover:underline self-end"
           >
-            Add Speaker
+            Add another speaker
           </button>
         </Fieldset>
         <Button

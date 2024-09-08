@@ -6,14 +6,14 @@ import { createSupabaseServerClient } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Request Proposal - BarCamp Kathmandu 2024" },
+    { title: "Sumit Proposal - BarCamp Kathmandu 2024" },
     {
       property: "og:title",
-      content: "Request Proposal - BarCamp Kathmandu 2024",
+      content: "Submit Proposal - BarCamp Kathmandu 2024",
     },
     {
       name: "description",
-      content: "Request a proposal for BarCamp Kathmandu 2024",
+      content: "Submit a proposal for BarCamp Kathmandu 2024",
     },
     {
       property: "og:image",
@@ -83,11 +83,28 @@ export default function RequestProposal() {
   const data = useActionData<typeof action>();
   return (
     <>
-      <section className="py-20 bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">
+      <section className="py-8 bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">
         <div className="container">
-          <h1 className="sm:text-3xl text-3xl font-bold mb-0 text-center">
-            Request a Proposal
-          </h1>
+          <div className="mx-auto max-w-4xl py-20 sm:py-20 lg:py-8">
+            <div className="text-center">
+              <h1 className="highlighted sm:text-3xl text-2xl font-bold">
+                You have something to share?
+              </h1>
+              <h2 className="text-sky-400 sm:text-xl text-lg font-bold mb-5 pt-2">
+                Submit a Proposal
+              </h2>
+              <p className="text-lg font-medium mb-5">
+                BarCamp Kathmandu is an unconference - an ad hoc gathering born
+                from the <strong>desire for people to share and learn</strong>{" "}
+                in an open environment. Most sessions do not require prepared
+                slides and we even encourage you not to use them. We also donot
+                enforce you any language or presentation style so be yourself.
+                We also encourage non-tech sessions and open discussion on a
+                variety of topics. BarCamp is an excellent way to test out your
+                public speaking skills.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 

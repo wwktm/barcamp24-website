@@ -100,7 +100,7 @@ export default function Header({
                     as="h3"
                     className="text-lg mb-4 font-semibold leading-6 text-black"
                   >
-                    Email a magic link
+                    Please enter your email to Login
                   </DialogTitle>
                   <div className="mt-2">
                     <Form
@@ -111,7 +111,7 @@ export default function Header({
                       {actionIntent === "login" && actionSuccess ? (
                         <div className="rounded-md bg-green-50 p-4">
                           <p className="text-sm font-medium text-green-800">
-                            Email has been sent please check your email
+                            We have sent you a login link in your email.
                           </p>
                         </div>
                       ) : null}
@@ -203,7 +203,7 @@ export default function Header({
             </button>
             <Link
               className="rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
-              to="/request-proposal"
+              to="/submit-proposal"
             >
               Submit a Proposal
             </Link>
@@ -212,7 +212,7 @@ export default function Header({
 
         {isMobileMenuOpen && (
           <div className="lg:hidden flex flex-col items-center bg-white py-4">
-            <Link
+            {/* <Link
               className="block px-4 py-2 text-base font-medium text-gray-900 hover:bg-gray-100"
               to="/"
               onClick={toggleMobileMenu}
@@ -232,7 +232,7 @@ export default function Header({
               onClick={toggleMobileMenu}
             >
               FAQ
-            </Link>
+            </Link> */}
             <button
               onClick={handleLoginLogout}
               className="mt-4 bg-orange-500 rounded-full px-6 py-2 text-base font-medium text-white hover:bg-orange-700"
@@ -241,7 +241,7 @@ export default function Header({
             </button>
             <Link
               className="mt-2 rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
-              to="/request-proposal"
+              to="/submit-proposal"
               onClick={toggleMobileMenu}
             >
               Submit a Proposal
