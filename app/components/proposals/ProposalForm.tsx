@@ -96,6 +96,82 @@ export default function ProposalForm({
 
   return (
     <div className="container my-20">
+      <p className="max-w-3xl m-auto mt-2 p-4 text-lg">
+        <ul className="flex flex-col gap-6 ml-3 list-disc">
+          <li>
+            BarCamp Kathmandu is an <em>unconference</em> - an ad hoc gathering
+            born from the&nbsp;
+            <strong>desire for people to share and learn</strong>&nbsp;in an
+            open environment.
+          </li>
+          <li>
+            Giving a session is a{" "}
+            <strong>
+              perfect opportunity to speak about that cool topic you are
+              interested in
+            </strong>
+            : whether it be about your unique take on Fitness and Art, about
+            that cool usecase for AI you discovered, or about the rabbithole you
+            went down last year about Nepali traditional <em>Dhunge dharas</em>{" "}
+            (We highly encourage varied topics, please checkout the
+            &quot;Session Categories&quot; below!)
+          </li>
+          <li>
+            The format of the event is that there will be{" "}
+            <strong>3/4 parallel tracks</strong>, and our main sessions will be{" "}
+            <strong>20 minutes</strong> each. Other than this, you can also opt
+            to present a <strong>5-minute lightning talk</strong>. There is no
+            set agenda, the sessions will be assigned to a track/room &amp; time
+            on the event day itself (on a BIG PHYSICAL timetable!)
+          </li>
+          <li>
+            Since this is an unconference, you also have the option to show up
+            on the event day itself with a talk idea. However,{" "}
+            <strong>we encourage you to submit a proposal earlier</strong> for
+            the following reasons:
+            <ol className="ml-8 mt-4 list-decimal">
+              <li>
+                We will be sharing the suggested proposals on social media, so a
+                proposal on a topic is a good way to attract like-minded people
+                to the event. Who knows, your proposal may encourage other
+                like-minded people to submit proposals about your area of
+                interest, and you may end up with a mini-conference of your
+                niche interest.
+              </li>
+              <li>
+                An unconference is a gathering for attendees{" "}
+                <em>by attendees</em>. Submitting a proposal is a way of
+                contributing to the event: by continuing as such and generating
+                excitement, you will be making the event better for everyone
+              </li>
+              <li>
+                Attendees will be able to upvote sessions they are interested in
+                and which they would like to attend. Pre submitting your session
+                proposal will therefore allow you to get a sense of which of
+                your ideas resonate. Note that you are welcome to submit
+                multiple proposals.
+              </li>
+              <li>
+                Psychology studies have shown that for rewarding but difficult
+                tasks (like giving a talk), you are much more likely to go
+                through with it if you pre-commit to it. Filling up this form
+                can be thought of as such a precommitment device.
+              </li>
+            </ol>
+          </li>
+          <li>
+            Most sessions do not require prepared slides and we even encourage
+            you not to use them. We also do not enforce any language or
+            presentation style so be yourself. However, we do require that all
+            sessions adhere to our{" "}
+            <a href="https://wwktm.co/2023/code-of-conduct/">code of conduct</a>
+          </li>
+          <li>
+            If you have any questions, please do not hesitate to{" "}
+            <a href="https://x.com/weekend_web">contact us</a>
+          </li>
+        </ul>
+      </p>
       <Form
         ref={form}
         method="post"

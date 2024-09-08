@@ -6,7 +6,7 @@ import { createSupabaseServerClient } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Sumit Proposal - BarCamp Kathmandu 2024" },
+    { title: "Submit Proposal - BarCamp Kathmandu 2024" },
     {
       property: "og:title",
       content: "Submit Proposal - BarCamp Kathmandu 2024",
@@ -93,16 +93,6 @@ export default function RequestProposal() {
               <h2 className="text-sky-400 sm:text-xl text-lg font-bold mb-5 pt-2">
                 Submit a Proposal
               </h2>
-              <p className="text-lg font-medium mb-5">
-                BarCamp Kathmandu is an unconference - an ad hoc gathering born
-                from the <strong>desire for people to share and learn</strong>{" "}
-                in an open environment. Most sessions do not require prepared
-                slides and we even encourage you not to use them. We also donot
-                enforce you any language or presentation style so be yourself.
-                We also encourage non-tech sessions and open discussion on a
-                variety of topics. BarCamp is an excellent way to test out your
-                public speaking skills.
-              </p>
             </div>
           </div>
         </div>
