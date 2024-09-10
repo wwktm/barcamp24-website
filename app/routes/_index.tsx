@@ -41,7 +41,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   // Fetch data from the "topics" table in Supabase
   const { data, error } = await supabaseClient
     .from("proposals")
-    .select("*")
+    .select("*, proposal_upvotes(count)")
     .eq("status", "voting")
     .order("upvotes", { ascending: false });
 

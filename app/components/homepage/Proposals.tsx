@@ -106,7 +106,7 @@ export default function Proposals({
                       <span className="interested-arrow leading-none">▲</span>
                     </button>
                     <div className="interested-count leading-none">
-                      {proposal.upvotes}
+                      {proposal.proposal_upvotes[0].count}
                     </div>
                   </div>
                 </div>

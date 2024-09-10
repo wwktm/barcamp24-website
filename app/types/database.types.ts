@@ -56,6 +56,9 @@ export type Database = {
           tags: string[];
           title: string;
           upvotes: number;
+          proposal_upvotes: Array<{
+            count: number;
+          }>;
         };
         Insert: {
           email?: string | null;
