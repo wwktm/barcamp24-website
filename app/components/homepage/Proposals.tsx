@@ -1,6 +1,7 @@
-import { Link, useSearchParams } from "@remix-run/react";
+import { Link, useNavigation, useSearchParams } from "@remix-run/react";
 import { useCallback } from "react";
 import { Database } from "~/types/database.types";
+import { ArrowPathIcon } from "@heroicons/react/20/solid";
 
 export default function Proposals({
   proposals,
@@ -13,6 +14,7 @@ export default function Proposals({
   userId?: string;
   handleUpvoteChange: (proposaslId: number) => void;
 }) {
+  const navigation = useNavigation();
   const [, setUrlSearchParams] = useSearchParams();
   const getUpvoteText = useCallback(
     (currentProposalId: number) => {
@@ -91,6 +93,7 @@ export default function Proposals({
                           ? "has-voted"
                           : ""
                       }`}
+                      disabled={navigation.state === "submitting"}
                       title={getUpvoteText(proposal.id)}
                       onClick={() => {
                         if (!userId) {
@@ -103,7 +106,11 @@ export default function Proposals({
                         }
                       }}
                     >
-                      <span className="interested-arrow leading-none">▲</span>
+                      {navigation.state === "submitting" ? (
+                        <ArrowPathIcon className="animate-spin" />
+                      ) : (
+                        <span className="interested-arrow leading-none">▲</span>
+                      )}
                     </button>
                     <div className="interested-count leading-none">
                       {proposal.proposal_upvotes[0].count}
