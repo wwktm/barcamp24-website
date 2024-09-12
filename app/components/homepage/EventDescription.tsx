@@ -8,7 +8,7 @@ export default function EventDescription() {
               BarCamp Kathmandu
             </h1>
             <h2 className="text-sky-400 mt-2 sm:text-3xl text-2xl font-bold mb-5 pt-2">
-              TBD, Kathmandu, Nepal
+              St Xavier’s College, Maitighar, Kathmandu
             </h2>
             <div className="my-8 flex justify-center">
               <div className="flex items-center relative rounded-full px-8 py-3 text-lg leading-6 text-black ring-1 ring-orange-100 bg-orange-100">
