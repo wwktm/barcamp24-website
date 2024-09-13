@@ -58,7 +58,7 @@ export default function Proposals({
                 )}
                 <div className="flex items-start justify-between">
                   <div className="my-4">
-                    <h3 className="text-xl font-semibold mb-4">
+                    <h3 className="text-xl font-semibold mb-4 capitalize">
                       {proposal.title}
                     </h3>
                     <div className="mb-4 text-xs font-medium text-gray-900">

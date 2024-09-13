@@ -42,8 +42,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const { data, error } = await supabaseClient
     .from("proposals")
     .select("*, proposal_upvotes(count)")
-    .eq("status", "voting")
-    .order("upvotes", { ascending: false });
+    .eq("status", "voting");
 
   const userData = await supabaseClient.auth.getUser();
   const upVotedProposals: number[] = [];
@@ -67,7 +66,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   // Return the data as JSON to be used in the component
   return json({
-    proposals: data || [],
+    proposals: data?.sort(() => Math.random() - 0.5) || [],
     userId: userData.data.user?.id,
     upVotedProposals,
   });
