@@ -1,10 +1,11 @@
 import xavierLogo from "~/images/st-xaviers-logo.png";
+import eventsmoLogo from "~/images/eventsmo-logo.png";
 
 export default function EventManagement() {
   return (
     <div
       id="supporters"
-      className="py-14  bg-gradient-to-l from-sky-100 to-orange-50 bg-gray-10"
+      className="py-14 bg-gradient-to-l from-sky-100 to-orange-50 bg-gray-10"
     >
       <div className="container">
         <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
@@ -24,6 +25,14 @@ export default function EventManagement() {
             <img
               alt="St Xavier's College"
               src={xavierLogo}
+              className="max-h-20 w-full object-contain"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-bold mb-4 text-center">Ticketing partner</h3>
+            <img
+              alt="St Xavier's College"
+              src={eventsmoLogo}
               className="max-h-20 w-full object-contain"
             />
           </div>
