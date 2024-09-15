@@ -37,7 +37,7 @@ export default function Proposals({
           {proposals.map((proposal) => (
             <div
               key={proposal.id}
-              className="proposal relative rounded-xl border-2 border-gray-300 bg-white px-6 py-6 shadow-sm  hover:border-gray-300"
+              className="proposal relative rounded-xl border-2 border-gray-300 bg-white px-6 py-6 shadow-sm hover:border-gray-300"
             >
               <div className=" ">
                 {proposal.speakers && (

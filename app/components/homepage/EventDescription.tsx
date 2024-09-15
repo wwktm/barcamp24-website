@@ -13,11 +13,11 @@ export default function EventDescription() {
               St Xavier’s College, Maitighar
             </h2>
             <div className="my-8 flex justify-center">
-              <div className="mt-2 flex items-center justify-center gap-x-3">
+              <div className="mt-2 sm:flex sm:items-center justify-center gap-x-3">
                 <Link
                   to="https://eventsmo.com/event/barcamp-kathmandu-2024"
                   target="blank"
-                  className="flex items-center rounded-full bg-orange-500 px-7 py-3 text-lg  font-normal text-white hover:bg-orange-700   focus-visible:outline-orange-400"
+                  className="flex items-center rounded-full bg-orange-500 px-7 py-3 my-2 text-lg  font-normal text-white hover:bg-orange-700   focus-visible:outline-orange-400"
                 >
                   <span className="me-2">
                     <svg
@@ -31,7 +31,7 @@ export default function EventDescription() {
                   </span>
                   Get your Tickets
                 </Link>
-                <div className="flex items-center relative rounded-full px-7 py-3 text-lg  text-black ring-1 ring-orange-100 bg-orange-100">
+                <div className="flex items-center relative rounded-full px-7 py-3 my-2 text-lg  text-black ring-1 ring-orange-100 bg-orange-100">
                   <span className="me-3">
                     <svg
                       className="h-5 w-5 text-gray-600"
