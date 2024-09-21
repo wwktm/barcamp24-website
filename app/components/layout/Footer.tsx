@@ -69,7 +69,7 @@ export default function Footer() {
         <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
           Follow us on social media
         </h2>
-        <div className="flex space-x-4 md:order-2 items-center justify-center">
+        <div className="flex space-x-4 md:order-2 items-center justify-center mb-4">
           {socialMedia.map((item) => (
             <a
               key={item.name}
@@ -82,6 +82,11 @@ export default function Footer() {
               <item.icon aria-hidden="true" className="h-6 w-6" />
             </a>
           ))}
+        </div>
+        <div className="flex space-x-1 md:order-2 items-center justify-center">
+          <span>Contact Us:</span>
+
+          <a href="mailto:barcamp@wwktm.com">barcamp@wwktm.com</a>
         </div>
       </div>
     </div>

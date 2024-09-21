@@ -1,5 +1,6 @@
 import xavierLogo from "~/images/st-xaviers-logo.png";
 import eventsmoLogo from "~/images/eventsmo-logo.png";
+import proshoreLogo from "~/images/proshore-logo.svg";
 
 export default function EventManagement() {
   return (
@@ -33,6 +34,14 @@ export default function EventManagement() {
             <img
               alt="St Xavier's College"
               src={eventsmoLogo}
+              className="max-h-20 w-full object-contain"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-bold mb-4 text-center">Treat Partner</h3>
+            <img
+              alt="Proshore  Nepal Pvt Ltd"
+              src={proshoreLogo}
               className="max-h-20 w-full object-contain"
             />
           </div>

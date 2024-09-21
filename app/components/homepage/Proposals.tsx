@@ -1,7 +1,8 @@
 import { Link, useNavigation, useSearchParams } from "@remix-run/react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Database } from "~/types/database.types";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
+import ProposalDetail from "./ProposalDetail";
 
 export default function Proposals({
   proposals,
@@ -16,6 +17,10 @@ export default function Proposals({
 }) {
   const navigation = useNavigation();
   const [, setUrlSearchParams] = useSearchParams();
+  const [proposalDetail, setProposalDetail] = useState<
+    Database["public"]["Tables"]["proposals"]["Row"] | undefined
+  >();
+
   const getUpvoteText = useCallback(
     (currentProposalId: number) => {
       if (!userId) return "Please login to upvote";
@@ -29,6 +34,10 @@ export default function Proposals({
 
   return (
     <div className="proposals py-12">
+      <ProposalDetail
+        proposalDetail={proposalDetail}
+        setProposalDetail={setProposalDetail}
+      />
       <div className="container">
         <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
           Suggested Proposals
@@ -59,7 +68,15 @@ export default function Proposals({
                 <div className="flex items-start justify-between">
                   <div className="my-4">
                     <h3 className="text-xl font-semibold mb-4 capitalize">
-                      {proposal.title}
+                      <button
+                        className="text-left"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setProposalDetail(proposal);
+                        }}
+                      >
+                        {proposal.title}
+                      </button>
                     </h3>
                     <div className="mb-4 text-xs font-medium text-gray-900">
                       Proposal by{" "}
