@@ -9,6 +9,7 @@ import EventDescription from "~/components/homepage/EventDescription";
 import EventManagement from "~/components/homepage/EventManagement";
 import Faq from "~/components/homepage/Faq";
 import Proposals from "~/components/homepage/Proposals";
+import Schedule from "~/components/homepage/Schedule";
 import { createSupabaseServerClient } from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
@@ -137,6 +138,7 @@ export default function Index() {
         handleUpvoteChange={handleUpvoteChange}
       />
       <EventManagement />
+      <Schedule />
       <Faq />
     </>
   );
