@@ -195,6 +195,19 @@ export default function Header({
           </div> */}
 
           <div className="hidden lg:flex gap-2 items-center">
+            <Link
+              className="text-base font-semibold text-gray-800 hover:underline me-3"
+              to="#"
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  "https://wwktm-2023.notion.site/Schedule-BarCamp-Kathmandu-2024-c135f4f03b7447c4bf375b49b86b6562",
+                  "_blank"
+                );
+              }}
+            >
+              Event Schedule
+            </Link>
             <button
               onClick={handleLoginLogout}
               className="bg-orange-500 rounded-full px-6 py-2 text-base font-medium text-white hover:bg-orange-700"
@@ -233,6 +246,19 @@ export default function Header({
             >
               FAQ
             </Link> */}
+            <Link
+              className="text-base font-semibold text-gray-800 hover:underline me-3"
+              to="#"
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(
+                  "https://wwktm-2023.notion.site/Schedule-BarCamp-Kathmandu-2024-c135f4f03b7447c4bf375b49b86b6562",
+                  "_blank"
+                );
+              }}
+            >
+              Event Schedule
+            </Link>
             <button
               onClick={handleLoginLogout}
               className="mt-4 bg-orange-500 rounded-full px-6 py-2 text-base font-medium text-white hover:bg-orange-700"
