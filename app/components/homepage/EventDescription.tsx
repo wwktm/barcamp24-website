@@ -15,7 +15,7 @@ export default function EventDescription() {
             <div className="my-8 flex justify-center">
               <div className="mt-2 sm:flex sm:items-center justify-center gap-x-3">
                 <Link
-                  to="https://eventsmo.com/event/barcamp-kathmandu-2024"
+                  to="https://eventsmo.com/en/event/barcamp-kathmandu-2024#tickets"
                   target="blank"
                   className="flex items-center rounded-full bg-orange-500 px-7 py-3 my-2 text-lg  font-normal text-white hover:bg-orange-700   focus-visible:outline-orange-400"
                 >
