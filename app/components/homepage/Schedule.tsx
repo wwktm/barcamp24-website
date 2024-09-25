@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import scheduleQr from "~/images/schedule-qr.png";
 export default function Schedule() {
   return (
-    <section className="event-schedule my-7 py-20">
+    <section className="event-schedule mt-7 mb-0 py-20">
       <div className="container">
         <div className="mx-auto max-w-4xl sm:py-10 lg:py-16 rounded-xl border-2 border-gray-300 bg-white px-6 py-6 shadow-sm hover:border-gray-300">
           <div className="text-center">
