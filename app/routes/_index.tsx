@@ -1,17 +1,9 @@
-import {
-  MetaFunction,
-  LoaderFunction,
-  json,
-  ActionFunction,
-} from "@remix-run/node";
-import { useLoaderData, useSubmit } from "@remix-run/react";
+import { MetaFunction } from "@remix-run/node";
 import EventDescription from "~/components/homepage/EventDescription";
 import EventManagement from "~/components/homepage/EventManagement";
 import Faq from "~/components/homepage/Faq";
-import Proposals from "~/components/homepage/Proposals";
 import Schedule from "~/components/homepage/Schedule";
-import { createSupabaseServerClient } from "~/utils/supabase.server";
-
+import scheduleBoard from "~/images/schedule.jpeg";
 export const meta: MetaFunction = () => {
   return [
     { title: "BarCamp Kathmandu 2024" },
@@ -36,107 +28,20 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const { supabaseClient } = createSupabaseServerClient(request);
-
-  // Fetch data from the "topics" table in Supabase
-  const { data, error } = await supabaseClient
-    .from("proposals")
-    .select("*, proposal_upvotes(count)")
-    .eq("status", "voting");
-
-  const userData = await supabaseClient.auth.getUser();
-  const upVotedProposals: number[] = [];
-  if (userData.data.user) {
-    const { data: proposalUpVoteData } = await supabaseClient
-      .from("proposal_upvotes")
-      .select("proposal_id")
-      .eq("user_id", userData.data.user.id);
-
-    if (proposalUpVoteData) {
-      upVotedProposals.push(
-        ...proposalUpVoteData.map((vote) => vote.proposal_id)
-      );
-    }
-  }
-
-  // Handle any errors during data fetching
-  if (error) {
-    console.error("Error fetching proposals data:", error);
-  }
-
-  // Return the data as JSON to be used in the component
-  return json({
-    proposals: data?.sort(() => Math.random() - 0.5) || [],
-    userId: userData.data.user?.id,
-    upVotedProposals,
-  });
-};
-
-export const action: ActionFunction = async ({ request }) => {
-  const { supabaseClient, headers } = createSupabaseServerClient(request);
-
-  const formData = await request.formData();
-  const intent = formData.get("intent");
-
-  const proposalId = formData.get("proposal_id") as string;
-  const userData = await supabaseClient.auth.getUser();
-  if (proposalId && userData.data.user) {
-    if (intent === "upvote") {
-      const { error } = await supabaseClient.from("proposal_upvotes").insert({
-        proposal_id: parseInt(proposalId, 10),
-        user_id: userData.data.user.id,
-      });
-
-      if (!error) {
-        return json({ intent, proposalId, success: true }, { headers });
-      }
-    }
-
-    if (intent === "remove_upvote") {
-      const { error } = await supabaseClient
-        .from("proposal_upvotes")
-        .delete()
-        .eq("proposal_id", parseInt(proposalId, 10))
-        .eq("user_id", userData.data.user.id);
-
-      if (!error) {
-        return json({ intent, proposalId, success: true }, { headers });
-      }
-    }
-  }
-
-  return json({ intent, success: false }, { headers });
-};
-
 export default function Index() {
-  const { proposals, userId, upVotedProposals } =
-    useLoaderData<typeof loader>();
-  const submit = useSubmit();
-
-  const handleUpvoteChange = (proposalId: number) => {
-    if (!userId) return;
-
-    const formData = new FormData();
-    if (upVotedProposals.includes(proposalId)) {
-      formData.append("intent", "remove_upvote");
-    } else {
-      formData.append("intent", "upvote");
-    }
-
-    formData.append("proposal_id", proposalId.toString());
-    submit(formData, { method: "post" });
-  };
-
   return (
     <>
       <EventDescription />
-      <Proposals
-        proposals={proposals}
-        userId={userId}
-        upVotedProposals={upVotedProposals}
-        handleUpvoteChange={handleUpvoteChange}
-      />
+      <div className="proposals py-12">
+        <div className="container">
+          <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
+            Scheduling Board
+          </h2>
+          <a href={scheduleBoard} target="_blank" rel="noopener noreferrer">
+            <img src={scheduleBoard} alt="Scheduling Board" />
+          </a>
+        </div>
+      </div>
       <EventManagement />
       <Schedule />
       <Faq />

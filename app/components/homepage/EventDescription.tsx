@@ -1,5 +1,3 @@
-import { Link } from "@remix-run/react";
-
 export default function EventDescription() {
   return (
     <section className="bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">
@@ -14,23 +12,6 @@ export default function EventDescription() {
             </h2>
             <div className="my-8 flex justify-center">
               <div className="mt-2 sm:flex sm:items-center justify-center gap-x-3">
-                <Link
-                  to="https://eventsmo.com/en/event/barcamp-kathmandu-2024#tickets"
-                  target="blank"
-                  className="flex items-center rounded-full bg-orange-500 px-7 py-3 my-2 text-lg  font-normal text-white hover:bg-orange-700   focus-visible:outline-orange-400"
-                >
-                  <span className="me-2">
-                    <svg
-                      className="h-7 w-7 text-white"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5z" />
-                    </svg>
-                  </span>
-                  Buy Tickets
-                </Link>
                 <div className="flex items-center relative rounded-full px-7 py-3 my-2 text-lg  text-black ring-1 ring-orange-100 bg-orange-100">
                   <span className="me-3">
                     <svg
