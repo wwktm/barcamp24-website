@@ -70,7 +70,7 @@ export type Database = {
           id?: never;
           speaker_time?: string | null;
           speakers: Json;
-          status?: Database["public"]["Enums"]["proposal_status"] | null;
+          status?: string;
           tags: string[];
           title: string;
           upvotes?: number;

@@ -1,15 +1,12 @@
 import { MetaFunction } from "@remix-run/node";
 import EventDescription from "~/components/homepage/EventDescription";
-import EventManagement from "~/components/homepage/EventManagement";
 import Faq from "~/components/homepage/Faq";
-import Schedule from "~/components/homepage/Schedule";
-import scheduleBoard from "~/images/schedule.jpeg";
 export const meta: MetaFunction = () => {
   return [
-    { title: "BarCamp Kathmandu 2024" },
+    { title: "BarCamp Kathmandu 2025" },
     {
       property: "og:title",
-      content: "BarCamp Kathmandu 2024",
+      content: "BarCamp Kathmandu 2025",
     },
     {
       name: "description",
@@ -32,18 +29,6 @@ export default function Index() {
   return (
     <>
       <EventDescription />
-      <div className="proposals py-12">
-        <div className="container">
-          <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
-            Scheduling Board
-          </h2>
-          <a href={scheduleBoard} target="_blank" rel="noopener noreferrer">
-            <img src={scheduleBoard} alt="Scheduling Board" />
-          </a>
-        </div>
-      </div>
-      <EventManagement />
-      <Schedule />
       <Faq />
     </>
   );

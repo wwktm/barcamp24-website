@@ -1,8 +1,8 @@
-import xavierLogo from "~/images/st-xaviers-logo.png";
-import eventsmoLogo from "~/images/eventsmo-logo.png";
-import proshoreLogo from "~/images/proshore-logo.svg";
-import arbyteLogo from "~/images/arbyte.svg";
-import devOpsLogo from "~/images/devops-kathmandu-logo.png";
+import xavierLogo from "~/ktm-2024/images/st-xaviers-logo.png";
+import eventsmoLogo from "~/ktm-2024/images/eventsmo-logo.png";
+import proshoreLogo from "~/ktm-2024/images/proshore-logo.svg";
+import arbyteLogo from "~/ktm-2024/images/arbyte.svg";
+import devOpsLogo from "~/ktm-2024/images/devops-kathmandu-logo.png";
 
 export default function EventManagement() {
   return (
