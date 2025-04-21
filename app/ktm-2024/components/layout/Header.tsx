@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@remix-run/react";
 
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Logo from "~/images/barcamp.svg";
+import Logo from "~/ktm-2024/images/logo.svg";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import scheduleQr from "~/images/schedule-qr.png";
+import scheduleQr from "~/ktm-2024/images/schedule-qr.png";
 export default function Schedule() {
   return (
     <section className="event-schedule mt-7 mb-0 py-20">
@@ -53,10 +53,10 @@ export default function Schedule() {
             </div>
             <div className="flex flex-col">
               <p className="text-lg mx-auto font-medium mb-5 px-3 lg:px-8">
-                "Barcamps are informal sessions, a kind of “un-conference”, with
-                a schedule decided on the day. It is all driven by the interests
-                and expertise of those who attend, so each one is different, but
-                ours will be great 😉!"
+                &quot;Barcamps are informal sessions, a kind of “un-conference”,
+                with a schedule decided on the day. It is all driven by the
+                interests and expertise of those who attend, so each one is
+                different, but ours will be great 😉!&quot;
               </p>
               <p className="text-sm mx-auto font-medium mb-5 px-3 lg:px-8">
                 Although the barcamp doesn’t have a strict schedule, it won’t be
