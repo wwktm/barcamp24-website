@@ -33,11 +33,9 @@ export default function Header() {
           <div className="hidden lg:flex gap-2 items-center">
             <a
               className="rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
-              href="https://drive.google.com/drive/folders/1d0vo7QBPE2XjzFsI-s05TiMUgaRWm139"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/ktm/2024"
             >
-              Event Photos
+              2024
             </a>
           </div>
         </div>
