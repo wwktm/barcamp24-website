@@ -16,7 +16,7 @@ export default function Header() {
       <header className="bg-white shadow">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <Link className="flex w-48 h-16 sm:h-20 py-2 items-start" to="/">
-            <img src={Logo} alt="BarCamp Kathmandu 2024" />
+            <img src={Logo} alt="BarCamp Kathmandu 2025" />
           </Link>
 
           <button
