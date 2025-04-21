@@ -43,13 +43,10 @@ export default function Header() {
         {isMobileMenuOpen && (
           <div className="lg:hidden flex flex-col items-center bg-white py-4">
             <a
-              className="mt-2 rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
-              href="https://drive.google.com/drive/folders/1d0vo7QBPE2XjzFsI-s05TiMUgaRWm139"
-              onClick={toggleMobileMenu}
-              target="_blank"
-              rel="noopener noreferrer"
+              className="rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
+              href="/ktm/2024"
             >
-              Event Photos
+              2024
             </a>
           </div>
         )}
