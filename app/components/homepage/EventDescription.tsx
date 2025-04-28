@@ -27,7 +27,7 @@ export default function EventDescription() {
                       ></path>
                     </svg>
                   </span>
-                  May 2025{" "}
+                  May 24, 2025{" "}
                 </div>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { Link } from "@remix-run/react";
 
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "~/images/barcamp.svg";
+import HeaderMenu from "../common/HeaderMenu";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,23 +32,13 @@ export default function Header() {
           </button>
 
           <div className="hidden lg:flex gap-2 items-center">
-            <a
-              className="rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
-              href="/ktm/2024"
-            >
-              2024
-            </a>
+            <HeaderMenu />
           </div>
         </div>
 
         {isMobileMenuOpen && (
           <div className="lg:hidden flex flex-col items-center bg-white py-4">
-            <a
-              className="rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
-              href="/ktm/2024"
-            >
-              2024
-            </a>
+            <HeaderMenu />
           </div>
         )}
       </header>
