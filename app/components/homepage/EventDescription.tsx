@@ -8,7 +8,7 @@ export default function EventDescription() {
               BarCamp Kathmandu
             </h1>
             <h2 className="text-sky-400 mt-2 sm:text-xl text-xl font-semibold mb-5 pt-2">
-              Location: TBD
+              Advanced College of Engineering and Management, Kalanki
             </h2>
             <div className="my-8 flex justify-center">
               <div className="mt-2 sm:flex sm:items-center justify-center gap-x-3">
@@ -27,7 +27,7 @@ export default function EventDescription() {
                       ></path>
                     </svg>
                   </span>
-                  May 24, 2025{" "}
+                  May 31<sup>st</sup>, 2025{" "}
                 </div>
               </div>
             </div>

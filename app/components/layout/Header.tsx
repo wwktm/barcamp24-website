@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "@remix-run/react";
 
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Logo from "~/images/barcamp.svg";
 import HeaderMenu from "../common/HeaderMenu";
 
 export default function Header() {
@@ -17,7 +16,7 @@ export default function Header() {
       <header className="bg-white shadow">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <Link className="flex w-48 h-16 sm:h-20 py-2 items-start" to="/">
-            <img src={Logo} alt="BarCamp Kathmandu 2025" />
+            <img src="/barcamp-ktm.png" alt="BarCamp Kathmandu 2025" />
           </Link>
 
           <button
