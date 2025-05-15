@@ -1,36 +1,17 @@
-import { Link, useNavigate, useNavigation } from "@remix-run/react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { Link } from "@remix-run/react";
+
 import { Database } from "~/types/database.types";
-import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import ProposalDetail from "./ProposalDetail";
 
 export default function Proposals({
   proposals,
-  userId,
-  upVotedProposals,
-  handleUpvoteChange,
 }: {
   proposals: Database["public"]["Tables"]["proposals"]["Row"][];
-  upVotedProposals: number[];
-  userId?: string;
-  handleUpvoteChange: (proposaslId: number) => void;
 }) {
-  const navigation = useNavigation();
-  const navigate = useNavigate();
   const [proposalDetail, setProposalDetail] = useState<
     Database["public"]["Tables"]["proposals"]["Row"] | undefined
   >();
-
-  const getUpvoteText = useCallback(
-    (currentProposalId: number) => {
-      if (!userId) return "Please login to upvote";
-
-      if (upVotedProposals?.includes(currentProposalId)) return "Upvoted";
-
-      return "Upvote";
-    },
-    [userId, upVotedProposals]
-  );
 
   return (
     <div className="proposals py-12">
@@ -101,33 +82,6 @@ export default function Proposals({
                           {tag}
                         </span>
                       ))}
-                    </div>
-                  </div>
-                  <div className="my-2 text-center ms-3">
-                    <button
-                      className={`interested rounded-full bg-white border border-gray-300 px-4 py-1 h-12 w-12 mb-2 ${
-                        upVotedProposals.includes(proposal.id)
-                          ? "has-voted"
-                          : ""
-                      }`}
-                      disabled={navigation.state === "submitting"}
-                      title={getUpvoteText(proposal.id)}
-                      onClick={() => {
-                        if (!userId) {
-                          navigate("/login");
-                        } else {
-                          handleUpvoteChange(proposal.id);
-                        }
-                      }}
-                    >
-                      {navigation.state === "submitting" ? (
-                        <ArrowPathIcon className="animate-spin" />
-                      ) : (
-                        <span className="interested-arrow leading-none">▲</span>
-                      )}
-                    </button>
-                    <div className="interested-count leading-none">
-                      {proposal.proposal_upvotes[0].count}
                     </div>
                   </div>
                 </div>

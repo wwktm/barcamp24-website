@@ -5,7 +5,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import HeaderMenu from "../common/HeaderMenu";
 
-export default function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
+export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -32,13 +32,13 @@ export default function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
           </button>
 
           <div className="hidden lg:flex gap-2 items-center">
-            <HeaderMenu isLoggedIn={isLoggedIn} />
+            <HeaderMenu />
           </div>
         </div>
 
         {isMobileMenuOpen && (
           <div className="lg:hidden flex flex-col items-center bg-white py-4">
-            <HeaderMenu isLoggedIn={isLoggedIn} />
+            <HeaderMenu />
           </div>
         )}
       </header>
