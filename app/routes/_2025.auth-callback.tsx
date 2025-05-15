@@ -4,12 +4,16 @@ import { createClient } from "~/utils/supabase.server";
 
 export const loader = async ({ request }: ActionFunctionArgs) => {
   const url = new URL(request.url);
-  const code = url.searchParams.get("code");
-  if (code) {
+  const tokenHash = url.searchParams.get("token_hash");
+  if (tokenHash) {
     const { supabaseClient, headers } = createClient(request);
-    const { error } = await supabaseClient.auth.exchangeCodeForSession(code);
+    const { error } = await supabaseClient.auth.verifyOtp({
+      token_hash: tokenHash,
+      type: "email",
+    });
+
     if (error) {
-      return redirect("/?action=login");
+      return redirect("/login");
     }
     return redirect("/", {
       headers,

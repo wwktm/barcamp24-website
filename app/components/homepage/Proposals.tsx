@@ -1,4 +1,4 @@
-import { Link, useNavigation, useSearchParams } from "@remix-run/react";
+import { Link, useNavigate, useNavigation } from "@remix-run/react";
 import { useCallback, useState } from "react";
 import { Database } from "~/types/database.types";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
@@ -16,7 +16,7 @@ export default function Proposals({
   handleUpvoteChange: (proposaslId: number) => void;
 }) {
   const navigation = useNavigation();
-  const [, setUrlSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [proposalDetail, setProposalDetail] = useState<
     Database["public"]["Tables"]["proposals"]["Row"] | undefined
   >();
@@ -114,10 +114,7 @@ export default function Proposals({
                       title={getUpvoteText(proposal.id)}
                       onClick={() => {
                         if (!userId) {
-                          setUrlSearchParams((prevParams) => {
-                            prevParams.set("action", "login");
-                            return prevParams;
-                          });
+                          navigate("/login");
                         } else {
                           handleUpvoteChange(proposal.id);
                         }

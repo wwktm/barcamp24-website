@@ -6,6 +6,7 @@ import {
 } from "@remix-run/node";
 import { useLoaderData, useSubmit } from "@remix-run/react";
 import EventDescription from "~/components/homepage/EventDescription";
+import EventManagement from "~/components/homepage/EventManagement";
 import Faq from "~/components/homepage/Faq";
 import Proposals from "~/components/homepage/Proposals";
 
@@ -123,7 +124,7 @@ export default function Index() {
     }
 
     formData.append("proposal_id", proposalId.toString());
-    submit(formData, { method: "post" });
+    submit(formData, { method: "post", navigate: false });
   };
 
   return (
@@ -135,6 +136,7 @@ export default function Index() {
         upVotedProposals={upVotedProposals}
         handleUpvoteChange={handleUpvoteChange}
       />
+      <EventManagement />
       <Faq />
     </>
   );

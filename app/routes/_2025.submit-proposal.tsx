@@ -59,7 +59,7 @@ export const action: ActionFunction = async ({ request }) => {
     }
   });
 
-  const supabaseClient = createClient(request);
+  const { supabaseClient } = createClient(request);
 
   const { error } = await supabaseClient.from("proposals").insert({
     email,
