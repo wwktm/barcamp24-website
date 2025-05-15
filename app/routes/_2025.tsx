@@ -14,7 +14,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export default function Layout2024() {
+export default function Layout2025() {
   return (
     <>
       <Header />

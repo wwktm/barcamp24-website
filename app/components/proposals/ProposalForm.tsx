@@ -188,7 +188,9 @@ export default function ProposalForm({
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-green-800">
-                  Proposal Sent Successfully
+                  Your proposal has been saved with us Successfully! We will be
+                  reviewing your content and making it appear in the website
+                  soon.
                 </p>
               </div>
             </div>
