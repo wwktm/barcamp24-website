@@ -23,7 +23,7 @@ export default function EventManagement() {
           <div className="flex flex-col gap-2 items-center">
             <h3 className="font-bold mb-4 text-center">Associate Partner</h3>
             <img
-              alt="St Xavier's College"
+              alt="Advanced College of Engineering and Management"
               src={acmeLogo}
               className="max-h-20 w-full max-w-40 object-contain"
             />
@@ -31,7 +31,7 @@ export default function EventManagement() {
           <div className="flex flex-col gap-2 items-center">
             <h3 className="font-bold mb-4 text-center">Ticketing partner</h3>
             <img
-              alt="St Xavier's College"
+              alt="Events Mo"
               src={eventsmoLogo}
               className="max-h-20 w-full max-w-40 object-contain"
             />
