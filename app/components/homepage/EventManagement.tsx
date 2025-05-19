@@ -1,5 +1,6 @@
 import acmeLogo from "~/images/acem.png";
 import eventsmoLogo from "~/images/eventsmo-logo.png";
+import arbyteLogo from "~/images/arbyte.svg";
 
 export default function EventManagement() {
   return (
@@ -11,7 +12,7 @@ export default function EventManagement() {
         <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
           Supporters
         </h2>
-        <div className="mx-auto grid max-w-lg grid-cols-2 justify-center items-start gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-3 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto grid max-w-lg grid-cols-2 justify-center items-start gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-4 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-4">
           <div className="flex flex-col gap-2 items-center">
             <h3 className="font-bold mb-4 text-center">Managed By</h3>
             <img
@@ -25,6 +26,14 @@ export default function EventManagement() {
             <img
               alt="Advanced College of Engineering and Management"
               src={acmeLogo}
+              className="max-h-20 w-full max-w-40 object-contain"
+            />
+          </div>
+          <div className="flex flex-col gap-2 items-center">
+            <h3 className="font-bold mb-4 text-center">Logistics Partner</h3>
+            <img
+              alt="Arbyte"
+              src={arbyteLogo}
               className="max-h-20 w-full max-w-40 object-contain"
             />
           </div>
