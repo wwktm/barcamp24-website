@@ -11,11 +11,10 @@ const faqs: Array<{ question: string; answer: ReactNode }> = [
   {
     question: "What is BarCamp Kathmandu?",
     answer: (
-      <p>
-        BarCamp Kathmandu is an unconference - an ad hoc gathering born from the
-        desire for people to share and learn in an open environment. The focus
-        of the event is <strong>sharing ideas</strong>
-      </p>
+      <>
+      <p>BarCamp Kathmandu is an unconference — a participant-driven event where anyone can share, learn, and connect in an open and informal setting. Unlike traditional conferences with scheduled speakers and topics, BarCamp is built around spontaneous sessions proposed by attendees themselves.
+      </p><p>Whether you’re a developer, designer, entrepreneur, student, or simply curious, BarCamp is a space where ideas flow freely, and everyone is encouraged to contribute.</p><p> The only rule? If you attend, try to present something — even a question or a story can spark a great discussion.</p>
+      </>
     ),
   },
   {

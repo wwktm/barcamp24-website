@@ -51,9 +51,8 @@ export default function EventDescription() {
               </div>
             </div>
             <p className="text-lg max-w-2xl mx-auto font-medium mb-5">
-              BarCamp Kathmandu is an unconference - an ad hoc gathering born
-              from the <strong>desire for people to share and learn</strong> in
-              an open environment.
+    BarCamp is a community-powered unconference where the agenda is made by the people, for the people. You can speak, listen, debate, or just explore new ideas. 
+All you need to do is show up and join the ride.
             </p>
             <p className="text-lg font-medium">
               It is an opportunity for people to come together to learn,

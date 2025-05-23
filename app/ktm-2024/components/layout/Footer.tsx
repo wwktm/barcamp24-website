@@ -66,9 +66,6 @@ export default function Footer() {
   return (
     <div className="py-14  bg-gradient-to-l from-sky-100 to-orange-50 bg-gray-10">
       <div className="container">
-        <h2 className="sm:text-3xl text-3xl font-bold mb-12 text-center">
-          Follow us on social media
-        </h2>
         <div className="flex space-x-4 md:order-2 items-center justify-center mb-4">
           {socialMedia.map((item) => (
             <a
@@ -84,8 +81,6 @@ export default function Footer() {
           ))}
         </div>
         <div className="flex space-x-1 md:order-2 items-center justify-center">
-          <span>Contact Us:</span>
-
           <a href="mailto:barcamp@wwktm.com">barcamp@wwktm.com</a>
         </div>
       </div>
