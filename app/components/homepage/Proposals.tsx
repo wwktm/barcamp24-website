@@ -27,9 +27,15 @@ export default function Proposals({
           {proposals.map((proposal) => (
             <div
               key={proposal.id}
-              className="proposal relative rounded-xl border-2 border-gray-300 bg-white px-6 py-6 shadow-sm hover:border-gray-300"
+              className="proposal relative rounded-xl border-1 border-gray-300 bg-white px-6 py-6 shadow-sm hover:border-gray-300"
             >
-              <div className=" ">
+            <button 
+            className="text-left"
+            onClick={(e) => {
+              e.preventDefault();
+              setProposalDetail(proposal);
+            }}>
+              <div className="flex items-start">
                 {proposal.speakers && (
                   <div
                     className={
@@ -47,8 +53,8 @@ export default function Proposals({
                   </div>
                 )}
                 <div className="flex items-start justify-between">
-                  <div className="my-4">
-                    <h3 className="text-xl font-semibold mb-4 capitalize">
+                  <div className="">
+                    <h3 className="text-xl font-semibold mb-2 capitalize">
                       <button
                         className="text-left"
                         onClick={(e) => {
@@ -77,7 +83,9 @@ export default function Proposals({
                       ))}
                     </div>
                     <div className="tags">
-                      {proposal.tags.map((tag) => (
+                      {proposal.tags
+                        .sort(() => 0.5 - Math.random())  // Shuffle
+                        .slice(0,3).map((tag) => (
                         <span key={tag} className="tag">
                           {tag}
                         </span>
@@ -86,6 +94,7 @@ export default function Proposals({
                   </div>
                 </div>
               </div>
+            </button>
             </div>
           ))}
         </div>

@@ -141,8 +141,8 @@ export default function Faq() {
             Frequently asked questions
           </h2>
           <dl className="mt-10 space-y-8 divide-y divide-gray-300">
-            {faqs.map((faq) => (
-              <Disclosure key={faq.question} as="div" className="pt-6">
+            {faqs.map((faq, i) => (
+              <Disclosure key={faq.question} as="div" className="pt-6" defaultOpen={i==0 ? true: false}>
                 <dt>
                   <DisclosureButton className="group flex w-full items-start justify-between text-left text-black">
                     <span className="text-lg font-semibold leading-7">

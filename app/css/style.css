@@ -45,11 +45,13 @@ p {
 }
 
 .proposal .avatar {
-  @apply mr-3;
+  @apply mr-4;
 }
 
 .proposal .avatar img {
   @apply w-20 rounded-full border-4 border-gray-200;
+  max-width: 5rem;
+  width: 5rem !important;
 }
 
 .avatars img {
@@ -70,6 +72,7 @@ p {
 
 .tags {
   @apply flex flex-wrap gap-1.5;
+  margin-left: -.5rem;
 }
 
 .tag {

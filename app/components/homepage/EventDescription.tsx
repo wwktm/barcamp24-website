@@ -4,10 +4,10 @@ export default function EventDescription() {
   return (
     <section className="bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">
       <div className="container">
-        <div className="mx-auto max-w-4xl py-20 sm:py-20 lg:py-28">
+        <div className="mx-auto max-w-4xl py-10 sm:py-10 lg:py-10">
           <div className="text-center">
             <h1 className="highlighted sm:text-7xl text-4xl font-bold mb-3">
-              BarCamp Kathmandu
+              Show Up. Speak Up.
             </h1>
             <h2 className="text-sky-400 mt-2 sm:text-xl text-xl font-semibold mb-5 pt-2">
               Advanced College of Engineering and Management, Kalanki
@@ -53,10 +53,6 @@ export default function EventDescription() {
             <p className="text-lg max-w-2xl mx-auto font-medium mb-5">
     BarCamp is a community-powered unconference where the agenda is made by the people, for the people. You can speak, listen, debate, or just explore new ideas. 
 All you need to do is show up and join the ride.
-            </p>
-            <p className="text-lg font-medium">
-              It is an opportunity for people to come together to learn,
-              network, and discuss great ideas in person.
             </p>
           </div>
         </div>
