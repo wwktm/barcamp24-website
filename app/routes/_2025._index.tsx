@@ -1,5 +1,6 @@
 import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import BarcampImages from "~/components/homepage/BarcampImages";
 import EventDescription from "~/components/homepage/EventDescription";
 import EventManagement from "~/components/homepage/EventManagement";
 import Faq from "~/components/homepage/Faq";
@@ -56,6 +57,7 @@ export default function Index() {
   return (
     <>
       <EventDescription />
+      <BarcampImages />
       <Proposals proposals={proposals} />
       <EventManagement />
       <Faq />
