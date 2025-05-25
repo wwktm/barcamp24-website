@@ -3,6 +3,7 @@ import { Link } from "@remix-run/react";
 
 import { Database } from "~/types/database.types";
 import ProposalDetail from "./ProposalDetail";
+import Speakers from "../common/Speakers";
 
 export default function Proposals({
   proposals,
@@ -27,31 +28,15 @@ export default function Proposals({
           {proposals.map((proposal) => (
             <div
               key={proposal.id}
-              className="proposal relative rounded-xl border-1 border-gray-300 bg-white px-6 py-6 shadow-sm hover:border-gray-300"
+              className="flex flex-col gap-3 justify-between proposal relative rounded-xl border-1 border-gray-300 bg-white px-6 py-6 shadow-sm border border-gray-100 hover:border-gray-300"
             >
-            <button 
-            className="text-left"
-            onClick={(e) => {
-              e.preventDefault();
-              setProposalDetail(proposal);
-            }}>
-              <div className="flex items-start">
-                {proposal.speakers && (
-                  <div
-                    className={
-                      proposal.speakers.length > 1 ? "avatars" : "avatar"
-                    }
-                  >
-                    {Array.isArray(proposal.speakers) &&
-                      proposal.speakers.map((speaker) => (
-                        <img
-                          key={speaker.name}
-                          src={speaker.photoUrl}
-                          alt={speaker.name}
-                        />
-                      ))}
-                  </div>
-                )}
+              <button
+                className="text-left"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setProposalDetail(proposal);
+                }}
+              >
                 <div className="flex items-start justify-between">
                   <div className="">
                     <h3 className="text-xl font-semibold mb-2 capitalize">
@@ -65,36 +50,20 @@ export default function Proposals({
                         {proposal.title}
                       </button>
                     </h3>
-                    <div className="mb-4 text-xs font-medium text-gray-900">
-                      Proposal by{" "}
-                      {proposal.speakers.map((speaker, index) => (
-                        <span key={speaker.name}>
-                          <a
-                            href={speaker.profileLink}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            {speaker.name}
-                          </a>
-                          {index < proposal.speakers.length - 1 && (
-                            <span> and </span>
-                          )}
-                        </span>
-                      ))}
-                    </div>
                     <div className="tags">
                       {proposal.tags
-                        .sort(() => 0.5 - Math.random())  // Shuffle
-                        .slice(0,3).map((tag) => (
-                        <span key={tag} className="tag">
-                          {tag}
-                        </span>
-                      ))}
+                        .sort(() => 0.5 - Math.random()) // Shuffle
+                        .slice(0, 3)
+                        .map((tag) => (
+                          <span key={tag} className="tag">
+                            {tag}
+                          </span>
+                        ))}
                     </div>
                   </div>
                 </div>
-              </div>
-            </button>
+              </button>
+              {proposal.speakers && <Speakers speakers={proposal.speakers} />}
             </div>
           ))}
         </div>

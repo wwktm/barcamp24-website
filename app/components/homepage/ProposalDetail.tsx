@@ -6,6 +6,7 @@ import {
 } from "@headlessui/react";
 import { Dispatch, SetStateAction } from "react";
 import { Database } from "~/types/database.types";
+import Speakers from "../common/Speakers";
 
 export default function ProposalDetail({
   proposalDetail,
@@ -42,54 +43,17 @@ export default function ProposalDetail({
                   className="proposal relative flex flex-col gap-4"
                 >
                   <div className="flex items-center gap-2">
-                    <div>
-                      {proposalDetail.speakers && (
-                        <div
-                          className={
-                            proposalDetail.speakers.length > 1
-                              ? "avatars"
-                              : "avatar"
-                          }
-                        >
-                          {Array.isArray(proposalDetail.speakers) &&
-                            proposalDetail.speakers.map((speaker) => (
-                              <img
-                                key={speaker.name}
-                                src={speaker.photoUrl}
-                                alt={speaker.name}
-                              />
-                            ))}
-                        </div>
-                      )}
-                    </div>
                     <div className="flex flex-col">
                       <DialogTitle
                         as="h3"
-                        className="text-base font-semibold leading-6 text-gray-900"
+                        className="text-xl font-semibold leading-6 text-gray-900"
                       >
                         {proposalDetail.title}
                       </DialogTitle>
-                      <div className="mb-4 text-xs font-medium text-gray-900">
-                        Proposal by{" "}
-                        {proposalDetail.speakers.map((speaker, index) => (
-                          <span key={speaker.name}>
-                            <a
-                              href={speaker.profileLink}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {speaker.name}
-                            </a>
-                            {index < proposalDetail.speakers.length - 1 && (
-                              <span> and </span>
-                            )}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   </div>
-                  <div className="text-sm">
-                    {proposalDetail?.speakers?.[0]?.introduction}
+                  <div>
+                    <p className="text-sm">{proposalDetail.description}</p>
                   </div>
                   <div className="flex items-start justify-between">
                     <div className="tags">
@@ -100,8 +64,12 @@ export default function ProposalDetail({
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <p className="text-sm">{proposalDetail.description}</p>
+
+                  {proposalDetail.speakers && (
+                    <Speakers speakers={proposalDetail.speakers} />
+                  )}
+                  <div className="text-sm">
+                    {proposalDetail?.speakers?.[0]?.introduction}
                   </div>
                 </div>
               </div>
