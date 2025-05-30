@@ -35,6 +35,13 @@ export default function EventDescription() {
                 </span>
                 Buy Tickets
               </Link>
+              <Link
+                to="https://wwktm-2023.notion.site/Schedule-Barcamp-2025-1f034d24f7928055aba0e870faa7b953"
+                target="blank"
+                className="font-bold bg-orange-800 flex items-center rounded-full px-7 py-3 mx-2 my-2 text-lg text-white hover:bg-orange-900 focus-visible:outline-orange-400"
+              >
+                Preliminary Schedule
+              </Link>
             </div>
             <div className="mt-2 flex justify-center gap-3 text-gray-400 font-bold">
               <div className="flex justify-between items-center gap-1">
