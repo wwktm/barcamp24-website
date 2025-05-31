@@ -1,12 +1,10 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { MetaFunction } from "@remix-run/node";
 import BarcampImages from "~/components/homepage/BarcampImages";
 import EventDescription from "~/components/homepage/EventDescription";
 import EventManagement from "~/components/homepage/EventManagement";
 import Faq from "~/components/homepage/Faq";
-import Proposals from "~/components/homepage/Proposals";
+import Schedule from "~/components/homepage/Schedule";
 
-import { createClient } from "~/utils/supabase.server";
 export const meta: MetaFunction = () => {
   return [
     { title: "BarCamp Kathmandu 2025" },
@@ -31,34 +29,12 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const { supabaseClient } = createClient(request);
-
-  // Fetch data from the "topics" table in Supabase
-  const { data, error } = await supabaseClient
-    .from("proposals")
-    .select("*")
-    .eq("status", "voting");
-
-  // Handle any errors during data fetching
-  if (error) {
-    console.error("Error fetching proposals data:", error);
-  }
-
-  // Return the data as JSON to be used in the component
-  return {
-    proposals: data?.sort(() => Math.random() - 0.5) || [],
-  };
-};
-
 export default function Index() {
-  const { proposals } = useLoaderData<typeof loader>();
-
   return (
     <>
       <EventDescription />
       <BarcampImages />
-      <Proposals proposals={proposals} />
+      <Schedule />
       <EventManagement />
       <Faq />
     </>
