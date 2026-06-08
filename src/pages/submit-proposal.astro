@@ -1,0 +1,22 @@
+---
+import Layout2025 from '../layouts/Layout2025.astro';
+import ProposalForm from '../components/proposals/ProposalForm';
+---
+<Layout2025 title="Submit Proposal - BarCamp Kathmandu 2025" description="Submit a proposal for BarCamp Kathmandu 2025">
+  <section class="py-8 bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">
+    <div class="container mx-auto px-4">
+      <div class="mx-auto max-w-4xl py-20 sm:py-20 lg:py-8">
+        <div class="text-center">
+          <h1 class="highlighted sm:text-3xl text-2xl font-bold">
+            You have something to share?
+          </h1>
+          <h2 class="text-sky-400 sm:text-xl text-lg font-bold mb-5 pt-2">
+            Submit a Proposal
+          </h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ProposalForm client:load />
+</Layout2025>
