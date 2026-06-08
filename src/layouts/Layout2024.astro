@@ -1,0 +1,39 @@
+---
+import Header from '../ktm-2024/components/layout/Header.astro';
+import Footer from '../ktm-2024/components/layout/Footer.astro';
+import '../ktm-2024/css/style.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "BarCamp Kathmandu 2024",
+  description = "Barcamp Kathmandu is an unconference - an ad hoc gathering born from the desire for people to share and learn in an open environment. It is an opportunity for people to come together to learn, network, and discuss great ideas in person.",
+  image = "https://barcamp.wwktm.com/ktm-2024/barcamp-og.png"
+} = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/ktm-2024/favicon.png" />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <Header year="2024" />
+    <slot />
+    <Footer />
+  </body>
+</html>
