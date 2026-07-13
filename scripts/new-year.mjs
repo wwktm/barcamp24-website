@@ -58,6 +58,8 @@ writeFileSync(join(frozenDir, `Layout${prevYear}.astro`), layout);
 const page = readFileSync(join(SRC, 'pages', 'index.astro'), 'utf8')
   .replaceAll('../layouts/Layout.astro', `../../ktm-${prevYear}/Layout${prevYear}.astro`)
   .replaceAll('../components/', `../../ktm-${prevYear}/components/`)
+  .replaceAll('../images/', `../../ktm-${prevYear}/images/`)
+  .replaceAll('../styles/style.css', `../../ktm-${prevYear}/style.css`)
   .replaceAll('../config', '../../config');
 mkdirSync(join(SRC, 'pages', 'ktm'), { recursive: true });
 writeFileSync(join(SRC, 'pages', 'ktm', `${prevYear}.astro`), page);
