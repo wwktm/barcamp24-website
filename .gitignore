@@ -1,5 +1,8 @@
 node_modules
 
+# Astro generated files
+.astro/
+
 /.cache
 /public/build
 /build
