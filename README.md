@@ -1,68 +1,28 @@
-# Welcome to Remix!
+# BarCamp Kathmandu Website
 
-- [Remix Docs](https://remix.run/docs)
-- [Netlify Functions Overview](https://docs.netlify.com/functions/overview)
+Astro 4 site for BarCamp Kathmandu, deployed on Netlify. The latest edition is served at
+`/`; past editions are frozen at `/ktm/<year>`. Proposal submissions are stored in Supabase.
 
-## Netlify Setup
-
-1. Install the [Netlify CLI](https://docs.netlify.com/cli/get-started/):
-
-```sh
-npm i -g netlify-cli
-```
-
-If you have previously installed the Netlify CLI, you should update it to the latest version:
-
-```sh
-npm i -g netlify-cli@latest
-```
-
-2. Sign up and log in to Netlify:
-
-```sh
-netlify login
-```
-
-3. Create a new site:
-
-```sh
-netlify init
-```
-
-## Development
-
-Ensure all packages are installed by running:
+## Develop
 
 ```sh
 npm install
+npm run dev        # local dev server
+npm run build      # production build to dist/
+npm run typecheck  # tsc --noEmit
+npm run lint       # eslint
 ```
 
-Run
+## Environment
 
-```sh
-netlify dev
-```
+Copy `.env.example` to `.env` and fill in:
 
-Open up [http://localhost:8888](http://localhost:8888), and you're ready to go!
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
 
-### Serve your site locally
+## Editions & starting a new year
 
-To serve your site locally in a production-like environment, run
-
-```sh
-netlify serve
-```
-
-Your site will be available at [http://localhost:8888](http://localhost:8888). Note that it will not auto-reload when you make changes.
-
-## Deployment
-
-There are two ways to deploy your app to Netlify, you can either link your app to your git repo and have it auto deploy changes to Netlify, or you can deploy your app manually. If you've followed the setup instructions already, all you need to do is run this:
-
-```sh
-# preview deployment
-netlify deploy --build
-
-# production deployment
-netlify deploy --build --prod
-```
+The edition at `/` lives in `src/components/` + `src/layouts/Layout.astro`. `src/config.ts`
+`LATEST_YEAR` marks which year is live. Past editions are self-contained snapshots in
+`src/ktm-<year>/`, served at `/ktm/<year>`. To roll over to a new year, see
+[CONTRIBUTING.md](./CONTRIBUTING.md).

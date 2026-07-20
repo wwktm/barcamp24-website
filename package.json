@@ -1,9 +1,10 @@
 {
-  "name": "barcamp-2024",
+  "name": "barcamp-website",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "new-year": "tsx scripts/new-year.ts",
     "build": "astro build",
     "dev": "astro dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
@@ -35,6 +36,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.44",
     "tailwindcss": "^3.4.10",
+    "tsx": "^4.23.1",
     "typescript": "^5.1.6"
   },
   "engines": {

@@ -1,0 +1,59 @@
+---
+import HeaderMenu from "../common/HeaderMenu.astro";
+
+interface Props {
+  year?: string;
+}
+
+const { year = "2026" } = Astro.props;
+---
+<header class="bg-white shadow">
+  <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+    <a class="flex w-48 h-16 sm:h-20 py-2 items-start" href="/">
+      <img src="/barcamp-ktm.png" alt={`BarCamp Kathmandu ${year}`} />
+    </a>
+
+    <button
+      id="mobile-menu-toggle"
+      class="lg:hidden flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+      aria-expanded="false"
+    >
+      <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+      <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 hidden">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="hidden lg:flex gap-2 items-center">
+      <HeaderMenu />
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden lg:hidden flex flex-col items-center bg-white py-4 gap-4">
+    <HeaderMenu />
+  </div>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById('mobile-menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  if (toggleBtn && mobileMenu && hamburgerIcon && closeIcon) {
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.toggle('hidden');
+      if (isHidden) {
+        hamburgerIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        hamburgerIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  }
+</script>
