@@ -1,0 +1,33 @@
+---
+import Button from '../common/Button.astro';
+import type { HeroCopy } from '../../content/announcement';
+interface Props {
+  copy: HeroCopy;
+  chips: { icon: string; label: string }[];
+  showCta: boolean;
+}
+const { copy, chips, showCta } = Astro.props;
+const lines = copy.headline.split('\n');
+---
+<header class="text-center py-24">
+  <div class="max-w-[940px] mx-auto px-[26px]">
+    <div class="font-mono uppercase text-eyebrow text-brand-deep font-semibold">{copy.eyebrow}</div>
+    {chips.length > 0 && (
+      <div class="inline-flex gap-[18px] items-center text-soft font-mono text-[12.5px] my-4 flex-wrap justify-center">
+        {chips.map((c) => <span>{c.icon} <b class="text-ink">{c.label}</b></span>)}
+      </div>
+    )}
+    <h1 class="font-display text-display mt-4">
+      {lines.map((line, i) => (
+        <Fragment>{i > 0 && <br />}{i === lines.length - 1 && lines.length > 1 ? <span class="font-light text-brand">{line}</span> : line}</Fragment>
+      ))}
+    </h1>
+    {copy.sub && <p class="text-soft text-[18px] max-w-[52ch] mx-auto my-7">{copy.sub}</p>}
+    {showCta && (
+      <div class="flex gap-3 justify-center flex-wrap">
+        <Button href="/submit-proposal">Submit a proposal</Button>
+        <Button variant="outline" href="/#how">How it works</Button>
+      </div>
+    )}
+  </div>
+</header>

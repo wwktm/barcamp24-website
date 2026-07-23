@@ -1,36 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Button from '../components/common/Button.astro';
+import { announcement } from '../content/announcement';
+import { isActive } from '../content/phase';
+import Hero from '../components/landing/Hero.astro';
 import LeadStatement from '../components/landing/LeadStatement.astro';
 import HowItWorks from '../components/landing/HowItWorks.astro';
 import Topics from '../components/landing/Topics.astro';
 import InviteCTA from '../components/landing/InviteCTA.astro';
+import SpeakersGrid from '../components/landing/SpeakersGrid.astro';
+
+const { event } = announcement;
+const chips: { icon: string; label: string }[] = [];
+if (isActive('date')) chips.push({ icon: '📅', label: event.date });
+if (isActive('venue')) chips.push({ icon: '📍', label: event.venue.name });
+if (isActive('date')) chips.push({ icon: '🎟', label: event.entry });
+
+const rule = 'h-px bg-line max-w-[940px] mx-auto';
 ---
 <Layout>
   <div class="bg-paper text-ink font-body">
-    <header class="text-center py-24">
-      <div class="max-w-[940px] mx-auto px-[26px]">
-        <div class="font-mono uppercase text-eyebrow text-brand-deep font-semibold">The unconference · Kathmandu</div>
-        <div class="inline-flex gap-[18px] items-center text-soft font-mono text-[12.5px] my-4 flex-wrap justify-center">
-          <span>📅 <b class="text-ink">July 18, 2026</b></span>
-          <span>📍 <b class="text-ink">Venue TBA</b></span>
-          <span>🎟 <b class="text-ink">Free-ish, community-run</b></span>
-        </div>
-        <h1 class="font-display text-display">Show up.<br><span class="font-light text-brand">Speak up.</span></h1>
-        <p class="text-soft text-[18px] max-w-[52ch] mx-auto my-7">A day with no fixed agenda and no passive audience. You decide the talks — propose a session, upvote the ones you'd attend, and help build the day as it happens.</p>
-        <div class="flex gap-3 justify-center flex-wrap">
-          <Button href="/submit-proposal">Submit a proposal</Button>
-          <Button variant="outline" href="/#how">How it works</Button>
-        </div>
-      </div>
-    </header>
+    <Hero copy={announcement.hero[announcement.currentPhase]} chips={chips} showCta={isActive('call-for-speakers')} />
 
-    <div class="h-px bg-line max-w-[940px] mx-auto"></div>
+    <div class={rule}></div>
     <LeadStatement />
-    <div class="h-px bg-line max-w-[940px] mx-auto"></div>
+    <div class={rule}></div>
     <HowItWorks />
-    <div class="h-px bg-line max-w-[940px] mx-auto"></div>
-    <Topics />
-    <InviteCTA />
+
+    {isActive('call-for-speakers') && (
+      <>
+        <div class={rule}></div>
+        <Topics />
+        <InviteCTA />
+      </>
+    )}
+
+    {isActive('speakers') && (
+      <>
+        <div class={rule}></div>
+        <SpeakersGrid speakers={announcement.speakers} />
+      </>
+    )}
   </div>
 </Layout>
