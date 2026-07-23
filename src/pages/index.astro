@@ -16,7 +16,7 @@ const categories = ["Information Technology","Music","Design","Arts","Philosophy
           <span>📍 <b class="text-ink">Venue TBA</b></span>
           <span>🎟 <b class="text-ink">Free-ish, community-run</b></span>
         </div>
-        <h1 class="font-sans text-display">Show up.<br><span class="font-light text-brand">Speak up.</span></h1>
+        <h1 class="font-display text-display">Show up.<br><span class="font-light text-brand">Speak up.</span></h1>
         <p class="text-soft text-[18px] max-w-[52ch] mx-auto my-7">A day with no fixed agenda and no passive audience. You decide the talks — propose a session, upvote the ones you'd attend, and help build the day as it happens.</p>
         <div class="flex gap-3 justify-center flex-wrap">
           <Button href="/submit-proposal">Submit a proposal</Button>
@@ -28,7 +28,7 @@ const categories = ["Information Technology","Music","Design","Arts","Philosophy
     <div class="h-px bg-line max-w-[940px] mx-auto"></div>
 
     <Section>
-      <p class="font-sans font-light text-lead text-ink">An <span class="text-brand">unconference</span> is a gathering <b class="font-bold">for attendees, by attendees</b>. No speaker list, no schedule — until the day itself, when the sessions go up on <b class="font-bold">one big physical timetable</b>.</p>
+      <p class="font-display font-light text-lead text-ink">An <span class="text-brand">unconference</span> is a gathering <b class="font-bold">for attendees, by attendees</b>. No speaker list, no schedule — until the day itself, when the sessions go up on <b class="font-bold">one big physical timetable</b>.</p>
     </Section>
 
     <div class="h-px bg-line max-w-[940px] mx-auto"></div>
@@ -37,17 +37,17 @@ const categories = ["Information Technology","Music","Design","Arts","Philosophy
       <div class="grid grid-cols-1 md:grid-cols-3 mt-8 border border-line rounded-2xl overflow-hidden bg-card">
         <div class="p-6 border-b md:border-b-0 md:border-r border-line">
           <div class="font-mono text-[12px] text-brand font-semibold">STEP 01</div>
-          <h3 class="font-sans text-[19px] text-ink mt-3 mb-2">Propose</h3>
+          <h3 class="font-display text-[19px] text-ink mt-3 mb-2">Propose</h3>
           <p class="text-soft text-[14.5px]">Pitch a 20-minute talk or a 5-minute lightning session — on anything you're into. Slides optional (we even prefer without).</p>
         </div>
         <div class="p-6 border-b md:border-b-0 md:border-r border-line">
           <div class="font-mono text-[12px] text-brand font-semibold">STEP 02</div>
-          <h3 class="font-sans text-[19px] text-ink mt-3 mb-2">Upvote</h3>
+          <h3 class="font-display text-[19px] text-ink mt-3 mb-2">Upvote</h3>
           <p class="text-soft text-[14.5px]">Browse proposals and upvote the sessions you'd show up for, so the day reflects what the room actually wants.</p>
         </div>
         <div class="p-6 border-line">
           <div class="font-mono text-[12px] text-brand font-semibold">STEP 03</div>
-          <h3 class="font-sans text-[19px] text-ink mt-3 mb-2">Present</h3>
+          <h3 class="font-display text-[19px] text-ink mt-3 mb-2">Present</h3>
           <p class="text-soft text-[14.5px]">Sessions are placed onto tracks &amp; times the morning of the event. Turn up, share, discuss.</p>
         </div>
       </div>
@@ -58,7 +58,7 @@ const categories = ["Information Technology","Music","Design","Arts","Philosophy
     <Section id="topics" heading="Talk about anything" index="02 — topics" sub="Not just tech. Bring your unique take on fitness and art, a rabbit-hole you fell down, or that use-case for AI you discovered.">
       <div class="grid [grid-template-columns:repeat(auto-fill,minmax(150px,1fr))] gap-px bg-line border border-line rounded-xl overflow-hidden mt-7">
         {categories.map((c) => (
-          <span class="bg-card px-[18px] py-4 font-sans font-semibold text-[14.5px] flex items-center gap-2.5">
+          <span class="bg-card px-[18px] py-4 font-display font-semibold text-[14.5px] flex items-center gap-2.5">
             <span class="w-[7px] h-[7px] rounded-sm bg-brand shrink-0"></span>{c}
           </span>
         ))}
@@ -69,7 +69,7 @@ const categories = ["Information Technology","Music","Design","Arts","Philosophy
       <div class="max-w-[940px] mx-auto px-[26px]">
         <div class="bg-gradient-to-l from-sky-100 to-orange-50 border border-line rounded-3xl px-11 py-16 text-center">
           <div class="font-mono uppercase text-eyebrow text-brand-deep font-semibold">Pre-commit to it</div>
-          <h2 class="font-sans font-extrabold text-ink my-3" style="font-size:clamp(30px,5vw,54px)">You've got something to share.</h2>
+          <h2 class="font-display font-extrabold text-ink my-3" style="font-size:clamp(30px,5vw,54px)">You've got something to share.</h2>
           <p class="max-w-[48ch] mx-auto mb-6" style="color:#4a4f66">Studies say you're far likelier to give that talk if you commit in advance. Consider this your nudge.</p>
           <Button href="/submit-proposal" class="shadow-[0_8px_20px_rgba(249,115,22,.3)]">Submit a proposal</Button>
         </div>
