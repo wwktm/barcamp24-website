@@ -17,7 +17,7 @@ if (isActive('date')) chips.push({ icon: '🎟', label: event.entry });
 
 const rule = 'h-px bg-line max-w-[940px] mx-auto';
 ---
-<Layout>
+<Layout overlayHeader>
   <div class="bg-paper text-ink font-body">
     <Hero copy={announcement.hero[announcement.currentPhase]} chips={chips} showCta={isActive('call-for-speakers')} />
 

@@ -4,12 +4,13 @@ import { isActive } from "../../content/phase";
 
 interface Props {
   year?: string;
+  overlay?: boolean;
 }
 
-const { year = "2026" } = Astro.props;
+const { year = "2026", overlay = false } = Astro.props;
 const cfsOpen = isActive('call-for-speakers');
 ---
-<header class="bg-white shadow">
+<header class={overlay ? "absolute top-0 left-0 right-0 z-50" : "relative bg-white shadow z-50"}>
   <div class="container mx-auto px-4 py-2 flex items-center justify-between">
     <a class="flex w-48 h-16 sm:h-20 items-center" href="/">
       <img src="/barcamp-ktm.png" alt={`BarCamp Kathmandu ${year}`} />
