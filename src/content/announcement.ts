@@ -28,7 +28,7 @@ export const announcement: Announcement = {
   currentPhase: 'teaser',
 
   event: {
-    date: 'July 18, 2026',
+    date: 'August 15, 2026',
     venue: { name: 'Venue TBA', note: '' },
     entry: 'Free-ish, community-run',
   },
@@ -36,12 +36,12 @@ export const announcement: Announcement = {
   hero: {
     teaser: {
       eyebrow: 'The unconference · Kathmandu',
-      headline: "We're\nback.",
-      sub: 'BarCamp Kathmandu returns for 2026 — a day built by whoever shows up. Details unfold here as we lock them in.',
+      headline: "BarCamp Kathmandu\nreturns again.",
+      sub: 'BarCamp Kathmandu returns for 2026 a day built by whoever shows up. Details unfold here as we lock them in.',
     },
     date: {
       eyebrow: 'Save the date',
-      headline: 'July 18,\n2026.',
+      headline: 'August 15,\n2026.',
       sub: 'Mark your calendar. Venue, sessions, and speakers land here next.',
     },
     venue: {
