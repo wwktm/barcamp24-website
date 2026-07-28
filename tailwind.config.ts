@@ -18,7 +18,7 @@ export default {
         body: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       fontSize: {
-        display: ["clamp(58px,11.5vw,144px)", { lineHeight: "0.92", fontWeight: "800" }],
+        display: ["clamp(36px,9vw,144px)", { lineHeight: "0.92", fontWeight: "800" }],
         lead: ["clamp(22px,3.4vw,32px)", { lineHeight: "1.35" }],
         "section-h": ["clamp(24px,4vw,34px)", { lineHeight: "1.15" }],
         eyebrow: ["11.5px", { letterSpacing: "0.22em", lineHeight: "1.4" }],
