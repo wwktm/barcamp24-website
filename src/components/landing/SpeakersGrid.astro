@@ -1,7 +1,6 @@
 ---
 import Section from '../common/Section.astro';
 import SpeakerCard from './SpeakerCard.astro';
-import Button from '../common/Button.astro';
 import type { DisplaySpeaker } from '../../utils/sessions';
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
 
 const { speakers } = Astro.props;
 ---
-<Section id="speakers" heading="Sessions so far" sub="Proposals that are confirmed so far — a starting point, not the final lineup.">
+<Section id="speakers" heading="Sessions so far" sub="Proposals that are confirmed so far — a starting point, not the final lineup. Anyone can still pitch a session.">
   {speakers.length === 0 ? (
     <p class="text-soft text-[15px] mt-6">First sessions announced soon — check back.</p>
   ) : (
@@ -18,13 +17,4 @@ const { speakers } = Astro.props;
       {speakers.map((s) => <SpeakerCard speaker={s} />)}
     </div>
   )}
-
-  <div class="mt-10 border border-line rounded-2xl bg-card p-6 text-center">
-    <p class="text-soft text-[15px] max-w-[62ch] mx-auto">
-      These sessions are here to get the day started — they are <b class="text-ink font-semibold">not the whole programme</b>, and the people above are not the only ones speaking. BarCamp is built by whoever shows up: every proposal we receive is welcome, and you can still pitch a session right up to the morning of the event.
-    </p>
-    <div class="mt-5 flex justify-center">
-      <Button href="/submit-proposal">Propose your session</Button>
-    </div>
-  </div>
 </Section>
