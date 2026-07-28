@@ -11,7 +11,7 @@ import SpeakersGrid from '../components/landing/SpeakersGrid.astro';
 
 const { event } = announcement;
 const chips: { icon: string; label: string }[] = [];
-if (isActive('date')) chips.push({ icon: '📅', label: event.date });
+chips.push({ icon: '📅', label: event.date }); // event date shown from the teaser phase
 if (isActive('venue')) chips.push({ icon: '📍', label: event.venue.name });
 if (isActive('date')) chips.push({ icon: '🎟', label: event.entry });
 
