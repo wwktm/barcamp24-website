@@ -124,7 +124,7 @@ export default function ProposalForm() {
 
   return (
     <div className="container my-20 mx-auto px-4">
-      <p className="max-w-3xl m-auto mt-2 p-4 text-lg">
+      <div className="max-w-3xl m-auto mt-2 p-4 text-lg">
         <ul className="flex flex-col gap-6 ml-3 list-disc">
           <li>
             BarCamp Kathmandu is an <em>unconference</em> - an ad hoc gathering
@@ -199,7 +199,7 @@ export default function ProposalForm() {
             <a href="https://x.com/weekend_web">contact us</a>
           </li>
         </ul>
-      </p>
+      </div>
       <form
         ref={form}
         onSubmit={handleSubmit}
