@@ -1,10 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { announcement } from '../content/announcement';
+import { isActive } from '../content/phase';
+import Hero from '../components/landing/Hero.astro';
+import LeadStatement from '../components/landing/LeadStatement.astro';
+import HowItWorks from '../components/landing/HowItWorks.astro';
+import Topics from '../components/landing/Topics.astro';
+import InviteCTA from '../components/landing/InviteCTA.astro';
+import SpeakersGrid from '../components/landing/SpeakersGrid.astro';
+
+const { event } = announcement;
+const chips: { icon: string; label: string }[] = [];
+if (isActive('date')) chips.push({ icon: '📅', label: event.date });
+if (isActive('venue')) chips.push({ icon: '📍', label: event.venue.name });
+if (isActive('date')) chips.push({ icon: '🎟', label: event.entry });
+
+const rule = 'h-px bg-line max-w-[940px] mx-auto';
 ---
 <Layout>
-  <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
-    <h1 class="text-5xl md:text-7xl font-bold mb-6">BarCamp Kathmandu 2026</h1>
-    <p class="text-2xl md:text-4xl font-semibold text-orange-600 mb-8">July 18</p>
-    <p class="text-xl md:text-2xl text-gray-600">Other details coming soon...</p>
+  <div class="bg-paper text-ink font-body">
+    <Hero copy={announcement.hero[announcement.currentPhase]} chips={chips} showCta={isActive('call-for-speakers')} />
+
+    <div class={rule}></div>
+    <LeadStatement />
+    <div class={rule}></div>
+    <HowItWorks />
+
+    {isActive('call-for-speakers') && (
+      <>
+        <div class={rule}></div>
+        <Topics />
+        <InviteCTA />
+      </>
+    )}
+
+    {isActive('speakers') && (
+      <>
+        <div class={rule}></div>
+        <SpeakersGrid speakers={announcement.speakers} />
+      </>
+    )}
   </div>
 </Layout>

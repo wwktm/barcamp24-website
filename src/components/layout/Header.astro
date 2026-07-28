@@ -1,15 +1,17 @@
 ---
 import HeaderMenu from "../common/HeaderMenu.astro";
+import { isActive } from "../../content/phase";
 
 interface Props {
   year?: string;
 }
 
 const { year = "2026" } = Astro.props;
+const cfsOpen = isActive('call-for-speakers');
 ---
 <header class="bg-white shadow">
   <div class="container mx-auto px-4 py-2 flex items-center justify-between">
-    <a class="flex w-48 h-16 sm:h-20 py-2 items-start" href="/">
+    <a class="flex w-48 h-16 sm:h-20 items-center" href="/">
       <img src="/barcamp-ktm.png" alt={`BarCamp Kathmandu ${year}`} />
     </a>
 
@@ -27,11 +29,15 @@ const { year = "2026" } = Astro.props;
     </button>
 
     <div class="hidden lg:flex gap-2 items-center">
+      {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
+      {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
       <HeaderMenu />
     </div>
   </div>
 
   <div id="mobile-menu" class="hidden lg:hidden flex flex-col items-center bg-white py-4 gap-4">
+    {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
+    {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
     <HeaderMenu />
   </div>
 </header>

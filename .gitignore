@@ -16,3 +16,7 @@ node_modules
 dist/
 
 barcamp_backup/
+
+# Local planning / superpowers scratch — never commit
+.superpowers/
+docs/superpowers/

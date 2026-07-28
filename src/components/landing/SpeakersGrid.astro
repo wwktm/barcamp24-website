@@ -1,0 +1,16 @@
+---
+import Section from '../common/Section.astro';
+import SpeakerCard from './SpeakerCard.astro';
+import type { Speaker } from '../../content/announcement';
+interface Props { speakers: Speaker[] }
+const { speakers } = Astro.props;
+---
+<Section id="speakers" heading="Speakers" index="03 — the lineup" sub="The people taking the floor. More announced as they're confirmed.">
+  {speakers.length === 0 ? (
+    <p class="text-soft text-[15px] mt-6">First speakers announced soon — check back.</p>
+  ) : (
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8">
+      {speakers.map((s) => <SpeakerCard speaker={s} />)}
+    </div>
+  )}
+</Section>

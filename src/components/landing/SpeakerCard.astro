@@ -1,0 +1,17 @@
+---
+import { Image } from 'astro:assets';
+import type { Speaker } from '../../content/announcement';
+interface Props { speaker: Speaker }
+const { speaker } = Astro.props;
+---
+<div class="bg-card border border-line rounded-2xl overflow-hidden">
+  <Image src={speaker.photo} alt={speaker.name} width={480} height={480} class="w-full aspect-square object-cover" />
+  <div class="p-5">
+    <h3 class="font-display font-bold text-[17px] text-ink">{speaker.name}</h3>
+    <p class="font-display text-[14px] text-brand-deep mt-1">{speaker.title}</p>
+    <p class="text-soft text-[13.5px] mt-2">{speaker.tagline}</p>
+    {speaker.link && (
+      <a href={speaker.link} target="_blank" rel="noopener noreferrer" class="inline-block mt-3 font-display font-semibold text-[13px] text-brand hover:text-brand-deep no-underline">Profile →</a>
+    )}
+  </div>
+</div>
