@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "new-year": "tsx scripts/new-year.ts",
+    "proposals": "tsx scripts/proposals.ts",
     "build": "astro build",
     "dev": "astro dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
