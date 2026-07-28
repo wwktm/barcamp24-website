@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
 
-export const PHASES = ['teaser', 'date', 'venue', 'call-for-speakers', 'speakers'] as const;
+export const PHASES = ['teaser', 'date', 'venue', 'call-for-speakers'] as const;
 export type Phase = (typeof PHASES)[number];
 
 export interface Speaker {
@@ -25,7 +25,7 @@ export interface Announcement {
 }
 
 export const announcement: Announcement = {
-  currentPhase: 'teaser',
+  currentPhase: 'call-for-speakers',
 
   event: {
     date: 'August 15, 2026',
@@ -53,11 +53,6 @@ export const announcement: Announcement = {
       eyebrow: 'Call for speakers',
       headline: 'Show up.\nSpeak up.',
       sub: "A day with no fixed agenda and no passive audience. You decide the talks — propose a session, upvote the ones you'd attend, and help build the day as it happens.",
-    },
-    speakers: {
-      eyebrow: 'The lineup',
-      headline: 'Meet the\nspeakers.',
-      sub: "Here's who's taking the floor — more added as they're confirmed.",
     },
   },
 

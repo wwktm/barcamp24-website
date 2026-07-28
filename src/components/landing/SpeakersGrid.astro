@@ -10,11 +10,7 @@ interface Props {
 const { speakers } = Astro.props;
 ---
 <Section id="speakers" heading="Sessions so far" sub="Proposals that are confirmed so far — a starting point, not the final lineup. Anyone can still pitch a session.">
-  {speakers.length === 0 ? (
-    <p class="text-soft text-[15px] mt-6">First sessions announced soon — check back.</p>
-  ) : (
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8">
-      {speakers.map((s) => <SpeakerCard speaker={s} />)}
-    </div>
-  )}
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8">
+    {speakers.map((s) => <SpeakerCard speaker={s} />)}
+  </div>
 </Section>

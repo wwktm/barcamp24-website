@@ -14,8 +14,8 @@ const { event } = announcement;
 const chips: { icon: string; label: string }[] = [];
 chips.push({ icon: '📅', label: event.date }); // the hero shows the date only
 
-// accepted proposals become the on-site speaker list (build-time read)
-const speakers = isActive('speakers') ? await getAcceptedSpeakers() : [];
+// accepted proposals show up as soon as they're accepted, while the call is open
+const speakers = isActive('call-for-speakers') ? await getAcceptedSpeakers() : [];
 
 const rule = 'h-px bg-line max-w-[940px] mx-auto';
 ---
@@ -36,7 +36,7 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
       </>
     )}
 
-    {isActive('speakers') && (
+    {speakers.length > 0 && (
       <>
         <div class={rule}></div>
         <SpeakersGrid speakers={speakers} />
