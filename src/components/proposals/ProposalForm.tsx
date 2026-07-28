@@ -205,6 +205,15 @@ export default function ProposalForm() {
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 max-w-3xl m-auto mt-4 p-4"
       >
+        {/* honeypot: hidden from humans; bots that fill it are dropped server-side */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+        />
         {submitSuccess ? (
           <div className="rounded-md bg-green-50 p-4">
             <div className="flex">
