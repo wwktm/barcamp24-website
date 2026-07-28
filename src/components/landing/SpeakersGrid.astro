@@ -5,7 +5,7 @@ import type { Speaker } from '../../content/announcement';
 interface Props { speakers: Speaker[] }
 const { speakers } = Astro.props;
 ---
-<Section id="speakers" heading="Speakers" index="03 — the lineup" sub="The people taking the floor. More announced as they're confirmed.">
+<Section id="speakers" heading="Speakers" sub="The people taking the floor. More announced as they're confirmed.">
   {speakers.length === 0 ? (
     <p class="text-soft text-[15px] mt-6">First speakers announced soon — check back.</p>
   ) : (
