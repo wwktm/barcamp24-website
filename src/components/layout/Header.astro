@@ -29,7 +29,6 @@ const cfsOpen = isActive('call-for-speakers');
     </button>
 
     <div class="hidden lg:flex gap-2 items-center">
-      <a href="/#how" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">How it works</a>
       {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
       {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
       <HeaderMenu />
@@ -37,7 +36,6 @@ const cfsOpen = isActive('call-for-speakers');
   </div>
 
   <div id="mobile-menu" class="hidden lg:hidden flex flex-col items-center bg-white py-4 gap-4">
-    <a href="/#how" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">How it works</a>
     {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
     {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
     <HeaderMenu />
