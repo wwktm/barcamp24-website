@@ -406,7 +406,7 @@ export default function ProposalForm() {
         <Button
           disabled={submitSuccess || isSubmitting}
           type="submit"
-          className="bg-orange-400 text-white px-4 py-2 rounded-md hover:bg-orange-500 disabled:bg-slate-100 disabled:text-slate-400 cursor-pointer"
+          className="bg-orange-400 text-white px-6 py-2.5 rounded-full hover:bg-orange-500 disabled:bg-slate-100 disabled:text-slate-400 cursor-pointer"
         >
           {getSubmitButtonText()}
         </Button>
