@@ -11,15 +11,13 @@ import SpeakersGrid from '../components/landing/SpeakersGrid.astro';
 
 const { event } = announcement;
 const chips: { icon: string; label: string }[] = [];
-chips.push({ icon: '📅', label: event.date }); // event date shown from the teaser phase
-if (isActive('venue')) chips.push({ icon: '📍', label: event.venue.name });
-if (isActive('date')) chips.push({ icon: '🎟', label: event.entry });
+chips.push({ icon: '📅', label: event.date }); // the hero shows the date only
 
 const rule = 'h-px bg-line max-w-[940px] mx-auto';
 ---
 <Layout overlayHeader>
   <div class="bg-paper text-ink font-body">
-    <Hero copy={announcement.hero[announcement.currentPhase]} chips={chips} showCta={isActive('call-for-speakers')} />
+    <Hero copy={announcement.hero.teaser} chips={chips} showCta={isActive('call-for-speakers')} />
 
     <div class={rule}></div>
     <LeadStatement />
