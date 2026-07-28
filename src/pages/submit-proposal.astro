@@ -1,8 +1,12 @@
 ---
-import Layout2025 from '../layouts/Layout2025.astro';
+import Layout from '../layouts/Layout.astro';
+import { LATEST_YEAR } from '../config';
 import ProposalForm from '../components/proposals/ProposalForm';
+import { isActive } from '../content/phase';
+
+const cfsOpen = isActive('call-for-speakers');
 ---
-<Layout2025 title="Submit Proposal - BarCamp Kathmandu 2025" description="Submit a proposal for BarCamp Kathmandu 2025">
+<Layout title={`Submit Proposal - BarCamp Kathmandu ${LATEST_YEAR}`} description={`Submit a proposal for BarCamp Kathmandu ${LATEST_YEAR}`}>
   <section class="py-8 bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">
     <div class="container mx-auto px-4">
       <div class="mx-auto max-w-4xl py-20 sm:py-20 lg:py-8">
@@ -18,5 +22,15 @@ import ProposalForm from '../components/proposals/ProposalForm';
     </div>
   </section>
 
-  <ProposalForm client:load />
-</Layout2025>
+  {cfsOpen ? (
+    <ProposalForm client:load />
+  ) : (
+    <section class="py-20">
+      <div class="max-w-[940px] mx-auto px-[26px] text-center">
+        <h2 class="font-display font-bold text-section-h text-ink">Submissions aren't open yet</h2>
+        <p class="text-soft mt-3">The call for speakers hasn't opened. Check back soon — or watch the homepage for the announcement.</p>
+        <a href="/" class="inline-block mt-6 font-display font-semibold text-brand hover:text-brand-deep no-underline">← Back to home</a>
+      </div>
+    </section>
+  )}
+</Layout>

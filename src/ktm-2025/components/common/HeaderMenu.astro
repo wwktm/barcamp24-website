@@ -1,0 +1,21 @@
+---
+const pathname = Astro.url.pathname;
+const is2024 = pathname === '/ktm/2024' || pathname === '/ktm/2024/';
+const is2025 = pathname === '/ktm/2025' || pathname === '/ktm/2025/';
+---
+{!is2024 && (
+  <a
+    class="rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
+    href="/ktm/2024"
+  >
+    2024
+  </a>
+)}
+{!is2025 && (
+  <a
+    class="rounded-full border border-black px-5 py-2 text-base font-medium text-black hover:bg-orange-700 hover:text-white"
+    href="/ktm/2025"
+  >
+    2025
+  </a>
+)}

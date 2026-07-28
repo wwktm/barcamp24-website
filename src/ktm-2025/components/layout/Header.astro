@@ -1,18 +1,15 @@
 ---
 import HeaderMenu from "../common/HeaderMenu.astro";
-import { isActive } from "../../content/phase";
 
 interface Props {
   year?: string;
-  overlay?: boolean;
 }
 
-const { year = "2026", overlay = false } = Astro.props;
-const cfsOpen = isActive('call-for-speakers');
+const { year = "2026" } = Astro.props;
 ---
-<header class={overlay ? "absolute top-0 left-0 right-0 z-50" : "relative bg-white shadow z-50"}>
+<header class="bg-white shadow">
   <div class="container mx-auto px-4 py-2 flex items-center justify-between">
-    <a class="flex w-48 h-16 sm:h-20 items-center" href="/">
+    <a class="flex w-48 h-16 sm:h-20 py-2 items-start" href="/">
       <img src="/barcamp-ktm.png" alt={`BarCamp Kathmandu ${year}`} />
     </a>
 
@@ -30,15 +27,11 @@ const cfsOpen = isActive('call-for-speakers');
     </button>
 
     <div class="hidden lg:flex gap-2 items-center">
-      {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
-      {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
       <HeaderMenu />
     </div>
   </div>
 
   <div id="mobile-menu" class="hidden lg:hidden flex flex-col items-center bg-white py-4 gap-4">
-    {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
-    {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
     <HeaderMenu />
   </div>
 </header>

@@ -1,5 +1,8 @@
 node_modules
 
+# Astro generated files
+.astro/
+
 /.cache
 /public/build
 /build
@@ -11,3 +14,9 @@ node_modules
 .DS_Store
 
 dist/
+
+barcamp_backup/
+
+# Local planning / superpowers scratch — never commit
+.superpowers/
+docs/superpowers/
