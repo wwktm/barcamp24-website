@@ -36,8 +36,8 @@ export const announcement: Announcement = {
   hero: {
     teaser: {
       eyebrow: 'The unconference · Kathmandu',
-      headline: 'Anyone\ncan speak.',
-      sub: 'Talk, listen, argue, or just follow your curiosity. All you have to do is turn up.',
+      headline: 'Show up.\nSpeak up.',
+      sub: 'Talk, listen, argue, or just follow your curiosity. All you have to do is turn up and join the ride.',
     },
     date: {
       eyebrow: 'Save the date',
