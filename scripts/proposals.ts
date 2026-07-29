@@ -10,24 +10,33 @@
  *   npm run proposals -- reset 5           back to pending
  *   npm run proposals -- export [file]     write accepted ones to JSON (no emails)
  *
- * TURSO_DATABASE_URL / TURSO_AUTH_TOKEN are loaded from .env by Node
- * (--env-file-if-exists, wired up in the npm script), or from the shell.
+ * Reads TURSO_DATABASE_URL / TURSO_AUTH_TOKEN from .env.
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { createClient, type Client } from '@libsql/client';
 
 const STATUSES = ['pending', 'accepted', 'rejected'] as const;
 type Status = (typeof STATUSES)[number];
 
+function loadEnv(): Record<string, string> {
+  const out: Record<string, string> = { ...(process.env as Record<string, string>) };
+  if (!existsSync('.env')) return out;
+  for (const line of readFileSync('.env', 'utf8').split('\n')) {
+    const t = line.trim();
+    if (!t || t.startsWith('#') || !t.includes('=')) continue;
+    const i = t.indexOf('=');
+    const key = t.slice(0, i).trim();
+    if (!out[key]) out[key] = t.slice(i + 1).trim().replace(/^["']|["']$/g, '');
+  }
+  return out;
+}
+
 function connect(): Client {
-  const url = process.env.TURSO_DATABASE_URL;
-  const authToken = process.env.TURSO_AUTH_TOKEN;
+  const env = loadEnv();
+  const url = env.TURSO_DATABASE_URL;
+  const authToken = env.TURSO_AUTH_TOKEN;
   if (!url || !authToken) {
-    console.error('Missing Turso credentials.');
-    console.error('  Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN in .env (see .env.example),');
-    console.error('  or export them in your shell. Get them with:');
-    console.error('    turso db show barcamp --url');
-    console.error('    turso db tokens create barcamp --expiration none');
+    console.error('Missing TURSO_DATABASE_URL / TURSO_AUTH_TOKEN (put them in .env).');
     process.exit(1);
   }
   return createClient({ url, authToken });
