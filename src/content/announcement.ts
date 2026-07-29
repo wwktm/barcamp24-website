@@ -36,28 +36,28 @@ export const announcement: Announcement = {
   hero: {
     teaser: {
       eyebrow: 'The unconference · Kathmandu',
-      headline: "BarCamp Kathmandu\nreturns again.",
-      sub: 'BarCamp Kathmandu returns for 2026 a day built by whoever shows up. Details unfold here as we lock them in.',
+      headline: 'Anyone\ncan speak.',
+      sub: 'Talk, listen, argue, or just follow your curiosity. All you have to do is turn up.',
     },
     date: {
       eyebrow: 'Save the date',
       headline: 'August 15,\n2026.',
-      sub: 'Mark your calendar. Venue, sessions, and speakers land here next.',
+      sub: "Put it in your calendar. We're still hunting for a venue.",
     },
     venue: {
       eyebrow: 'We have a home',
       headline: "We've got\na venue.",
-      sub: 'The where is settled. Next up: the call for speakers.',
+      sub: 'Now we need talks.',
     },
     'call-for-speakers': {
       eyebrow: 'Call for speakers',
       headline: 'Show up.\nSpeak up.',
-      sub: "A day with no fixed agenda and no passive audience. You decide the talks — propose a session, upvote the ones you'd attend, and help build the day as it happens.",
+      sub: "No fixed agenda, no passive audience. Propose a session, upvote the ones you'd actually sit through, and we pin the schedule up on the morning.",
     },
     speakers: {
       eyebrow: 'The lineup',
       headline: 'Meet the\nspeakers.',
-      sub: "Here's who's taking the floor — more added as they're confirmed.",
+      sub: "Who's speaking so far. More get added right up to the morning of.",
     },
   },
 
