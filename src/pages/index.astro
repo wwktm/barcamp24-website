@@ -4,10 +4,10 @@ import { announcement } from '../content/announcement';
 import { isActive } from '../content/phase';
 import Hero from '../components/landing/Hero.astro';
 import LeadStatement from '../components/landing/LeadStatement.astro';
-import HowItWorks from '../components/landing/HowItWorks.astro';
 import Topics from '../components/landing/Topics.astro';
 import InviteCTA from '../components/landing/InviteCTA.astro';
 import SpeakersGrid from '../components/landing/SpeakersGrid.astro';
+import Faq from '../components/landing/Faq.astro';
 
 const { event } = announcement;
 const chips: { icon: string; label: string }[] = [];
@@ -23,8 +23,6 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
 
     <div class={rule}></div>
     <LeadStatement />
-    <div class={rule}></div>
-    <HowItWorks />
 
     {isActive('call-for-speakers') && (
       <>
@@ -40,5 +38,8 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
         <SpeakersGrid speakers={announcement.speakers} />
       </>
     )}
+
+    <div class={rule}></div>
+    <Faq />
   </div>
 </Layout>
