@@ -1,8 +1,5 @@
 import type { ImageMetadata } from 'astro';
 
-export const PHASES = ['teaser', 'date', 'venue', 'call-for-speakers'] as const;
-export type Phase = (typeof PHASES)[number];
-
 export interface Speaker {
   name: string;
   title: string;      // talk / session title
@@ -12,20 +9,22 @@ export interface Speaker {
 }
 
 export interface HeroCopy {
-  eyebrow: string;
+  eyebrow?: string;   // omit to render no eyebrow at all
   headline: string;   // may contain \n for a two-line hero
   sub?: string;
 }
 
 export interface Announcement {
-  currentPhase: Phase;
+  /** Flip to false to close submissions and hide the proposal CTAs. */
+  callForSpeakersOpen: boolean;
   event: { date: string; venue: { name: string; note?: string }; entry: string };
-  hero: Record<Phase, HeroCopy>;
+  hero: HeroCopy;
+  /** Hand-added speakers; accepted proposals from the DB are appended to these. */
   speakers: Speaker[];
 }
 
 export const announcement: Announcement = {
-  currentPhase: 'call-for-speakers',
+  callForSpeakersOpen: true,
 
   event: {
     date: 'August 15, 2026',
@@ -34,26 +33,8 @@ export const announcement: Announcement = {
   },
 
   hero: {
-    teaser: {
-      eyebrow: 'The unconference · Kathmandu',
-      headline: "BarCamp Kathmandu\nreturns again.",
-      sub: 'BarCamp Kathmandu returns for 2026 a day built by whoever shows up. Details unfold here as we lock them in.',
-    },
-    date: {
-      eyebrow: 'Save the date',
-      headline: 'August 15,\n2026.',
-      sub: 'Mark your calendar. Venue, sessions, and speakers land here next.',
-    },
-    venue: {
-      eyebrow: 'We have a home',
-      headline: "We've got\na venue.",
-      sub: 'The where is settled. Next up: the call for speakers.',
-    },
-    'call-for-speakers': {
-      eyebrow: 'Call for speakers',
-      headline: 'Show up.\nSpeak up.',
-      sub: "A day with no fixed agenda and no passive audience. You decide the talks — propose a session, upvote the ones you'd attend, and help build the day as it happens.",
-    },
+    headline: 'Show up.\nSpeak up.',
+    sub: 'Talk, listen, argue, or just follow your curiosity. All you have to do is turn up and join the ride.',
   },
 
   speakers: [],

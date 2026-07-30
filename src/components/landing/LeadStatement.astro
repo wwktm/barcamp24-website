@@ -1,6 +1,26 @@
 ---
+import { Image } from 'astro:assets';
 import Section from '../common/Section.astro';
+import scheduleBoard from '../../ktm-2024/images/schedule.jpeg';
 ---
 <Section>
-  <p class="font-display font-light text-lead text-ink">An <span class="text-brand">unconference</span> is a gathering <b class="font-bold">for attendees, by attendees</b>. No speaker list, no schedule — until the day itself, when the sessions go up on <b class="font-bold">one big physical timetable</b>.</p>
+  <p class="font-display font-light text-lead text-ink">An <span class="text-brand">unconference</span> is a gathering <b class="font-bold">for attendees, by attendees</b>. A few talks open the day. After that there is no schedule, not until the sessions go up on <b class="font-bold">one big physical timetable</b> and the room decides where to be.</p>
+
+  <figure class="mt-10">
+    <a
+      href={scheduleBoard.src}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="block rounded-2xl overflow-hidden border border-line bg-card"
+    >
+      <Image
+        src={scheduleBoard}
+        alt="The session board at BarCamp Kathmandu 2024: a wall-sized grid of tracks and time slots, filled in by hand with session cards."
+        widths={[640, 940, 1880]}
+        sizes="(min-width: 940px) 888px, 100vw"
+        class="w-full h-auto block"
+      />
+    </a>
+    <figcaption class="font-body text-[12px] text-faint mt-3">The board at BarCamp Kathmandu 2024. Every slot filled by whoever turned up.</figcaption>
+  </figure>
 </Section>
