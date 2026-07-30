@@ -8,11 +8,11 @@ interface Props {
 const { variant = "primary", href, class: className = "" } = Astro.props;
 
 const base =
-  "font-display font-bold text-[15px] rounded-[10px] px-7 py-3.5 inline-flex gap-2 items-center no-underline cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400";
+  "font-display font-bold text-[15px] rounded-full px-7 py-3.5 inline-flex gap-2 items-center no-underline cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400";
 
 const variants = {
   primary: "bg-brand text-white hover:bg-brand-deep",
-  outline: "bg-transparent text-ink border-[1.5px] border-line hover:border-ink",
+  outline: "bg-transparent text-ink border-[1.5px] border-ink/35 hover:border-brand hover:text-brand",
 };
 
 const classes = [base, variants[variant], className].filter(Boolean).join(" ");

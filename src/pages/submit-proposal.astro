@@ -2,9 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import { LATEST_YEAR } from '../config';
 import ProposalForm from '../components/proposals/ProposalForm';
-import { isActive } from '../content/phase';
+import { announcement } from '../content/announcement';
 
-const cfsOpen = isActive('call-for-speakers');
+const cfsOpen = announcement.callForSpeakersOpen;
 ---
 <Layout title={`Submit Proposal - BarCamp Kathmandu ${LATEST_YEAR}`} description={`Submit a proposal for BarCamp Kathmandu ${LATEST_YEAR}`}>
   <section class="py-8 bg-gray-100 bg-gradient-to-l from-sky-100 to-orange-50">

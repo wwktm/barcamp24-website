@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "new-year": "tsx scripts/new-year.ts",
+    "proposals": "tsx scripts/proposals.ts",
     "build": "astro build",
     "dev": "astro dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
@@ -18,8 +19,6 @@
     "@headlessui/react": "^2.1.3",
     "@heroicons/react": "^2.1.5",
     "@libsql/client": "^0.17.4",
-    "@supabase/ssr": "^0.6.1",
-    "@supabase/supabase-js": "^2.49.4",
     "astro": "^4.15.4",
     "isbot": "^4.1.0"
   },

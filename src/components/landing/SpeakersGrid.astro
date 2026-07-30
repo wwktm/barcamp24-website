@@ -1,16 +1,16 @@
 ---
 import Section from '../common/Section.astro';
 import SpeakerCard from './SpeakerCard.astro';
-import type { Speaker } from '../../content/announcement';
-interface Props { speakers: Speaker[] }
+import type { DisplaySpeaker } from '../../utils/sessions';
+
+interface Props {
+  speakers: DisplaySpeaker[];
+}
+
 const { speakers } = Astro.props;
 ---
-<Section id="speakers" heading="Speakers" sub="The people taking the floor. More announced as they're confirmed.">
-  {speakers.length === 0 ? (
-    <p class="text-soft text-[15px] mt-6">First speakers announced soon — check back.</p>
-  ) : (
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8">
-      {speakers.map((s) => <SpeakerCard speaker={s} />)}
-    </div>
-  )}
+<Section id="speakers" heading="Sessions so far" sub="Proposals that are confirmed so far — a starting point, not the final lineup. Anyone can still pitch a session.">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8">
+    {speakers.map((s) => <SpeakerCard speaker={s} />)}
+  </div>
 </Section>

@@ -124,7 +124,7 @@ export default function ProposalForm() {
 
   return (
     <div className="container my-20 mx-auto px-4">
-      <p className="max-w-3xl m-auto mt-2 p-4 text-lg">
+      <div className="max-w-3xl m-auto mt-2 p-4 text-lg">
         <ul className="flex flex-col gap-6 ml-3 list-disc">
           <li>
             BarCamp Kathmandu is an <em>unconference</em> - an ad hoc gathering
@@ -199,12 +199,21 @@ export default function ProposalForm() {
             <a href="https://x.com/weekend_web">contact us</a>
           </li>
         </ul>
-      </p>
+      </div>
       <form
         ref={form}
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 max-w-3xl m-auto mt-4 p-4"
       >
+        {/* honeypot: hidden from humans; bots that fill it are dropped server-side */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="hidden"
+        />
         {submitSuccess ? (
           <div className="rounded-md bg-green-50 p-4">
             <div className="flex">
@@ -397,7 +406,7 @@ export default function ProposalForm() {
         <Button
           disabled={submitSuccess || isSubmitting}
           type="submit"
-          className="bg-orange-400 text-white px-4 py-2 rounded-md hover:bg-orange-500 disabled:bg-slate-100 disabled:text-slate-400 cursor-pointer"
+          className="bg-orange-400 text-white px-6 py-2.5 rounded-full hover:bg-orange-500 disabled:bg-slate-100 disabled:text-slate-400 cursor-pointer"
         >
           {getSubmitButtonText()}
         </Button>
