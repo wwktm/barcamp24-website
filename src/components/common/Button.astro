@@ -12,7 +12,7 @@ const base =
 
 const variants = {
   primary: "bg-brand text-white hover:bg-brand-deep",
-  outline: "bg-transparent text-ink border-[1.5px] border-line hover:border-ink",
+  outline: "bg-transparent text-ink border-[1.5px] border-ink/35 hover:border-brand hover:text-brand",
 };
 
 const classes = [base, variants[variant], className].filter(Boolean).join(" ");
