@@ -4,7 +4,7 @@ import type { HeroCopy } from '../../content/announcement';
 
 interface Props {
   copy: HeroCopy;
-  chips: { icon: string; label: string }[];
+  chips: { icon?: string; iconSrc?: string; label: string }[];
   showCta: boolean;
 }
 
@@ -19,7 +19,14 @@ const lines = copy.headline.split('\n');
     {copy.eyebrow && <div class="rise d1 font-display uppercase text-eyebrow text-brand-deep font-semibold">{copy.eyebrow}</div>}
     {chips.length > 0 && (
       <div class="rise d2 inline-flex gap-[26px] items-center text-soft font-display font-semibold text-[23px] my-6 flex-wrap justify-center">
-        {chips.map((c) => <span>{c.icon} <b class="text-ink">{c.label}</b></span>)}
+        {chips.map((c) => (
+          <span class="inline-flex items-center gap-2.5">
+            {c.iconSrc
+              ? <img src={c.iconSrc} alt="" width="34" height="34" class="w-[34px] h-[34px] shrink-0" />
+              : c.icon}
+            <b class="text-ink">{c.label}</b>
+          </span>
+        ))}
       </div>
     )}
     <h1 class="hero-title rise d2 font-display text-display mt-4">
@@ -31,6 +38,7 @@ const lines = copy.headline.split('\n');
     {showCta && (
       <div class="rise d4 flex gap-3 justify-center flex-wrap">
         <Button href="/submit-proposal">Submit a proposal</Button>
+        <Button variant="outline" href="/#topics">Browse topics</Button>
       </div>
     )}
   </div>
