@@ -30,7 +30,7 @@ const answerProse = [
               </svg>
             </span>
           </summary>
-          <dd class={`pb-6 pr-10 flex flex-col gap-3 font-display font-light text-soft text-[16px] leading-7 ${answerProse}`}>
+          <dd class={`pb-6 pr-10 flex flex-col gap-3 text-soft text-[16px] leading-7 [&_p]:font-body [&_p]:font-normal ${answerProse}`}>
             {item.a.map((para) => <p set:html={para} />)}
           </dd>
         </details>
