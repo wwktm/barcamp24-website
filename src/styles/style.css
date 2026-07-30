@@ -18,6 +18,16 @@
     outline: 2px solid theme('colors.sky.400');
     outline-offset: 2px;
   }
+  /* smooth in-page anchor scrolling; instant for reduced-motion users */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  /* keep anchored section headings clear of the top edge */
+  [id] {
+    scroll-margin-top: 24px;
+  }
 }
 
 body {
