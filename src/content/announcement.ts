@@ -12,7 +12,7 @@ export interface Speaker {
 }
 
 export interface HeroCopy {
-  eyebrow: string;
+  eyebrow?: string;   // omit to render no eyebrow at all
   headline: string;   // may contain \n for a two-line hero
   sub?: string;
 }
@@ -35,7 +35,6 @@ export const announcement: Announcement = {
 
   hero: {
     teaser: {
-      eyebrow: 'The unconference · Kathmandu',
       headline: 'Show up.\nSpeak up.',
       sub: 'Talk, listen, argue, or just follow your curiosity. All you have to do is turn up and join the ride.',
     },
