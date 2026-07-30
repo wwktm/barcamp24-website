@@ -10,7 +10,7 @@ interface Props {
 const { year = "2026", overlay = false } = Astro.props;
 const cfsOpen = isActive('call-for-speakers');
 ---
-<header class={overlay ? "absolute top-0 left-0 right-0 z-50" : "relative bg-white shadow z-50"}>
+<header class={overlay ? "absolute top-0 left-0 right-0 z-50" : "relative z-50 bg-paper/70 backdrop-blur-2xl backdrop-saturate-150 border-b border-line"}>
   <div class="container mx-auto px-4 py-2 flex items-center justify-between">
     <a class="flex w-48 h-16 sm:h-20 items-center" href="/">
       <img src="/barcamp-ktm.png" alt={`BarCamp Kathmandu ${year}`} />
@@ -18,7 +18,7 @@ const cfsOpen = isActive('call-for-speakers');
 
     <button
       id="mobile-menu-toggle"
-      class="lg:hidden flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+      class="lg:hidden flex items-center justify-center p-2 rounded-[10px] text-ink transition-colors hover:text-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400"
       aria-expanded="false"
     >
       <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
@@ -36,10 +36,12 @@ const cfsOpen = isActive('call-for-speakers');
     </div>
   </div>
 
-  <div id="mobile-menu" class="hidden lg:hidden flex flex-col items-center bg-white py-4 gap-4">
-    {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
-    {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
-    <HeaderMenu />
+  <div id="mobile-menu" class="hidden lg:hidden flex flex-col items-center gap-1 px-4 pt-2 pb-5 bg-paper/60 backdrop-blur-2xl backdrop-saturate-150 border-t border-b border-line">
+    {cfsOpen && <a href="/#topics" class="w-full text-center py-2.5 font-display font-semibold text-[15px] text-soft hover:text-brand no-underline transition-colors">Topics</a>}
+    {cfsOpen && <a href="/submit-proposal" class="w-full text-center py-2.5 font-display font-semibold text-[15px] text-brand hover:text-brand-deep no-underline transition-colors">Submit</a>}
+    <div class="flex gap-2 items-center justify-center pt-2">
+      <HeaderMenu />
+    </div>
   </div>
 </header>
 
