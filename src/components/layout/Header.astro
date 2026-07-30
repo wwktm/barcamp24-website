@@ -1,6 +1,5 @@
 ---
 import HeaderMenu from "../common/HeaderMenu.astro";
-import { announcement } from "../../content/announcement";
 
 interface Props {
   year?: string;
@@ -8,7 +7,6 @@ interface Props {
 }
 
 const { year = "2026", overlay = false } = Astro.props;
-const cfsOpen = announcement.callForSpeakersOpen;
 ---
 <header class={overlay ? "absolute top-0 left-0 right-0 z-50" : "relative z-50 bg-paper/70 backdrop-blur-2xl backdrop-saturate-150 border-b border-line"}>
   <div class="container mx-auto px-4 py-2 flex items-center justify-between">
@@ -30,18 +28,12 @@ const cfsOpen = announcement.callForSpeakersOpen;
     </button>
 
     <div class="hidden lg:flex gap-2 items-center">
-      {cfsOpen && <a href="/#topics" class="font-display font-semibold text-[13.5px] text-soft hover:text-brand no-underline">Topics</a>}
-      {cfsOpen && <a href="/submit-proposal" class="font-display font-semibold text-[13.5px] text-brand hover:text-brand no-underline">Submit</a>}
       <HeaderMenu />
     </div>
   </div>
 
-  <div id="mobile-menu" class="hidden lg:hidden flex flex-col items-center gap-1 px-4 pt-2 pb-5 bg-paper/60 backdrop-blur-2xl backdrop-saturate-150 border-t border-b border-line">
-    {cfsOpen && <a href="/#topics" class="w-full text-center py-2.5 font-display font-semibold text-[15px] text-soft hover:text-brand no-underline transition-colors">Topics</a>}
-    {cfsOpen && <a href="/submit-proposal" class="w-full text-center py-2.5 font-display font-semibold text-[15px] text-brand hover:text-brand-deep no-underline transition-colors">Submit</a>}
-    <div class="flex gap-2 items-center justify-center pt-2">
-      <HeaderMenu />
-    </div>
+  <div id="mobile-menu" class="hidden lg:hidden flex items-center justify-center gap-2 px-4 py-4 bg-paper/60 backdrop-blur-2xl backdrop-saturate-150 border-t border-b border-line">
+    <HeaderMenu />
   </div>
 </header>
 
