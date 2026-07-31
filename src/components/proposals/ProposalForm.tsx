@@ -12,6 +12,13 @@ import {
   Radio,
 } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import {
+  LIMITS,
+  SESSION_CATEGORIES,
+  parseProposalForm,
+  validateProposal,
+  type ProposalErrors,
+} from "../../utils/proposal-validation";
 
 export interface SpeakerProfile {
   name: string;
@@ -24,23 +31,34 @@ const initalSpeakersValue: SpeakerProfile[] = [
   { name: "", photoUrl: "", profileLink: "", introduction: "" },
 ];
 
-const sessionCategories = [
-  "Information Technology",
-  "Music",
-  "Design",
-  "Arts",
-  "Philosophy",
-  "Life and Lifestyle",
-  "AI",
-  "Blockchain",
-  "Futuristic",
-  "Nostalgia",
-  "Standup Comedy",
-  "Deep Dive",
-  "Education and Training",
-  "Health and Fitness",
-  "Other",
-];
+const inputClass =
+  "w-full px-3 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-300";
+
+/** Maps a validation key (`speakers.0.name`) back to the form field name. */
+const fieldName = (key: string) => {
+  const m = key.match(/^speakers\.(\d+)\.(\w+)$/);
+  return m ? `speakers[${m[1]}][${m[2]}]` : key;
+};
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return (
+    <p role="alert" className="mt-1.5 text-sm text-red-600">
+      {message}
+    </p>
+  );
+}
+
+function CharCount({ value, max }: { value: string; max: number }) {
+  const over = value.length > max;
+  return (
+    <div
+      className={`mt-1 text-right text-xs ${over ? "text-red-600" : "text-gray-400"}`}
+    >
+      {value.length}/{max}
+    </div>
+  );
+}
 
 export default function ProposalForm() {
   const form = useRef<HTMLFormElement>(null);
@@ -48,18 +66,36 @@ export default function ProposalForm() {
   const [speakers, setSpeakers] =
     useState<SpeakerProfile[]>(initalSpeakersValue);
 
-  const [sessionCategory, setSessionCategory] = useState<string>();
+  // "" not undefined: keeps the RadioGroup controlled from first render
+  const [sessionCategory, setSessionCategory] = useState("");
+  const [categoryOther, setCategoryOther] = useState("");
+  const [description, setDescription] = useState("");
+  const [errors, setErrors] = useState<ProposalErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState<string>();
 
   const addSpeaker = () => {
-    setSpeakers([...speakers, { name: "", photoUrl: "", profileLink: "" }]);
+    setSpeakers([
+      ...speakers,
+      { name: "", photoUrl: "", profileLink: "", introduction: "" },
+    ]);
   };
 
   const removeSpeaker = (index: number) => {
     setSpeakers(speakers.filter((_, i) => i !== index));
+    setErrors({});
   };
+
+  /** Clears one field's error as soon as the user starts fixing it. */
+  const clearError = useCallback((key: string) => {
+    setErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  }, []);
 
   const handleSpeakerChange = (
     index: number,
@@ -70,6 +106,7 @@ export default function ProposalForm() {
       i === index ? { ...speaker, [field]: event.target.value } : speaker
     );
     setSpeakers(updatedSpeakers);
+    clearError(`speakers.${index}.${field}`);
   };
 
   useEffect(() => {
@@ -77,7 +114,10 @@ export default function ProposalForm() {
       form.current?.reset();
       form.current?.scrollIntoView({ behavior: "smooth" });
       setSpeakers(initalSpeakersValue);
-      setSessionCategory(undefined);
+      setSessionCategory("");
+      setCategoryOther("");
+      setDescription("");
+      setErrors({});
     }
   }, [submitSuccess]);
 
@@ -87,40 +127,70 @@ export default function ProposalForm() {
     return "Submit";
   }, [submitSuccess, isSubmitting]);
 
+  /** Scrolls the first offending field into view and focuses it. */
+  const focusFirstError = (found: ProposalErrors) => {
+    const first = Object.keys(found)[0];
+    if (!first) return;
+    const el = form.current?.querySelector<HTMLElement>(
+      `[name="${fieldName(first)}"]`
+    );
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    el?.focus({ preventScroll: true });
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitError(undefined);
+
+    const formData = new FormData(e.currentTarget);
+    if (sessionCategory) {
+      formData.set("session_category", sessionCategory);
+    }
+
+    // Validate with the same code the API runs, so the two can't disagree.
+    const found = validateProposal(parseProposalForm(formData));
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      focusFirstError(found);
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitSuccess(false);
-    setSubmitError(false);
 
     try {
-      const formData = new FormData(e.currentTarget);
-      if (sessionCategory) {
-        formData.set("session_category", sessionCategory);
-      }
-
       const response = await fetch("/api/submit-proposal", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit proposal");
+      const data = await response.json().catch(() => null);
+
+      if (data?.success) {
+        setSubmitSuccess(true);
+        return;
       }
 
-      const data = await response.json();
-      if (data.success) {
-        setSubmitSuccess(true);
-      } else {
-        setSubmitError(true);
+      // Server rejected it — mirror its field errors and message.
+      if (data?.errors) {
+        setErrors(data.errors);
+        focusFirstError(data.errors);
       }
+      setSubmitError(
+        data?.error ?? "Sorry, there was an error submitting your proposal."
+      );
     } catch (err) {
       console.error("Submission error:", err);
-      setSubmitError(true);
+      setSubmitError(
+        "We couldn't reach the server. Check your connection and try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const border = (key: string) =>
+    errors[key] ? "border-red-400" : "border-gray-300";
 
   return (
     <div className="container my-20 mx-auto px-4">
@@ -203,6 +273,7 @@ export default function ProposalForm() {
       <form
         ref={form}
         onSubmit={handleSubmit}
+        noValidate
         className="flex flex-col gap-4 max-w-3xl m-auto mt-4 p-4"
       >
         {/* honeypot: hidden from humans; bots that fill it are dropped server-side */}
@@ -234,20 +305,8 @@ export default function ProposalForm() {
           </div>
         ) : null}
         {submitError ? (
-          <div className="rounded-md bg-red-50 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <CheckCircleIcon
-                  aria-hidden="true"
-                  className="h-5 w-5 text-red-400"
-                />
-              </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-red-800">
-                  Sorry there was an error submitting your proposal
-                </p>
-              </div>
-            </div>
+          <div role="alert" className="rounded-md bg-red-50 p-4">
+            <p className="text-sm font-medium text-red-800">{submitError}</p>
           </div>
         ) : null}
         <Field>
@@ -260,9 +319,13 @@ export default function ProposalForm() {
           <Input
             type="email"
             name="email"
-            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-            required
+            maxLength={LIMITS.email.max}
+            autoComplete="email"
+            aria-invalid={!!errors.email}
+            onInput={() => clearError("email")}
+            className={`${inputClass} ${border("email")}`}
           />
+          <FieldError message={errors.email} />
         </Field>
         <Field>
           <Label className="block text-gray-900 font-semibold mb-3">
@@ -270,12 +333,13 @@ export default function ProposalForm() {
           </Label>
           <Select
             name="duration"
-            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-            required
+            aria-invalid={!!errors.duration}
+            className={`${inputClass} ${border("duration")}`}
           >
             <option value="regular">Regular: 20mins</option>
             <option value="lightning">Lightning: 5mins</option>
           </Select>
+          <FieldError message={errors.duration} />
         </Field>
         <Fieldset>
           <Legend className="block text-gray-900 font-semibold mb-3">
@@ -284,11 +348,14 @@ export default function ProposalForm() {
           <RadioGroup
             name="session_category"
             value={sessionCategory}
-            onChange={setSessionCategory}
+            onChange={(value: string) => {
+              setSessionCategory(value);
+              clearError("session_category");
+            }}
             aria-label="Session Category"
             className="flex flex-col gap-2"
           >
-            {sessionCategories.map((category) => (
+            {SESSION_CATEGORIES.map((category) => (
               <Field key={category} className="flex items-center gap-2">
                 <Radio
                   value={category}
@@ -300,13 +367,24 @@ export default function ProposalForm() {
               </Field>
             ))}
           </RadioGroup>
+          <FieldError message={errors.session_category} />
           {sessionCategory === "Other" ? (
-            <Input
-              name="category_other"
-              type="text"
-              placeholder="Please specify"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none mt-3"
-            />
+            <div className="mt-3">
+              <Input
+                name="category_other"
+                type="text"
+                placeholder="Please specify"
+                value={categoryOther}
+                maxLength={LIMITS.categoryOther.max}
+                aria-invalid={!!errors.category_other}
+                onChange={(e) => {
+                  setCategoryOther(e.target.value);
+                  clearError("category_other");
+                }}
+                className={`${inputClass} ${border("category_other")}`}
+              />
+              <FieldError message={errors.category_other} />
+            </div>
           ) : null}
         </Fieldset>
         <Field>
@@ -316,21 +394,29 @@ export default function ProposalForm() {
           <Input
             type="text"
             name="title"
-            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-            required
+            maxLength={LIMITS.title.max}
+            aria-invalid={!!errors.title}
+            onInput={() => clearError("title")}
+            className={`${inputClass} ${border("title")}`}
           />
+          <FieldError message={errors.title} />
         </Field>
         <Field>
           <Label className="block text-gray-900 font-semibold mb-3">
             Topic Tags
           </Label>
+          <div className="text-sm text-gray-500 mb-3">
+            Up to {LIMITS.tagCount.max}, comma separated
+          </div>
           <Input
             type="text"
             name="tags"
-            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-            placeholder="Comma separated tags"
-            required
+            aria-invalid={!!errors.tags}
+            onInput={() => clearError("tags")}
+            className={`${inputClass} ${border("tags")}`}
+            placeholder="e.g. design, typography, workshop"
           />
+          <FieldError message={errors.tags} />
         </Field>
         <Field>
           <Label className="block text-gray-700 font-bold mb-2">
@@ -338,10 +424,18 @@ export default function ProposalForm() {
           </Label>
           <Textarea
             name="description"
-            className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
+            value={description}
+            maxLength={LIMITS.description.max}
             rows={3}
-            required
+            aria-invalid={!!errors.description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              clearError("description");
+            }}
+            className={`${inputClass} ${border("description")}`}
           />
+          <CharCount value={description} max={LIMITS.description.max} />
+          <FieldError message={errors.description} />
         </Field>
         <Fieldset className="flex flex-col gap-2">
           <Legend className="block text-gray-700 font-bold mb-2">
@@ -352,38 +446,63 @@ export default function ProposalForm() {
               key={index}
               className="flex flex-col gap-2 border border-gray-200 p-4"
             >
-              <Input
-                type="text"
-                name={`speakers[${index}][name]`}
-                placeholder="Your Name"
-                value={speaker.name}
-                onChange={(e) => handleSpeakerChange(index, "name", e)}
-                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-                required
-              />
-              <Input
-                type="url"
-                name={`speakers[${index}][photoUrl]`}
-                placeholder="Your Photo URL"
-                value={speaker.photoUrl}
-                onChange={(e) => handleSpeakerChange(index, "photoUrl", e)}
-                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-              />
-              <Input
-                type="url"
-                name={`speakers[${index}][profileLink]`}
-                placeholder="Social Media / Website Link"
-                value={speaker.profileLink}
-                onChange={(e) => handleSpeakerChange(index, "profileLink", e)}
-                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-              />
-              <Textarea
-                name={`speakers[${index}][introduction]`}
-                placeholder="About you / Introduction"
-                value={speaker?.introduction}
-                onChange={(e) => handleSpeakerChange(index, "introduction", e)}
-                className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none"
-              />
+              <div>
+                <Input
+                  type="text"
+                  name={`speakers[${index}][name]`}
+                  placeholder="Your Name"
+                  value={speaker.name}
+                  maxLength={LIMITS.speakerName.max}
+                  aria-invalid={!!errors[`speakers.${index}.name`]}
+                  onChange={(e) => handleSpeakerChange(index, "name", e)}
+                  className={`${inputClass} ${border(`speakers.${index}.name`)}`}
+                />
+                <FieldError message={errors[`speakers.${index}.name`]} />
+              </div>
+              <div>
+                <Input
+                  type="url"
+                  name={`speakers[${index}][photoUrl]`}
+                  placeholder="Your Photo URL (optional)"
+                  value={speaker.photoUrl}
+                  maxLength={LIMITS.url.max}
+                  aria-invalid={!!errors[`speakers.${index}.photoUrl`]}
+                  onChange={(e) => handleSpeakerChange(index, "photoUrl", e)}
+                  className={`${inputClass} ${border(`speakers.${index}.photoUrl`)}`}
+                />
+                <FieldError message={errors[`speakers.${index}.photoUrl`]} />
+              </div>
+              <div>
+                <Input
+                  type="url"
+                  name={`speakers[${index}][profileLink]`}
+                  placeholder="Social Media / Website Link (optional)"
+                  value={speaker.profileLink}
+                  maxLength={LIMITS.url.max}
+                  aria-invalid={!!errors[`speakers.${index}.profileLink`]}
+                  onChange={(e) => handleSpeakerChange(index, "profileLink", e)}
+                  className={`${inputClass} ${border(`speakers.${index}.profileLink`)}`}
+                />
+                <FieldError message={errors[`speakers.${index}.profileLink`]} />
+              </div>
+              <div>
+                <Textarea
+                  name={`speakers[${index}][introduction]`}
+                  placeholder="About you / Introduction (optional)"
+                  value={speaker?.introduction}
+                  maxLength={LIMITS.speakerIntro.max}
+                  aria-invalid={!!errors[`speakers.${index}.introduction`]}
+                  onChange={(e) =>
+                    handleSpeakerChange(index, "introduction", e)
+                  }
+                  className={`${inputClass} ${border(`speakers.${index}.introduction`)}`}
+                />
+                <CharCount
+                  value={speaker.introduction ?? ""}
+                  max={LIMITS.speakerIntro.max}
+                />
+                <FieldError message={errors[`speakers.${index}.introduction`]} />
+              </div>
               {index > 0 && (
                 <button
                   type="button"
@@ -414,4 +533,3 @@ export default function ProposalForm() {
     </div>
   );
 }
-
