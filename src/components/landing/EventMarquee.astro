@@ -143,20 +143,63 @@ const ITEMS = [
     }
   }
 
+  /*
+   * The edges echo the hero's cloud shader rather than being a flat paper wash.
+   * Those two tints are the shader's own output, not eyeballed: it mixes paper
+   * with sky at 0.42 and with orange at 0.4, then washes the result back toward
+   * paper at 0.72 — which lands on #bfe6f6 and #f9d2b5.
+   *
+   * Soft blobs supply the cloud; a mask dissolves the whole layer inward, so the
+   * photos emerge from the gradient instead of meeting a hard line. Purely
+   * decorative: aria-hidden in the markup, and pointer-events:none so nothing
+   * here is hoverable, clickable, or able to swallow a scroll.
+   */
   .edge {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: clamp(40px, 8vw, 120px);
+    width: clamp(88px, 15vw, 260px);
     pointer-events: none;
+    background:
+      /* cloud tints: present at the screen edge, gone well before the inner end */
+      radial-gradient(
+        135% 95% at 0% 16%,
+        rgba(191, 230, 246, 0.8) 0%,
+        rgba(191, 230, 246, 0.34) 30%,
+        rgba(191, 230, 246, 0) 66%
+      ),
+      radial-gradient(
+        120% 85% at 0% 94%,
+        rgba(249, 210, 181, 0.66) 0%,
+        rgba(249, 210, 181, 0.26) 32%,
+        rgba(249, 210, 181, 0) 68%
+      ),
+      /*
+       * The paper veil that actually hides the cut edge. Opacity eases the whole
+       * way to zero with no opaque plateau — a plateau is what reads as a solid
+       * block ending in a hard line. Stops are dense enough to avoid banding.
+       */
+        linear-gradient(
+          to right,
+          rgba(249, 248, 245, 1) 0%,
+          rgba(249, 248, 245, 0.97) 9%,
+          rgba(249, 248, 245, 0.9) 20%,
+          rgba(249, 248, 245, 0.78) 32%,
+          rgba(249, 248, 245, 0.62) 44%,
+          rgba(249, 248, 245, 0.44) 57%,
+          rgba(249, 248, 245, 0.27) 70%,
+          rgba(249, 248, 245, 0.13) 83%,
+          rgba(249, 248, 245, 0.04) 93%,
+          rgba(249, 248, 245, 0) 100%
+        );
   }
   .edge-left {
     left: 0;
-    background: linear-gradient(to right, #f9f8f5, rgba(249, 248, 245, 0));
   }
+  /* Mirrored so one gradient and one mask serve both sides. */
   .edge-right {
     right: 0;
-    background: linear-gradient(to left, #f9f8f5, rgba(249, 248, 245, 0));
+    transform: scaleX(-1);
   }
 
   /*
