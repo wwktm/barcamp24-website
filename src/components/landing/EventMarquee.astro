@@ -1,21 +1,41 @@
 ---
 import { Image } from 'astro:assets';
 import scheduleBoard from '../../ktm-2024/images/schedule.jpeg';
+import board2025 from '../../images/barcamp-2025/photo-5.jpg';
+import groupPhoto2025 from '../../images/barcamp-2025/photo-2.jpg';
+import thanks2025a from '../../images/barcamp-2025/photo-1.jpg';
+import thanks2025b from '../../images/barcamp-2025/photo-3.jpg';
+import entrance2025 from '../../images/barcamp-2025/photo-4.jpg';
 
 /**
  * Continuously scrolling photo strip.
  *
- * Every photo renders at a fixed 300px height with width:auto, which is the
- * native height of the 2025 set — so nothing is ever upscaled. The track holds
- * the list twice and slides exactly -50%, which is what makes the loop
- * seamless; the spacing lives in each item's padding rather than a flex `gap`
- * so the two copies stay perfectly symmetric.
+ * Every photo renders at a fixed height with width:auto rather than being
+ * stretched to fill, so aspect ratios stay untouched and the tall shots read as
+ * tall. The track holds the list twice and slides exactly -50%, which is what
+ * makes the loop seamless; the spacing lives in each item's padding rather than
+ * a flex `gap` so the two copies stay exactly the same width.
  */
 
+/** The desktop display height the srcset is sized against (see .h-\[360px\] below). */
+const DISPLAY_H = 360;
+
+/** Rendered width of an imported image once it is scaled to DISPLAY_H. */
+const displayWidth = (a: { width: number; height: number }) =>
+  Math.round(DISPLAY_H * (a.width / a.height));
+
+/*
+ * Ordered to alternate wide and tall so the strip has some rhythm, and to open
+ * on the two session boards — the paragraph above is about that timetable.
+ */
 const ITEMS = [
   {
     asset: scheduleBoard,
     alt: 'The session board at BarCamp Kathmandu 2024: a wall-sized grid of tracks and time slots, filled in by hand with session cards.',
+  },
+  {
+    asset: board2025,
+    alt: 'The 2025 session board: a whiteboard grid of rooms and time slots covered in handwritten session cards, with attendees reading it.',
   },
   {
     src: '/homepage-images/image-1.jpg',
@@ -24,10 +44,18 @@ const ITEMS = [
     alt: 'Attendees crowded around the printed session grid, reading the day’s tracks.',
   },
   {
+    asset: groupPhoto2025,
+    alt: 'The BarCamp Kathmandu 2025 group photo: around a hundred and fifty attendees filling the tiers of an outdoor amphitheatre.',
+  },
+  {
     src: '/homepage-images/image-4.jpg',
     width: 230,
     height: 300,
     alt: 'A speaker presenting at a whiteboard to a seated room.',
+  },
+  {
+    asset: thanks2025a,
+    alt: 'A speaker being handed a framed BarCamp thank-you certificate in one of the session rooms.',
   },
   {
     src: '/homepage-images/image-2.jpg',
@@ -36,10 +64,18 @@ const ITEMS = [
     alt: 'The BarCamp Kathmandu group photo on the steps outside the venue.',
   },
   {
+    asset: entrance2025,
+    alt: 'The venue entrance in 2025, with a BarCamp Kathmandu roll-up banner beside the doors.',
+  },
+  {
     src: '/homepage-images/image-0.jpg',
     width: 230,
     height: 300,
     alt: 'The BarCamp flame logo standee at the venue entrance.',
+  },
+  {
+    asset: thanks2025b,
+    alt: 'Two organisers holding up a framed BarCamp thank-you certificate for the camera.',
   },
   {
     src: '/homepage-images/image-3.jpg',
@@ -61,8 +97,8 @@ const ITEMS = [
                 <Image
                   src={item.asset}
                   alt={copy === 0 ? item.alt : ''}
-                  widths={[756, 1512]}
-                  sizes="756px"
+                  widths={[displayWidth(item.asset), displayWidth(item.asset) * 2]}
+                  sizes={`${displayWidth(item.asset)}px`}
                   class="h-[240px] sm:h-[360px] w-auto rounded-xl border border-line bg-card object-cover block"
                 />
               ) : (
