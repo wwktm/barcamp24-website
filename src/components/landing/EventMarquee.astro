@@ -50,7 +50,7 @@ const ITEMS = [
 ];
 ---
 
-<div class="marquee relative mt-10">
+<div class="marquee relative">
   <div class="viewport overflow-hidden">
     <div class="track">
       {[0, 1].map((copy) => (
@@ -61,9 +61,9 @@ const ITEMS = [
                 <Image
                   src={item.asset}
                   alt={copy === 0 ? item.alt : ''}
-                  widths={[630, 1260]}
-                  sizes="630px"
-                  class="h-[220px] sm:h-[300px] w-auto rounded-xl border border-line bg-card object-cover block"
+                  widths={[756, 1512]}
+                  sizes="756px"
+                  class="h-[240px] sm:h-[360px] w-auto rounded-xl border border-line bg-card object-cover block"
                 />
               ) : (
                 <img
@@ -75,7 +75,7 @@ const ITEMS = [
                       intersection check and leave a blank frame mid-loop.
                       All five together are ~680KB. */}
                   decoding="async"
-                  class="h-[220px] sm:h-[300px] w-auto rounded-xl border border-line bg-card object-cover block"
+                  class="h-[240px] sm:h-[360px] w-auto rounded-xl border border-line bg-card object-cover block"
                 />
               )}
             </div>
@@ -111,7 +111,7 @@ const ITEMS = [
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 56px;
+    width: clamp(40px, 8vw, 120px);
     pointer-events: none;
   }
   .edge-left {

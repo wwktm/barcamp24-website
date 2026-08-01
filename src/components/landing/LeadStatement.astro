@@ -4,9 +4,14 @@ import EventMarquee from './EventMarquee.astro';
 ---
 <Section>
   <p class="font-display font-light text-lead text-ink">An <span class="text-brand">unconference</span> is a gathering <b class="font-bold">for attendees, by attendees</b>. A few talks open the day. After that there is no schedule, not until the sessions go up on <b class="font-bold">one big physical timetable</b> and the room decides where to be.</p>
-
-  <figure>
-    <EventMarquee />
-    <figcaption class="font-body text-[12px] text-faint mt-3">The board at BarCamp Kathmandu 2024, and the rooms it filled. Every slot taken by whoever turned up.</figcaption>
-  </figure>
 </Section>
+
+<!--
+  The strip sits outside <Section> so it can run the full width of the screen.
+  Doing it with `width: 100vw` inside the column would overflow by the width of
+  the vertical scrollbar, which 100vw counts and 100% does not.
+-->
+<figure class="-mt-8 pb-16">
+  <EventMarquee />
+  <figcaption class="font-body text-[12px] text-faint mt-3 mx-auto max-w-[940px] px-[26px]">The board at BarCamp Kathmandu 2024, and the rooms it filled. Every slot taken by whoever turned up.</figcaption>
+</figure>
