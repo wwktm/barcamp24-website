@@ -1,11 +1,21 @@
 ---
 import Section from '../common/Section.astro';
-const categories = ["Information Technology","Music","Design","Arts","Philosophy","Life and Lifestyle","AI","Blockchain","Futuristic","Nostalgia","Standup Comedy","Deep Dive","Education and Training","Health and Fitness","Other"];
+import { SESSION_CATEGORIES } from '../../utils/proposal-validation';
+
+// "Other" is the point of the list, so it gets the same cloud gradient as the CTA card.
+const FEATURED = 'Other';
 ---
 <Section id="topics" heading="Talk about anything" sub="Not just tech. Bring your unique take on fitness and art, a rabbit-hole you fell down, or that use-case for AI you discovered.">
   <div class="grid [grid-template-columns:repeat(auto-fill,minmax(150px,1fr))] gap-px bg-line border border-line rounded-xl overflow-hidden mt-7">
-    {categories.map((c) => (
-      <span class="bg-card px-[18px] py-4 font-display font-semibold text-[14.5px] flex items-center gap-2.5">
+    {SESSION_CATEGORIES.map((c) => (
+      <span
+        class:list={[
+          'px-[18px] py-4 font-display font-semibold text-[14.5px] flex items-center gap-2.5',
+          c === FEATURED
+            ? 'bg-gradient-to-l from-sky-100 to-orange-50 text-brand-deep'
+            : 'bg-card',
+        ]}
+      >
         <span class="w-[7px] h-[7px] rounded-sm bg-brand shrink-0"></span>{c}
       </span>
     ))}
