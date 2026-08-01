@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import scheduleBoard from '../../ktm-2024/images/schedule.jpeg';
+
+/**
+ * Continuously scrolling photo strip.
+ *
+ * Every photo renders at a fixed 300px height with width:auto, which is the
+ * native height of the 2025 set — so nothing is ever upscaled. The track holds
+ * the list twice and slides exactly -50%, which is what makes the loop
+ * seamless; the spacing lives in each item's padding rather than a flex `gap`
+ * so the two copies stay perfectly symmetric.
+ */
+
+const ITEMS = [
+  {
+    asset: scheduleBoard,
+    alt: 'The session board at BarCamp Kathmandu 2024: a wall-sized grid of tracks and time slots, filled in by hand with session cards.',
+  },
+  {
+    src: '/homepage-images/image-1.jpg',
+    width: 380,
+    height: 300,
+    alt: 'Attendees crowded around the printed session grid, reading the day’s tracks.',
+  },
+  {
+    src: '/homepage-images/image-4.jpg',
+    width: 230,
+    height: 300,
+    alt: 'A speaker presenting at a whiteboard to a seated room.',
+  },
+  {
+    src: '/homepage-images/image-2.jpg',
+    width: 380,
+    height: 300,
+    alt: 'The BarCamp Kathmandu group photo on the steps outside the venue.',
+  },
+  {
+    src: '/homepage-images/image-0.jpg',
+    width: 230,
+    height: 300,
+    alt: 'The BarCamp flame logo standee at the venue entrance.',
+  },
+  {
+    src: '/homepage-images/image-3.jpg',
+    width: 380,
+    height: 300,
+    alt: 'Attendees gathered in the open corridor as someone addresses the group.',
+  },
+];
+---
+
+<div class="marquee relative mt-10">
+  <div class="viewport overflow-hidden">
+    <div class="track">
+      {[0, 1].map((copy) => (
+        <div class="copy flex" aria-hidden={copy === 1 ? 'true' : undefined}>
+          {ITEMS.map((item) => (
+            <div class="pr-4 shrink-0">
+              {item.asset ? (
+                <Image
+                  src={item.asset}
+                  alt={copy === 0 ? item.alt : ''}
+                  widths={[630, 1260]}
+                  sizes="630px"
+                  class="h-[220px] sm:h-[300px] w-auto rounded-xl border border-line bg-card object-cover block"
+                />
+              ) : (
+                <img
+                  src={item.src}
+                  alt={copy === 0 ? item.alt : ''}
+                  width={item.width}
+                  height={item.height}
+                  {/* not lazy: a horizontally-scrolled item can fail to trip the
+                      intersection check and leave a blank frame mid-loop.
+                      All five together are ~680KB. */}
+                  decoding="async"
+                  class="h-[220px] sm:h-[300px] w-auto rounded-xl border border-line bg-card object-cover block"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="edge edge-left" aria-hidden="true"></div>
+  <div class="edge edge-right" aria-hidden="true"></div>
+</div>
+
+<style>
+  .track {
+    display: flex;
+    width: max-content;
+    animation: gallery-scroll 60s linear infinite;
+  }
+
+  /* Slowing to a stop on hover keeps a photo readable without controls. */
+  .marquee:hover .track,
+  .marquee:focus-within .track {
+    animation-play-state: paused;
+  }
+
+  @keyframes gallery-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .edge {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 56px;
+    pointer-events: none;
+  }
+  .edge-left {
+    left: 0;
+    background: linear-gradient(to right, #f9f8f5, rgba(249, 248, 245, 0));
+  }
+  .edge-right {
+    right: 0;
+    background: linear-gradient(to left, #f9f8f5, rgba(249, 248, 245, 0));
+  }
+
+  /*
+   * No motion: drop the animation and the duplicate copy, and hand the strip
+   * over as a normal scroll container so every photo is still reachable.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .track {
+      animation: none;
+    }
+    .copy[aria-hidden='true'] {
+      display: none;
+    }
+    .viewport {
+      overflow-x: auto;
+    }
+    .edge {
+      display: none;
+    }
+  }
+</style>
