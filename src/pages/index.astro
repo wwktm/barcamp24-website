@@ -10,7 +10,10 @@ import Faq from '../components/landing/Faq.astro';
 import { getAcceptedSpeakers } from '../utils/sessions';
 
 const { event, callForSpeakersOpen } = announcement;
-const chips = [{ iconSrc: '/calendar-icon.png', label: event.date }]; // the hero shows the date only
+const chips = [
+  { icon: 'calendar' as const, label: event.date },
+  { icon: 'pin' as const, label: event.venue.name },
+];
 
 // accepted proposals show up as soon as they're accepted, while the call is open
 const speakers = callForSpeakersOpen ? await getAcceptedSpeakers() : [];

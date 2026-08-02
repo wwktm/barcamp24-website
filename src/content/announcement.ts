@@ -28,7 +28,7 @@ export const announcement: Announcement = {
 
   event: {
     date: 'August 15, 2026',
-    venue: { name: 'Venue TBA', note: '' },
+    venue: { name: 'IIMS College, Naxal', note: '' },
     entry: 'Free-ish, community-run',
   },
 
