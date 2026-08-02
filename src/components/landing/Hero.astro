@@ -2,14 +2,22 @@
 import Button from '../common/Button.astro';
 import type { HeroCopy } from '../../content/announcement';
 
+export type ChipIcon = 'calendar' | 'pin';
+
 interface Props {
   copy: HeroCopy;
-  chips: { icon?: string; iconSrc?: string; label: string }[];
+  chips: { icon: ChipIcon; label: string }[];
   showCta: boolean;
 }
 
 const { copy, chips, showCta } = Astro.props;
 const lines = copy.headline.split('\n');
+
+const ICONS: Record<ChipIcon, string> = {
+  calendar:
+    '<rect x="3" y="5" width="18" height="16" rx="2.5" /><path d="M8 3v4M16 3v4M3 10.5h18" />',
+  pin: '<path d="M20 10.3c0 5.7-8 11.7-8 11.7s-8-6-8-11.7a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.9" />',
+};
 ---
 <header class="hero-liquid relative overflow-hidden text-center flex items-center justify-center min-h-[100svh] py-16">
   <canvas class="liquid-canvas" aria-hidden="true"></canvas>
@@ -18,12 +26,20 @@ const lines = copy.headline.split('\n');
   <div class="relative z-10 w-full max-w-[1040px] mx-auto px-[26px]">
     {copy.eyebrow && <div class="rise d1 font-display uppercase text-eyebrow text-brand-deep font-semibold">{copy.eyebrow}</div>}
     {chips.length > 0 && (
-      <div class="rise d2 inline-flex gap-[26px] items-center text-soft font-display font-semibold text-[23px] my-6 flex-wrap justify-center">
+      <div class="rise d2 my-6 flex flex-wrap items-start justify-center gap-x-[26px] gap-y-2 text-soft font-display font-semibold text-[15px] sm:text-[17px]">
         {chips.map((c) => (
-          <span class="inline-flex items-center gap-2.5">
-            {c.iconSrc
-              ? <img src={c.iconSrc} alt="" width="34" height="34" class="w-[34px] h-[34px] shrink-0" />
-              : c.icon}
+          <span class="inline-flex items-start gap-2.5">
+            <svg
+              class="w-[18px] h-[18px] mt-[2px] shrink-0 text-brand sm:w-[20px] sm:h-[20px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              set:html={ICONS[c.icon]}
+            />
             <b class="text-ink">{c.label}</b>
           </span>
         ))}

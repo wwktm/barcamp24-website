@@ -7,27 +7,12 @@ import thanks2025a from '../../images/barcamp-2025/photo-1.jpg';
 import thanks2025b from '../../images/barcamp-2025/photo-3.jpg';
 import entrance2025 from '../../images/barcamp-2025/photo-4.jpg';
 
-/**
- * Continuously scrolling photo strip.
- *
- * Every photo renders at a fixed height with width:auto rather than being
- * stretched to fill, so aspect ratios stay untouched and the tall shots read as
- * tall. The track holds the list twice and slides exactly -50%, which is what
- * makes the loop seamless; the spacing lives in each item's padding rather than
- * a flex `gap` so the two copies stay exactly the same width.
- */
+const H_MOBILE = 180;
+const H_DESKTOP = 360;
 
-/** The desktop display height the srcset is sized against (see .h-\[360px\] below). */
-const DISPLAY_H = 360;
+const widthAt = (a: { width: number; height: number }, h: number) =>
+  Math.round(h * (a.width / a.height));
 
-/** Rendered width of an imported image once it is scaled to DISPLAY_H. */
-const displayWidth = (a: { width: number; height: number }) =>
-  Math.round(DISPLAY_H * (a.width / a.height));
-
-/*
- * Ordered to alternate wide and tall so the strip has some rhythm, and to open
- * on the two session boards — the paragraph above is about that timetable.
- */
 const ITEMS = [
   {
     asset: scheduleBoard,
@@ -92,14 +77,18 @@ const ITEMS = [
       {[0, 1].map((copy) => (
         <div class="copy flex" aria-hidden={copy === 1 ? 'true' : undefined}>
           {ITEMS.map((item) => (
-            <div class="pr-4 shrink-0">
+            <div class="shrink-0">
               {item.asset ? (
                 <Image
                   src={item.asset}
                   alt={copy === 0 ? item.alt : ''}
-                  widths={[displayWidth(item.asset), displayWidth(item.asset) * 2]}
-                  sizes={`${displayWidth(item.asset)}px`}
-                  class="h-[240px] sm:h-[360px] w-auto rounded-xl border border-line bg-card object-cover block"
+                  widths={[
+                    widthAt(item.asset, H_MOBILE),
+                    widthAt(item.asset, H_DESKTOP),
+                    widthAt(item.asset, H_DESKTOP) * 2,
+                  ]}
+                  sizes={`(min-width: 640px) ${widthAt(item.asset, H_DESKTOP)}px, ${widthAt(item.asset, H_MOBILE)}px`}
+                  class="h-[180px] sm:h-[360px] w-auto object-cover block"
                 />
               ) : (
                 <img
@@ -107,11 +96,8 @@ const ITEMS = [
                   alt={copy === 0 ? item.alt : ''}
                   width={item.width}
                   height={item.height}
-                  {/* not lazy: a horizontally-scrolled item can fail to trip the
-                      intersection check and leave a blank frame mid-loop.
-                      All five together are ~680KB. */}
                   decoding="async"
-                  class="h-[240px] sm:h-[360px] w-auto rounded-xl border border-line bg-card object-cover block"
+                  class="h-[180px] sm:h-[360px] w-auto object-cover block"
                 />
               )}
             </div>
@@ -131,7 +117,6 @@ const ITEMS = [
     animation: gallery-scroll 60s linear infinite;
   }
 
-  /* Slowing to a stop on hover keeps a photo readable without controls. */
   .marquee:hover .track,
   .marquee:focus-within .track {
     animation-play-state: paused;
@@ -143,17 +128,6 @@ const ITEMS = [
     }
   }
 
-  /*
-   * The edges echo the hero's cloud shader rather than being a flat paper wash.
-   * Those two tints are the shader's own output, not eyeballed: it mixes paper
-   * with sky at 0.42 and with orange at 0.4, then washes the result back toward
-   * paper at 0.72 — which lands on #bfe6f6 and #f9d2b5.
-   *
-   * Soft blobs supply the cloud; a mask dissolves the whole layer inward, so the
-   * photos emerge from the gradient instead of meeting a hard line. Purely
-   * decorative: aria-hidden in the markup, and pointer-events:none so nothing
-   * here is hoverable, clickable, or able to swallow a scroll.
-   */
   .edge {
     position: absolute;
     top: 0;
@@ -161,7 +135,6 @@ const ITEMS = [
     width: clamp(88px, 15vw, 260px);
     pointer-events: none;
     background:
-      /* cloud tints: present at the screen edge, gone well before the inner end */
       radial-gradient(
         135% 95% at 0% 16%,
         rgba(191, 230, 246, 0.8) 0%,
@@ -174,38 +147,36 @@ const ITEMS = [
         rgba(249, 210, 181, 0.26) 32%,
         rgba(249, 210, 181, 0) 68%
       ),
-      /*
-       * The paper veil that actually hides the cut edge. Opacity eases the whole
-       * way to zero with no opaque plateau — a plateau is what reads as a solid
-       * block ending in a hard line. Stops are dense enough to avoid banding.
-       */
-        linear-gradient(
-          to right,
-          rgba(249, 248, 245, 1) 0%,
-          rgba(249, 248, 245, 0.97) 9%,
-          rgba(249, 248, 245, 0.9) 20%,
-          rgba(249, 248, 245, 0.78) 32%,
-          rgba(249, 248, 245, 0.62) 44%,
-          rgba(249, 248, 245, 0.44) 57%,
-          rgba(249, 248, 245, 0.27) 70%,
-          rgba(249, 248, 245, 0.13) 83%,
-          rgba(249, 248, 245, 0.04) 93%,
-          rgba(249, 248, 245, 0) 100%
-        );
+      linear-gradient(
+        to right,
+        rgba(249, 248, 245, 1) 0%,
+        rgba(249, 248, 245, 0.97) 9%,
+        rgba(249, 248, 245, 0.9) 20%,
+        rgba(249, 248, 245, 0.78) 32%,
+        rgba(249, 248, 245, 0.62) 44%,
+        rgba(249, 248, 245, 0.44) 57%,
+        rgba(249, 248, 245, 0.27) 70%,
+        rgba(249, 248, 245, 0.13) 83%,
+        rgba(249, 248, 245, 0.04) 93%,
+        rgba(249, 248, 245, 0) 100%
+      );
   }
+
   .edge-left {
     left: 0;
   }
-  /* Mirrored so one gradient and one mask serve both sides. */
+
   .edge-right {
     right: 0;
     transform: scaleX(-1);
   }
 
-  /*
-   * No motion: drop the animation and the duplicate copy, and hand the strip
-   * over as a normal scroll container so every photo is still reachable.
-   */
+  @media (max-width: 639px) {
+    .edge {
+      display: none;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .track {
       animation: none;
