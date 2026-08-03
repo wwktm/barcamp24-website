@@ -1,0 +1,106 @@
+---
+import Section from '../common/Section.astro';
+import SpeakerCard from './SpeakerCard.astro';
+import type { DisplaySpeaker } from '../../utils/sessions';
+
+interface Props {
+  speakers: DisplaySpeaker[];
+}
+
+const { speakers } = Astro.props;
+
+/*
+  A copy narrower than the viewport leaves the loop seam on screen, so short
+  lineups repeat until a copy is wide enough to cover it. Cards past the first
+  pass are hidden from assistive tech, so each speaker is announced once.
+*/
+const MIN_CARDS = 8;
+const passes = Math.max(1, Math.ceil(MIN_CARDS / speakers.length));
+const copy = Array.from({ length: passes }, () => speakers).flat();
+const seconds = Math.max(28, copy.length * 7);
+---
+<Section
+  id="speakers"
+  heading="Sessions so far"
+  sub="Proposals that are confirmed so far — a starting point, not the final lineup. Anyone can still pitch a session."
+/>
+
+<!--
+  The strip sits outside <Section> so it can run the full width of the screen.
+  Doing it with `width: 100vw` inside the column would overflow by the width of
+  the vertical scrollbar, which 100vw counts and 100% does not.
+-->
+<div class="speakers-marquee -mt-8 pb-16" style={`--duration: ${seconds}s`}>
+  <div class="speakers-viewport">
+    <div class="speakers-track">
+      {[0, 1].map((c) => (
+        <div class="speakers-copy" aria-hidden={c === 1 ? 'true' : undefined}>
+          {copy.map((s, i) => (
+            <div
+              class:list={['pr-5', { pad: i >= speakers.length }]}
+              aria-hidden={c === 0 && i >= speakers.length ? 'true' : undefined}
+            >
+              <SpeakerCard speaker={s} />
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .speakers-viewport {
+    overflow: hidden;
+    /* a mask fades the edges over any background, unlike a colour gradient */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .speakers-track {
+    display: flex;
+    width: max-content;
+    animation: speakers-scroll var(--duration, 60s) linear infinite;
+  }
+
+  .speakers-copy {
+    display: flex;
+  }
+
+  /*
+    The gap lives in each card's own width (pr-5) rather than in `gap`, so one
+    copy is exactly half the track. With `gap`, the seam between copies is one
+    gap wider than the gaps inside a copy and -50% drifts by half a gap.
+  */
+  @keyframes speakers-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .speakers-marquee:hover .speakers-track,
+  .speakers-marquee:focus-within .speakers-track,
+  .speakers-marquee:active .speakers-track {
+    animation-play-state: paused;
+  }
+
+  @media (max-width: 639px) {
+    .speakers-viewport {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .speakers-track {
+      animation: none;
+    }
+    .speakers-copy[aria-hidden='true'],
+    .pad {
+      display: none;
+    }
+    .speakers-viewport {
+      overflow-x: auto;
+    }
+  }
+</style>

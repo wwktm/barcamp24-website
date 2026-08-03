@@ -14,32 +14,49 @@ const initials = speaker.name
   .slice(0, 2)
   .map((w) => w[0].toUpperCase())
   .join('');
+
+const DURATION_LABELS: Record<string, string> = {
+  lightning: 'Lightning talk',
+  regular: 'Full session',
+};
+const durationLabel = speaker.duration ? DURATION_LABELS[speaker.duration] : undefined;
 ---
-<div class="bg-card border border-line rounded-2xl overflow-hidden">
-  {speaker.photo ? (
-    <Image src={speaker.photo} alt={speaker.name} width={480} height={480} class="w-full aspect-square object-cover" />
-  ) : (
-    /* initials sit underneath; a submitted photo covers them, and removes
-       itself if the remote URL is dead so the initials show through */
-    <div class="relative w-full aspect-square flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50">
-      <span class="font-display font-extrabold text-[42px] text-ink/40">{initials}</span>
-      {speaker.photoUrl && (
+<article class="shrink-0 w-[268px] sm:w-[300px] min-h-[228px] h-full flex flex-col bg-card border border-line rounded-2xl p-5">
+  {speaker.category && (
+    <p class="font-display font-semibold text-[11px] uppercase tracking-[0.09em] text-brand-deep">{speaker.category}</p>
+  )}
+  <h3 class="font-display font-bold text-[17px] leading-snug text-ink mt-2 line-clamp-3">{speaker.title}</h3>
+  {speaker.tagline && <p class="text-soft text-[13px] leading-normal mt-2 line-clamp-2">{speaker.tagline}</p>}
+
+  <div class="mt-auto pt-5 flex items-center gap-3">
+    {/* initials sit underneath; a photo covers them, and a dead remote URL
+        removes itself so the initials show through */}
+    <div class="relative shrink-0 w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50">
+      <span class="font-display font-bold text-[13px] text-ink/45">{initials}</span>
+      {speaker.photo ? (
+        <Image src={speaker.photo} alt="" width={80} height={80} class="absolute inset-0 w-full h-full object-cover" />
+      ) : speaker.photoUrl ? (
         <img
           src={speaker.photoUrl}
-          alt={speaker.name}
+          alt=""
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover"
           onerror="this.remove()"
         />
-      )}
+      ) : null}
     </div>
-  )}
-  <div class="p-5">
-    <h3 class="font-display font-bold text-[17px] text-ink">{speaker.name}</h3>
-    {speaker.title && <p class="font-display text-[14px] text-brand-deep mt-1">{speaker.title}</p>}
-    {speaker.tagline && <p class="text-soft text-[13.5px] mt-2">{speaker.tagline}</p>}
-    {speaker.link && (
-      <a href={speaker.link} target="_blank" rel="noopener noreferrer" class="inline-block mt-3 font-display font-semibold text-[13px] text-brand hover:text-brand-deep no-underline">Profile →</a>
-    )}
+    <div class="min-w-0">
+      {speaker.link ? (
+        <a
+          href={speaker.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block truncate font-display font-semibold text-[14px] text-ink hover:text-brand no-underline"
+        >{speaker.name}</a>
+      ) : (
+        <p class="truncate font-display font-semibold text-[14px] text-ink">{speaker.name}</p>
+      )}
+      {durationLabel && <p class="text-faint text-[12px] mt-0.5">{durationLabel}</p>}
+    </div>
   </div>
-</div>
+</article>
