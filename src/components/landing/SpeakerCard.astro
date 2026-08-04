@@ -25,30 +25,30 @@ const durationLabel = speaker.duration ? DURATION_LABELS[speaker.duration] : und
 const tags = (speaker.tags ?? []).slice(0, 3);
 ---
 {/*
-  The notches are real holes: a mask removes two semicircles from the card, so
-  the page shows through rather than being painted over in page colour. That
-  costs some structure. A mask applies to everything inside the element, so the
-  arcs that outline each notch cannot live inside the card — they sit here in
-  the wrapper as siblings, and the wrapper (not the card) carries the hover
-  transform so the arcs travel with it.
+  The tear is made by the card's own borders, so nothing has to be aligned.
 
-  STUB_H below is the height of the speaker stub, and the notch centre sits half
-  a notch above it. The card declares that height rather than deriving it from
-  padding, so the mask and the arcs can agree on where the tear is.
+  The card is two stacked blocks: a body and a speaker stub. The body's bottom
+  corners and the stub's top corners are rounded by the same radius, so where
+  they meet the outline curves inward and straight back out. That pinch IS the
+  notch. Because it is the elements' own border-radius, the outline is
+  continuous by construction, and the background is clipped to the rounded box,
+  so the bite is genuinely transparent and the page shows through it.
+
+  Two earlier approaches are deliberately not used here. A mask needs
+  mask-composite to punch two holes on one element, and when that does not apply
+  the layers union and quietly cancel both holes out. Overlaying an arc on top
+  of a break in the border leaves a seam, because a 1px line and a 1px arc drawn
+  by different boxes never quite meet.
 */}
-<div class="ticket group relative h-full rounded-2xl transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-[0_14px_30px_-12px_rgba(32,35,58,0.18)]">
-  {/* One hole per element. Two holes on one element would need mask-composite
-      to intersect them, and when that does not apply the layers union instead,
-      which cancels both holes out and leaves the border running straight
-      through the notch. Nesting sidesteps compositing entirely. */}
-  <div class="notch-clip notch-clip--l absolute inset-0">
-    <div class="notch-clip notch-clip--r absolute inset-0">
-      <div class="ticket-face absolute inset-0 bg-card border border-line rounded-2xl transition-colors duration-200"></div>
-    </div>
-  </div>
-
+{/*
+  No hover shadow. A shadow is drawn outside the card's rectangle, so it never
+  reaches inside the notch — which left the bite lighter than the shadowed page
+  right next to it, and read as a patch instead of a hole. The lift and the
+  border warming carry the hover on their own.
+*/}
+<div class="ticket group relative h-full transition-transform duration-200 hover:-translate-y-1">
   <article class="relative flex flex-col h-full">
-    <div class="flex flex-col grow p-5 pb-4">
+    <div class="ticket-edge body grow bg-card border border-line border-b-0 rounded-t-2xl p-5 pb-4 flex flex-col">
       {speaker.category && (
         <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
       )}
@@ -70,11 +70,7 @@ const tags = (speaker.tags ?? []).slice(0, 3);
       )}
     </div>
 
-    <div class="relative h-[18px]">
-      <div class="absolute inset-x-[13px] top-1/2 -translate-y-1/2 border-t border-dashed border-line"></div>
-    </div>
-
-    <div class="flex items-center gap-3 px-5 h-[68px]">
+    <div class="ticket-edge flex items-center gap-3 px-5 bg-card border border-line border-t-0 rounded-b-2xl stub">
       {/* initials sit underneath; a photo covers them, and a dead remote URL
           removes itself so the initials show through */}
       <div class="relative shrink-0 w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
@@ -106,103 +102,44 @@ const tags = (speaker.tags ?? []).slice(0, 3);
         {durationLabel && <p class="text-faint text-[11.5px] mt-0.5 truncate">{durationLabel}</p>}
       </div>
     </div>
+    <div class="tear-rule"></div>
   </article>
-
-  {/* Each arc is a bordered circle with no fill, clipped to its inner half, so
-      only the curve shows and the hole stays empty. */}
-  <div class="notch-arc notch-arc--left">
-    <div class="notch-circle"></div>
-  </div>
-  <div class="notch-arc notch-arc--right">
-    <div class="notch-circle"></div>
-  </div>
 </div>
 
 <style>
   .ticket {
-    --notch-r: 9px;
+    --notch-r: 10px;
     --stub-h: 68px;
-    /* centre of the tear, measured from the bottom of the card */
-    --tear-y: calc(var(--stub-h) + var(--notch-r));
   }
 
-  .notch-clip {
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
+  .stub {
+    height: var(--stub-h);
   }
 
-  .notch-clip--l {
-    -webkit-mask-image: radial-gradient(
-      circle var(--notch-r) at left calc(100% - var(--tear-y)),
-      transparent 99%,
-      #000 100%
-    );
-    mask-image: radial-gradient(
-      circle var(--notch-r) at left calc(100% - var(--tear-y)),
-      transparent 99%,
-      #000 100%
-    );
+  /* the two radii that meet to form the notch */
+  .body {
+    border-bottom-left-radius: var(--notch-r);
+    border-bottom-right-radius: var(--notch-r);
   }
 
-  .notch-clip--r {
-    -webkit-mask-image: radial-gradient(
-      circle var(--notch-r) at right calc(100% - var(--tear-y)),
-      transparent 99%,
-      #000 100%
-    );
-    mask-image: radial-gradient(
-      circle var(--notch-r) at right calc(100% - var(--tear-y)),
-      transparent 99%,
-      #000 100%
-    );
+  .stub {
+    border-top-left-radius: var(--notch-r);
+    border-top-right-radius: var(--notch-r);
   }
 
-  /* the border colour lives here because the face is not the hover target */
-  .ticket:hover .ticket-face {
-    border-color: theme('colors.brand.DEFAULT / 40%');
-  }
-
-  /* A clip box one radius wide, so only the inner half of the circle survives. */
-  .notch-arc {
+  /* sits on the seam between the two blocks, starting clear of the notch */
+  .tear-rule {
     position: absolute;
+    left: calc(var(--notch-r) + 4px);
+    right: calc(var(--notch-r) + 4px);
     bottom: var(--stub-h);
-    width: var(--notch-r);
-    height: calc(var(--notch-r) * 2);
-    overflow: hidden;
-    pointer-events: none;
+    border-top: 1px dashed theme('colors.line');
   }
 
-  /* a pixel outside the card, so the arc's ends meet the border it replaces */
-  .notch-arc--left {
-    left: -1px;
-  }
-
-  .notch-arc--right {
-    right: -1px;
-  }
-
-  .notch-circle {
-    position: absolute;
-    top: 0;
-    width: calc(var(--notch-r) * 2);
-    height: calc(var(--notch-r) * 2);
-    border: 1px solid theme('colors.line');
-    border-radius: 9999px;
-    transition: border-color 200ms;
-  }
-
-  /* kept here rather than as a group-hover utility: Astro's scoping raises this
-     rule's specificity, so a utility would lose to it */
-  .ticket:hover .notch-circle {
+  /* set here rather than as a group-hover utility: Astro's scoping raises the
+     base rule above a utility's specificity and the utility would lose */
+  .ticket:hover .ticket-edge {
     border-color: theme('colors.brand.DEFAULT / 40%');
-  }
-
-  .notch-arc--left .notch-circle {
-    left: calc(var(--notch-r) * -1);
-  }
-
-  .notch-arc--right .notch-circle {
-    right: calc(var(--notch-r) * -1);
   }
 
   @media (prefers-reduced-motion: reduce) {
