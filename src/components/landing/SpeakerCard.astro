@@ -36,10 +36,18 @@ const tags = (speaker.tags ?? []).slice(0, 3);
   a notch above it. The card declares that height rather than deriving it from
   padding, so the mask and the arcs can agree on where the tear is.
 */}
-<div class="ticket group relative h-full transition-transform duration-200 hover:-translate-y-1">
-  <article
-    class="ticket-face flex flex-col h-full bg-card border border-line rounded-2xl transition-[border-color,box-shadow] duration-200 group-hover:border-brand/40 group-hover:shadow-[0_14px_30px_-12px_rgba(32,35,58,0.18)]"
-  >
+<div class="ticket group relative h-full rounded-2xl transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-[0_14px_30px_-12px_rgba(32,35,58,0.18)]">
+  {/* One hole per element. Two holes on one element would need mask-composite
+      to intersect them, and when that does not apply the layers union instead,
+      which cancels both holes out and leaves the border running straight
+      through the notch. Nesting sidesteps compositing entirely. */}
+  <div class="notch-clip notch-clip--l absolute inset-0">
+    <div class="notch-clip notch-clip--r absolute inset-0">
+      <div class="ticket-face absolute inset-0 bg-card border border-line rounded-2xl transition-colors duration-200"></div>
+    </div>
+  </div>
+
+  <article class="relative flex flex-col h-full">
     <div class="flex flex-col grow p-5 pb-4">
       {speaker.category && (
         <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
@@ -118,34 +126,40 @@ const tags = (speaker.tags ?? []).slice(0, 3);
     --tear-y: calc(var(--stub-h) + var(--notch-r));
   }
 
-  .ticket-face {
-    -webkit-mask-image:
-      radial-gradient(
-        circle var(--notch-r) at left calc(100% - var(--tear-y)),
-        transparent 99%,
-        #000 100%
-      ),
-      radial-gradient(
-        circle var(--notch-r) at right calc(100% - var(--tear-y)),
-        transparent 99%,
-        #000 100%
-      );
-    mask-image:
-      radial-gradient(
-        circle var(--notch-r) at left calc(100% - var(--tear-y)),
-        transparent 99%,
-        #000 100%
-      ),
-      radial-gradient(
-        circle var(--notch-r) at right calc(100% - var(--tear-y)),
-        transparent 99%,
-        #000 100%
-      );
+  .notch-clip {
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
-    /* both holes must apply, so keep only what each mask layer keeps */
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
+  }
+
+  .notch-clip--l {
+    -webkit-mask-image: radial-gradient(
+      circle var(--notch-r) at left calc(100% - var(--tear-y)),
+      transparent 99%,
+      #000 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--notch-r) at left calc(100% - var(--tear-y)),
+      transparent 99%,
+      #000 100%
+    );
+  }
+
+  .notch-clip--r {
+    -webkit-mask-image: radial-gradient(
+      circle var(--notch-r) at right calc(100% - var(--tear-y)),
+      transparent 99%,
+      #000 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--notch-r) at right calc(100% - var(--tear-y)),
+      transparent 99%,
+      #000 100%
+    );
+  }
+
+  /* the border colour lives here because the face is not the hover target */
+  .ticket:hover .ticket-face {
+    border-color: theme('colors.brand.DEFAULT / 40%');
   }
 
   /* A clip box one radius wide, so only the inner half of the circle survives. */
