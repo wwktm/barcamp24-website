@@ -4,11 +4,9 @@ import type { DisplaySpeaker } from '../../utils/sessions';
 
 interface Props {
   speaker: DisplaySpeaker;
-  /** Position in the lineup, printed as the ticket number. */
-  index: number;
 }
 
-const { speaker, index } = Astro.props;
+const { speaker } = Astro.props;
 
 const initials = speaker.name
   .split(/\s+/)
@@ -23,20 +21,14 @@ const DURATION_LABELS: Record<string, string> = {
 };
 const durationLabel = speaker.duration ? DURATION_LABELS[speaker.duration] : undefined;
 
-const ticketNo = String(index + 1).padStart(2, '0');
 // Three is what fits on one line at the narrowest card width.
 const tags = (speaker.tags ?? []).slice(0, 3);
 ---
 <article class="ticket group relative flex flex-col h-full bg-card border border-line rounded-2xl transition duration-200 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_14px_30px_-12px_rgba(32,35,58,0.18)]">
   <div class="flex flex-col grow p-5 pb-4">
-    <div class="flex items-baseline justify-between gap-3">
-      {speaker.category ? (
-        <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
-      ) : (
-        <span></span>
-      )}
-      <p class="font-display font-bold text-[11px] text-faint shrink-0 tabular-nums">No. {ticketNo}</p>
-    </div>
+    {speaker.category && (
+      <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
+    )}
 
     <h3 class="font-display font-bold text-[18px] leading-[1.25] text-ink mt-3 line-clamp-3">{speaker.title}</h3>
 
@@ -53,13 +45,14 @@ const tags = (speaker.tags ?? []).slice(0, 3);
     )}
   </div>
 
-  {/* The tear: a dashed rule, with a punched hole bitten out of each edge. The
-      holes are filled with the page colour, which is what makes them read as
-      holes rather than as dots. */}
+  {/* The tear: a dashed rule, with a bite taken out of each edge. The bites are
+      the page colour and carry no outline of their own, so they read as the card
+      being cut rather than as dots drawn on top of it. They sit slightly outside
+      the card so they swallow its border where they cross it. */}
   <div class="relative">
-    <div class="absolute inset-x-4 top-1/2 -translate-y-1/2 border-t border-dashed border-line"></div>
-    <div class="absolute -left-[7px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-paper border border-line"></div>
-    <div class="absolute -right-[7px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-paper border border-line"></div>
+    <div class="absolute inset-x-5 top-1/2 -translate-y-1/2 border-t border-dashed border-line"></div>
+    <div class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-paper"></div>
+    <div class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-paper"></div>
     <div class="h-4"></div>
   </div>
 
@@ -92,11 +85,7 @@ const tags = (speaker.tags ?? []).slice(0, 3);
       ) : (
         <p class="truncate font-display font-semibold text-[14px] text-ink">{speaker.name}</p>
       )}
-      <p class="text-faint text-[11.5px] mt-0.5 truncate">
-        {durationLabel && <span>{durationLabel}</span>}
-        {durationLabel && <span class="mx-1.5 text-line">·</span>}
-        <span class="font-display uppercase tracking-[0.14em] text-[10px]">Admit one</span>
-      </p>
+      {durationLabel && <p class="text-faint text-[11.5px] mt-0.5 truncate">{durationLabel}</p>}
     </div>
   </div>
 </article>
