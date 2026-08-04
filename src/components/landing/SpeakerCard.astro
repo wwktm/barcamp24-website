@@ -21,7 +21,7 @@ const DURATION_LABELS: Record<string, string> = {
 };
 const durationLabel = speaker.duration ? DURATION_LABELS[speaker.duration] : undefined;
 ---
-<article class="shrink-0 w-[268px] sm:w-[300px] min-h-[228px] h-full flex flex-col bg-card border border-line rounded-2xl p-5">
+<article class="min-h-[228px] h-full flex flex-col bg-card border border-line rounded-2xl p-5">
   {speaker.category && (
     <p class="font-display font-semibold text-[11px] uppercase tracking-[0.09em] text-brand-deep">{speaker.category}</p>
   )}

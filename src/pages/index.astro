@@ -5,7 +5,7 @@ import Hero from '../components/landing/Hero.astro';
 import LeadStatement from '../components/landing/LeadStatement.astro';
 import Topics from '../components/landing/Topics.astro';
 import InviteCTA from '../components/landing/InviteCTA.astro';
-import SpeakersCarousel from '../components/landing/SpeakersCarousel.astro';
+import SpeakersGrid from '../components/landing/SpeakersGrid.astro';
 import Faq from '../components/landing/Faq.astro';
 import { getAcceptedSpeakers } from '../utils/sessions';
 
@@ -38,7 +38,7 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
     {speakers.length > 0 && (
       <>
         <div class={rule}></div>
-        <SpeakersCarousel speakers={speakers} />
+        <SpeakersGrid speakers={speakers} />
       </>
     )}
 

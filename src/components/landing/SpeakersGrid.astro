@@ -1,0 +1,20 @@
+---
+import Section from '../common/Section.astro';
+import SpeakerCard from './SpeakerCard.astro';
+import type { DisplaySpeaker } from '../../utils/sessions';
+
+interface Props {
+  speakers: DisplaySpeaker[];
+}
+
+const { speakers } = Astro.props;
+---
+<Section
+  id="speakers"
+  heading="Who's talking so far"
+  sub="These ones are confirmed. Nothing else is, so if you've been putting off that pitch, now's a good time."
+>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8">
+    {speakers.map((s) => <SpeakerCard speaker={s} />)}
+  </div>
+</Section>
