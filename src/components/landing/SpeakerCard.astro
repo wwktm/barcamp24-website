@@ -24,87 +24,173 @@ const durationLabel = speaker.duration ? DURATION_LABELS[speaker.duration] : und
 // Three is what fits on one line at the narrowest card width.
 const tags = (speaker.tags ?? []).slice(0, 3);
 ---
-<article class="ticket group relative flex flex-col h-full bg-card border border-line rounded-2xl transition duration-200 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_14px_30px_-12px_rgba(32,35,58,0.18)]">
-  <div class="flex flex-col grow p-5 pb-4">
-    {speaker.category && (
-      <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
-    )}
+{/*
+  The notches are real holes: a mask removes two semicircles from the card, so
+  the page shows through rather than being painted over in page colour. That
+  costs some structure. A mask applies to everything inside the element, so the
+  arcs that outline each notch cannot live inside the card — they sit here in
+  the wrapper as siblings, and the wrapper (not the card) carries the hover
+  transform so the arcs travel with it.
 
-    {/* Uppercased in CSS, not in the text, so the real title is what gets read
-        out and indexed. Caps run wider, hence the slightly smaller size. */}
-    <h3 class="font-display font-bold text-[17px] uppercase tracking-[0.015em] leading-[1.28] text-ink mt-3 line-clamp-3">{speaker.title}</h3>
-
-    {speaker.description && (
-      <p class="text-soft text-[13px] leading-[1.5] mt-2.5 line-clamp-2">{speaker.description}</p>
-    )}
-
-    {tags.length > 0 && (
-      <ul class="flex flex-wrap gap-1.5 mt-4 list-none p-0">
-        {tags.map((tag) => (
-          <li class="font-display text-[11px] font-medium text-soft bg-paper border border-line rounded-full px-2.5 py-1">{tag}</li>
-        ))}
-      </ul>
-    )}
-  </div>
-
-  {/*
-    The tear: a dashed rule between two notches bitten out of the card edges.
-
-    Each notch is a full circle — page-coloured, with the same border as the
-    card — inside a half-width box that clips its outer half away. Only the
-    inner arc survives, so the card's outline curves around the bite instead of
-    stopping dead at it, which is what makes it read as cut rather than flat.
-    The clipper starts 1px outside the card so the notch swallows the border it
-    crosses.
-  */}
-  <div class="relative">
-    <div class="absolute inset-x-[11px] top-1/2 -translate-y-1/2 border-t border-dashed border-line"></div>
-
-    <div class="absolute left-[-1px] top-1/2 -translate-y-1/2 w-[9px] h-[18px] overflow-hidden">
-      <div class="absolute top-0 left-[-9px] w-[18px] h-[18px] rounded-full bg-paper border border-line transition-colors duration-200 group-hover:border-brand/40"></div>
-    </div>
-    <div class="absolute right-[-1px] top-1/2 -translate-y-1/2 w-[9px] h-[18px] overflow-hidden">
-      <div class="absolute top-0 right-[-9px] w-[18px] h-[18px] rounded-full bg-paper border border-line transition-colors duration-200 group-hover:border-brand/40"></div>
-    </div>
-
-    <div class="h-[18px]"></div>
-  </div>
-
-  <div class="flex items-center gap-3 p-5 pt-1">
-    {/* initials sit underneath; a photo covers them, and a dead remote URL
-        removes itself so the initials show through */}
-    <div class="relative shrink-0 w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
-      <span class="font-display font-bold text-[13px] text-ink/45">{initials}</span>
-      {speaker.photo ? (
-        <Image src={speaker.photo} alt="" width={88} height={88} class="absolute inset-0 w-full h-full object-cover" />
-      ) : speaker.photoUrl ? (
-        <img
-          src={speaker.photoUrl}
-          alt=""
-          loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover"
-          onerror="this.remove()"
-        />
-      ) : null}
-    </div>
-
-    <div class="min-w-0 grow">
-      {speaker.link ? (
-        <a
-          href={speaker.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="block truncate font-display font-semibold text-[14px] text-ink hover:text-brand no-underline"
-        >{speaker.name}</a>
-      ) : (
-        <p class="truncate font-display font-semibold text-[14px] text-ink">{speaker.name}</p>
+  STUB_H below is the height of the speaker stub, and the notch centre sits half
+  a notch above it. The card declares that height rather than deriving it from
+  padding, so the mask and the arcs can agree on where the tear is.
+*/}
+<div class="ticket group relative h-full transition-transform duration-200 hover:-translate-y-1">
+  <article
+    class="ticket-face flex flex-col h-full bg-card border border-line rounded-2xl transition-[border-color,box-shadow] duration-200 group-hover:border-brand/40 group-hover:shadow-[0_14px_30px_-12px_rgba(32,35,58,0.18)]"
+  >
+    <div class="flex flex-col grow p-5 pb-4">
+      {speaker.category && (
+        <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
       )}
-      {durationLabel && <p class="text-faint text-[11.5px] mt-0.5 truncate">{durationLabel}</p>}
+
+      {/* Uppercased in CSS, not in the text, so the real title is what gets read
+          out and indexed. Caps run wider, hence the slightly smaller size. */}
+      <h3 class="font-display font-bold text-[17px] uppercase tracking-[0.015em] leading-[1.28] text-ink mt-3 line-clamp-3">{speaker.title}</h3>
+
+      {speaker.description && (
+        <p class="text-soft text-[13px] leading-[1.5] mt-2.5 line-clamp-2">{speaker.description}</p>
+      )}
+
+      {tags.length > 0 && (
+        <ul class="flex flex-wrap gap-1.5 mt-4 list-none p-0">
+          {tags.map((tag) => (
+            <li class="font-display text-[11px] font-medium text-soft bg-paper border border-line rounded-full px-2.5 py-1">{tag}</li>
+          ))}
+        </ul>
+      )}
     </div>
+
+    <div class="relative h-[18px]">
+      <div class="absolute inset-x-[13px] top-1/2 -translate-y-1/2 border-t border-dashed border-line"></div>
+    </div>
+
+    <div class="flex items-center gap-3 px-5 h-[68px]">
+      {/* initials sit underneath; a photo covers them, and a dead remote URL
+          removes itself so the initials show through */}
+      <div class="relative shrink-0 w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
+        <span class="font-display font-bold text-[13px] text-ink/45">{initials}</span>
+        {speaker.photo ? (
+          <Image src={speaker.photo} alt="" width={88} height={88} class="absolute inset-0 w-full h-full object-cover" />
+        ) : speaker.photoUrl ? (
+          <img
+            src={speaker.photoUrl}
+            alt=""
+            loading="lazy"
+            class="absolute inset-0 w-full h-full object-cover"
+            onerror="this.remove()"
+          />
+        ) : null}
+      </div>
+
+      <div class="min-w-0 grow">
+        {speaker.link ? (
+          <a
+            href={speaker.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block truncate font-display font-semibold text-[14px] text-ink hover:text-brand no-underline"
+          >{speaker.name}</a>
+        ) : (
+          <p class="truncate font-display font-semibold text-[14px] text-ink">{speaker.name}</p>
+        )}
+        {durationLabel && <p class="text-faint text-[11.5px] mt-0.5 truncate">{durationLabel}</p>}
+      </div>
+    </div>
+  </article>
+
+  {/* Each arc is a bordered circle with no fill, clipped to its inner half, so
+      only the curve shows and the hole stays empty. */}
+  <div class="notch-arc notch-arc--left">
+    <div class="notch-circle"></div>
   </div>
-</article>
+  <div class="notch-arc notch-arc--right">
+    <div class="notch-circle"></div>
+  </div>
+</div>
 
 <style>
+  .ticket {
+    --notch-r: 9px;
+    --stub-h: 68px;
+    /* centre of the tear, measured from the bottom of the card */
+    --tear-y: calc(var(--stub-h) + var(--notch-r));
+  }
+
+  .ticket-face {
+    -webkit-mask-image:
+      radial-gradient(
+        circle var(--notch-r) at left calc(100% - var(--tear-y)),
+        transparent 99%,
+        #000 100%
+      ),
+      radial-gradient(
+        circle var(--notch-r) at right calc(100% - var(--tear-y)),
+        transparent 99%,
+        #000 100%
+      );
+    mask-image:
+      radial-gradient(
+        circle var(--notch-r) at left calc(100% - var(--tear-y)),
+        transparent 99%,
+        #000 100%
+      ),
+      radial-gradient(
+        circle var(--notch-r) at right calc(100% - var(--tear-y)),
+        transparent 99%,
+        #000 100%
+      );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    /* both holes must apply, so keep only what each mask layer keeps */
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  /* A clip box one radius wide, so only the inner half of the circle survives. */
+  .notch-arc {
+    position: absolute;
+    bottom: var(--stub-h);
+    width: var(--notch-r);
+    height: calc(var(--notch-r) * 2);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* a pixel outside the card, so the arc's ends meet the border it replaces */
+  .notch-arc--left {
+    left: -1px;
+  }
+
+  .notch-arc--right {
+    right: -1px;
+  }
+
+  .notch-circle {
+    position: absolute;
+    top: 0;
+    width: calc(var(--notch-r) * 2);
+    height: calc(var(--notch-r) * 2);
+    border: 1px solid theme('colors.line');
+    border-radius: 9999px;
+    transition: border-color 200ms;
+  }
+
+  /* kept here rather than as a group-hover utility: Astro's scoping raises this
+     rule's specificity, so a utility would lose to it */
+  .ticket:hover .notch-circle {
+    border-color: theme('colors.brand.DEFAULT / 40%');
+  }
+
+  .notch-arc--left .notch-circle {
+    left: calc(var(--notch-r) * -1);
+  }
+
+  .notch-arc--right .notch-circle {
+    right: calc(var(--notch-r) * -1);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ticket {
       transition: none;
