@@ -45,15 +45,27 @@ const tags = (speaker.tags ?? []).slice(0, 3);
     )}
   </div>
 
-  {/* The tear: a dashed rule, with a bite taken out of each edge. The bites are
-      the page colour and carry no outline of their own, so they read as the card
-      being cut rather than as dots drawn on top of it. They sit slightly outside
-      the card so they swallow its border where they cross it. */}
+  {/*
+    The tear: a dashed rule between two notches bitten out of the card edges.
+
+    Each notch is a full circle — page-coloured, with the same border as the
+    card — inside a half-width box that clips its outer half away. Only the
+    inner arc survives, so the card's outline curves around the bite instead of
+    stopping dead at it, which is what makes it read as cut rather than flat.
+    The clipper starts 1px outside the card so the notch swallows the border it
+    crosses.
+  */}
   <div class="relative">
-    <div class="absolute inset-x-5 top-1/2 -translate-y-1/2 border-t border-dashed border-line"></div>
-    <div class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-paper"></div>
-    <div class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-paper"></div>
-    <div class="h-4"></div>
+    <div class="absolute inset-x-[11px] top-1/2 -translate-y-1/2 border-t border-dashed border-line"></div>
+
+    <div class="absolute left-[-1px] top-1/2 -translate-y-1/2 w-[9px] h-[18px] overflow-hidden">
+      <div class="absolute top-0 left-[-9px] w-[18px] h-[18px] rounded-full bg-paper border border-line transition-colors duration-200 group-hover:border-brand/40"></div>
+    </div>
+    <div class="absolute right-[-1px] top-1/2 -translate-y-1/2 w-[9px] h-[18px] overflow-hidden">
+      <div class="absolute top-0 right-[-9px] w-[18px] h-[18px] rounded-full bg-paper border border-line transition-colors duration-200 group-hover:border-brand/40"></div>
+    </div>
+
+    <div class="h-[18px]"></div>
   </div>
 
   <div class="flex items-center gap-3 p-5 pt-1">
