@@ -8,11 +8,12 @@
  *   npm run proposals -- accept 3 7        they're coming -> shown on the site
  *   npm run proposals -- reject 4          not coming -> hidden
  *   npm run proposals -- reset 5           back to pending
- *   npm run proposals -- export [file]     write accepted ones to JSON (no emails)
+ *   npm run proposals -- export [file]     accepted ones -> JSON + their photos
  *
  * Reads TURSO_DATABASE_URL / TURSO_AUTH_TOKEN from .env.
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { createClient, type Client } from '@libsql/client';
 
 const STATUSES = ['pending', 'accepted', 'rejected'] as const;
@@ -113,16 +114,24 @@ async function show(db: Client, id: string) {
       .map((l) => '    ' + l)
       .join('\n')
   );
+  const uploads = await db.execute({
+    sql: 'SELECT speaker_index, mime, length(bytes) AS n FROM speaker_photos WHERE proposal_id = ?',
+    args: [id],
+  });
+  const uploadFor = new Map(uploads.rows.map((u) => [Number(u.speaker_index), u]));
+
   console.log('');
   console.log('  Speakers');
   try {
     const arr = JSON.parse(String(r.speakers ?? '[]'));
-    for (const sp of Array.isArray(arr) ? arr : []) {
+    (Array.isArray(arr) ? arr : []).forEach((sp, i) => {
       console.log(`    • ${sp?.name || '(no name)'}`);
       if (sp?.profileLink) console.log(`      profile: ${sp.profileLink}`);
       if (sp?.photoUrl) console.log(`      photo:   ${sp.photoUrl}`);
+      const up = uploadFor.get(i);
+      if (up) console.log(`      upload:  ${up.mime}, ${humanSize(Number(up.n))}`);
       if (sp?.introduction) console.log(`      intro:   ${sp.introduction}`);
-    }
+    });
   } catch {
     console.log('    (unparseable)');
   }
@@ -148,10 +157,130 @@ async function setStatus(db: Client, status: Status, ids: string[]) {
   }
 }
 
+/** Photos come back byte-for-byte as submitted, so the extension follows the stored mime. */
+const PHOTO_EXTENSIONS: Record<string, string> = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+};
+
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 40);
+
+const humanSize = (bytes: number) => {
+  if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  if (bytes >= 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${bytes} B`;
+};
+
+/** Pulls a photo the submitter linked to instead of uploading. */
+async function fetchRemote(url: string): Promise<{ mime: string; bytes: Buffer } | null> {
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });
+    if (!res.ok) {
+      console.log(`  ! ${url} — HTTP ${res.status}, skipped`);
+      return null;
+    }
+    const mime = (res.headers.get('content-type') ?? '').split(';')[0].trim();
+    if (!PHOTO_EXTENSIONS[mime]) {
+      console.log(`  ! ${url} — served ${mime || 'no content-type'}, skipped`);
+      return null;
+    }
+    return { mime, bytes: Buffer.from(await res.arrayBuffer()) };
+  } catch (err) {
+    console.log(`  ! ${url} — ${err instanceof Error ? err.message : err}, skipped`);
+    return null;
+  }
+}
+
+/**
+ * Writes the accepted speakers' photos into `dir`. Uploads come out of the
+ * database byte-for-byte; a speaker who linked to one instead has it fetched,
+ * so the export is the whole lineup rather than only the half that uploaded.
+ * Returns "<proposalId>-<speakerIndex>" -> filename.
+ */
+async function writePhotos(db: Client, dir: string): Promise<Map<string, string>> {
+  const accepted = await db.execute(
+    "SELECT id, speakers FROM proposals WHERE status = 'accepted' ORDER BY id"
+  );
+  const uploads = await db.execute(
+    `SELECT sp.proposal_id, sp.speaker_index, sp.mime, sp.bytes
+     FROM speaker_photos sp
+     JOIN proposals p ON p.id = sp.proposal_id
+     WHERE p.status = 'accepted'`
+  );
+  const uploadFor = new Map(
+    uploads.rows.map((u) => [`${u.proposal_id}-${u.speaker_index}`, u])
+  );
+
+  const written = new Map<string, string>();
+
+  // Files are named after the speaker, since that is what makes them useful to
+  // hand around. Two speakers can share a name though, and everything lands in
+  // one folder, so a repeat gets a counter rather than quietly overwriting.
+  const taken = new Set<string>();
+  const uniqueName = (base: string, ext: string) => {
+    let candidate = `${base}.${ext}`;
+    for (let n = 2; taken.has(candidate); n++) candidate = `${base}-${n}.${ext}`;
+    taken.add(candidate);
+    return candidate;
+  };
+
+  const save = (key: string, speakerName: string, mime: string, bytes: Buffer, note: string) => {
+    const ext = PHOTO_EXTENSIONS[mime];
+    if (!ext) return;
+    mkdirSync(dir, { recursive: true });
+    const base = uniqueName(slug(speakerName) || 'speaker', ext);
+    writeFileSync(join(dir, base), bytes);
+    written.set(key, base);
+    console.log(`  saved ${join(dir, base)}  (${mime}, ${humanSize(bytes.length)}, ${note})`);
+  };
+
+  for (const row of accepted.rows) {
+    let speakers: Array<Record<string, unknown>> = [];
+    try {
+      const parsed = JSON.parse(String(row.speakers ?? '[]'));
+      if (Array.isArray(parsed)) speakers = parsed;
+    } catch {
+      continue;
+    }
+
+    for (const [i, sp] of speakers.entries()) {
+      const key = `${row.id}-${i}`;
+      const name = String(sp?.name ?? '');
+
+      const up = uploadFor.get(key);
+      if (up) {
+        save(key, name, String(up.mime), Buffer.from(up.bytes as unknown as ArrayBuffer), 'uploaded');
+        continue;
+      }
+
+      const url = String(sp?.photoUrl ?? '').trim();
+      if (!url) continue;
+      const remote = await fetchRemote(url);
+      if (remote) save(key, name, remote.mime, remote.bytes, 'from their link');
+    }
+  }
+
+  return written;
+}
+
 async function exportAccepted(db: Client, file = 'accepted-sessions.json') {
   const { rows } = await db.execute(
     "SELECT id, title, description, session_category, duration, tags, speakers, created_at FROM proposals WHERE status = 'accepted' ORDER BY created_at"
   );
+
+  // Photos land in a `photos/` folder beside the JSON, and each speaker points
+  // at their file, so the export is self-contained: hand over both and nothing
+  // has to be fetched from the database again.
+  const photoDir = join(dirname(file), 'photos');
+  console.log('');
+  const photos = await writePhotos(db, photoDir);
+
   // email is deliberately not selected — exports are public/archive data
   const sessions = rows.map((r) => ({
     id: r.id,
@@ -160,11 +289,28 @@ async function exportAccepted(db: Client, file = 'accepted-sessions.json') {
     category: r.session_category,
     duration: r.duration,
     tags: (() => { try { return JSON.parse(String(r.tags ?? '[]')); } catch { return []; } })(),
-    speakers: (() => { try { return JSON.parse(String(r.speakers ?? '[]')); } catch { return []; } })(),
+    speakers: (() => {
+      try {
+        const arr = JSON.parse(String(r.speakers ?? '[]'));
+        return (Array.isArray(arr) ? arr : []).map((sp, i) => ({
+          ...sp,
+          photoFile: photos.get(`${r.id}-${i}`) ?? null,
+        }));
+      } catch {
+        return [];
+      }
+    })(),
     submitted_at: r.created_at,
   }));
   writeFileSync(file, JSON.stringify(sessions, null, 2) + '\n');
-  console.log(`  exported ${sessions.length} accepted session(s) → ${file} (no emails included)`);
+  console.log(
+    `\n  exported ${sessions.length} accepted session(s) → ${file} (no emails included)`
+  );
+  console.log(
+    photos.size
+      ? `  ${photos.size} photo(s) → ${photoDir}/, referenced as speakers[].photoFile\n`
+      : '  no uploaded photos to include\n'
+  );
 }
 
 const [cmd = 'list', ...args] = process.argv.slice(2);

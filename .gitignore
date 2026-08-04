@@ -23,3 +23,7 @@ docs/superpowers/
 
 # Speaker photos pulled out of Turso at build time — generated, not source
 src/images/speakers/
+
+# `npm run proposals -- export` output
+accepted-sessions.json
+photos/
