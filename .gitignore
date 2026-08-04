@@ -20,3 +20,6 @@ barcamp_backup/
 # Local planning / superpowers scratch — never commit
 .superpowers/
 docs/superpowers/
+
+# Speaker photos pulled out of Turso at build time — generated, not source
+src/images/speakers/

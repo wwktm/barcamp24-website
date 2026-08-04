@@ -3,9 +3,27 @@ import { getTurso } from './turso';
 import { announcement } from '../content/announcement';
 
 /**
+ * Photos uploaded through the proposal form, written to disk before the build
+ * by scripts/materialize-photos.ts and named <proposalId>-<speakerIndex>.<ext>.
+ * Going through Vite here is what earns them Astro's image optimization.
+ */
+const uploaded = import.meta.glob<{ default: ImageMetadata }>(
+  '../images/speakers/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
+
+const uploadedPhoto = (proposalId: unknown, speakerIndex: number): ImageMetadata | undefined => {
+  const stem = `${proposalId}-${speakerIndex}.`;
+  const hit = Object.entries(uploaded).find(([path]) =>
+    (path.split('/').pop() ?? '').startsWith(stem)
+  );
+  return hit?.[1].default;
+};
+
+/**
  * A speaker as rendered on the site. `photo` (a local, optimized asset) wins;
- * `photoUrl` is the URL the submitter gave and is only a fallback — remote URLs
- * rot, so accepted speakers should be snapshotted into src/content/speakers/.
+ * `photoUrl` is the URL the submitter gave and is only a fallback, since remote
+ * URLs rot. Uploads always arrive as `photo`.
  */
 export interface DisplaySpeaker {
   name: string;
@@ -49,7 +67,7 @@ export async function getAcceptedSpeakers(): Promise<DisplaySpeaker[]> {
   try {
     // `email` is read for de-duplication only — it is never rendered.
     const { rows } = await db.execute(
-      "SELECT title, session_category, duration, speakers, email FROM proposals WHERE status = 'accepted' ORDER BY created_at"
+      "SELECT id, title, session_category, duration, speakers, email FROM proposals WHERE status = 'accepted' ORDER BY created_at"
     );
 
     const out = [...manual];
@@ -85,6 +103,7 @@ export async function getAcceptedSpeakers(): Promise<DisplaySpeaker[]> {
           category,
           duration,
           link: String(sp?.profileLink ?? '').trim() || undefined,
+          photo: uploadedPhoto(row.id, i),
           photoUrl: String(sp?.photoUrl ?? '').trim() || undefined,
         });
       });

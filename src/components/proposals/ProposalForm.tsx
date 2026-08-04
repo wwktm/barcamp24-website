@@ -14,6 +14,7 @@ import {
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import {
   LIMITS,
+  PHOTO_TYPES,
   SESSION_CATEGORIES,
   parseProposalForm,
   validateProposal,
@@ -460,16 +461,35 @@ export default function ProposalForm() {
                 <FieldError message={errors[`speakers.${index}.name`]} />
               </div>
               <div>
+                <Label className="block text-gray-900 font-semibold mb-2">
+                  Speaker photo
+                </Label>
+                <input
+                  type="file"
+                  name={`speakers[${index}][photo]`}
+                  accept={PHOTO_TYPES.join(",")}
+                  aria-invalid={!!errors[`speakers.${index}.photo`]}
+                  onChange={() => clearError(`speakers.${index}.photo`)}
+                  className="w-full text-sm text-gray-600 file:mr-3 file:px-4 file:py-2 file:rounded-full file:border-0 file:bg-orange-100 file:text-orange-700 file:font-semibold hover:file:bg-orange-200 file:cursor-pointer"
+                />
+                <div className="text-sm text-gray-500 mt-1.5">
+                  JPEG, PNG or WebP, up to 2 MB. No file handy? Paste a link
+                  instead.
+                </div>
                 <Input
                   type="url"
                   name={`speakers[${index}][photoUrl]`}
-                  placeholder="Your Photo URL (optional)"
+                  placeholder="https://… link to a photo of you"
                   value={speaker.photoUrl}
                   maxLength={LIMITS.url.max}
                   aria-invalid={!!errors[`speakers.${index}.photoUrl`]}
-                  onChange={(e) => handleSpeakerChange(index, "photoUrl", e)}
-                  className={`${inputClass} ${border(`speakers.${index}.photoUrl`)}`}
+                  onChange={(e) => {
+                    handleSpeakerChange(index, "photoUrl", e);
+                    clearError(`speakers.${index}.photo`);
+                  }}
+                  className={`${inputClass} ${border(`speakers.${index}.photoUrl`)} mt-2`}
                 />
+                <FieldError message={errors[`speakers.${index}.photo`]} />
                 <FieldError message={errors[`speakers.${index}.photoUrl`]} />
               </div>
               <div>

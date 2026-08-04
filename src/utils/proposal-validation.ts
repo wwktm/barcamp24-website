@@ -26,7 +26,12 @@ export const SESSION_CATEGORIES = [
 
 export const DURATIONS = ['regular', 'lightning'] as const;
 
+/** What the photo upload accepts. Anything else is rejected before it reaches the DB. */
+export const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+
 export const LIMITS = {
+  /** 2 MB: a Turso BLOB write of that size lands in well under a second. */
+  photoBytes: { max: 2 * 1024 * 1024 },
   title: { min: 5, max: 120 },
   description: { min: 30, max: 1200 },
   categoryOther: { min: 2, max: 40 },
@@ -38,11 +43,22 @@ export const LIMITS = {
   email: { max: 254 },
 } as const;
 
+/**
+ * The metadata of an uploaded photo, without its bytes. Validation only needs
+ * the size and type; the API reads the bytes straight off the FormData.
+ */
+export interface UploadedPhoto {
+  size: number;
+  type: string;
+}
+
 export interface ProposalSpeaker {
   name: string;
   photoUrl: string;
   profileLink: string;
   introduction: string;
+  /** Set only when a file was actually chosen. */
+  photo?: UploadedPhoto;
 }
 
 export interface ProposalInput {
@@ -67,12 +83,31 @@ const str = (v: FormDataEntryValue | null) => (typeof v === 'string' ? v.trim() 
  */
 export function parseProposalForm(formData: FormData): ProposalInput {
   const speakers: ProposalSpeaker[] = [];
+  const blank = (): ProposalSpeaker => ({
+    name: '',
+    photoUrl: '',
+    profileLink: '',
+    introduction: '',
+  });
+
   formData.forEach((value, key) => {
-    const m = key.match(/^speakers\[(\d+)\]\[(name|photoUrl|profileLink|introduction)\]$/);
-    if (!m) return;
-    const idx = Number(m[1]);
-    speakers[idx] ??= { name: '', photoUrl: '', profileLink: '', introduction: '' };
-    speakers[idx][m[2] as keyof ProposalSpeaker] = String(value).trim();
+    const text = key.match(/^speakers\[(\d+)\]\[(name|photoUrl|profileLink|introduction)\]$/);
+    if (text) {
+      const idx = Number(text[1]);
+      speakers[idx] ??= blank();
+      speakers[idx][text[2] as 'name' | 'photoUrl' | 'profileLink' | 'introduction'] =
+        String(value).trim();
+      return;
+    }
+
+    const file = key.match(/^speakers\[(\d+)\]\[photo\]$/);
+    if (!file) return;
+    // An untouched file input still submits an empty File, so size 0 means
+    // "nothing chosen" rather than "a chosen file that happens to be empty".
+    if (!isFileLike(value) || value.size === 0) return;
+    const idx = Number(file[1]);
+    speakers[idx] ??= blank();
+    speakers[idx].photo = { size: value.size, type: value.type };
   });
 
   return {
@@ -84,8 +119,16 @@ export function parseProposalForm(formData: FormData): ProposalInput {
     tags: parseTags(str(formData.get('tags'))),
     description: str(formData.get('description')),
     // drop holes left by a sparse speakers[] index
-    speakers: Array.from(speakers, (s) => s ?? { name: '', photoUrl: '', profileLink: '', introduction: '' }),
+    speakers: Array.from(speakers, (s) => s ?? blank()),
   };
+}
+
+/**
+ * True for a File without relying on the `File` global, which is not present on
+ * every runtime this validation runs in.
+ */
+function isFileLike(v: unknown): v is { size: number; type: string } {
+  return typeof v === 'object' && v !== null && 'size' in v && 'arrayBuffer' in v;
 }
 
 /** Splits the comma-separated tag input, trimming blanks and de-duping case-insensitively. */
@@ -176,9 +219,20 @@ export function validateProposal(input: ProposalInput): ProposalErrors {
     );
     for (const field of ['photoUrl', 'profileLink'] as const) {
       const url = s[field];
-      if (!url) continue; // both optional
+      if (!url) continue; // a blank link is caught by the photo rule below, if at all
       if (url.length > LIMITS.url.max) set(`speakers.${i}.${field}`, 'This link is too long.');
       else if (!isHttpUrl(url)) set(`speakers.${i}.${field}`, 'Enter a full http(s) link.');
+    }
+
+    // A photo is required, but either way of giving one will do.
+    if (s.photo) {
+      if (!(PHOTO_TYPES as readonly string[]).includes(s.photo.type)) {
+        set(`speakers.${i}.photo`, 'Use a JPEG, PNG or WebP image.');
+      } else if (s.photo.size > LIMITS.photoBytes.max) {
+        set(`speakers.${i}.photo`, 'That photo is over 2 MB. Pick a smaller one.');
+      }
+    } else if (!s.photoUrl) {
+      set(`speakers.${i}.photo`, 'Add a photo, either a file or a link.');
     }
     if (s.introduction.length > LIMITS.speakerIntro.max) {
       set(`speakers.${i}.introduction`, `Keep this under ${LIMITS.speakerIntro.max} characters.`);

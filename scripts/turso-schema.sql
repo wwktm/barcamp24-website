@@ -15,3 +15,15 @@ CREATE TABLE IF NOT EXISTS proposals (
 );
 
 CREATE INDEX IF NOT EXISTS idx_proposals_status ON proposals (status);
+
+-- Uploaded speaker photos, kept out of `proposals` so the row stays small:
+-- the build reads every accepted proposal, and dragging megabytes of image
+-- through that query would be paid for on every deploy.
+CREATE TABLE IF NOT EXISTS speaker_photos (
+  proposal_id   INTEGER NOT NULL REFERENCES proposals (id) ON DELETE CASCADE,
+  speaker_index INTEGER NOT NULL,               -- position in proposals.speakers
+  mime          TEXT NOT NULL,                  -- image/jpeg | image/png | image/webp
+  bytes         BLOB NOT NULL,
+  created_at    TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (proposal_id, speaker_index)
+);
