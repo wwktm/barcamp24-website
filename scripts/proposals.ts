@@ -106,6 +106,8 @@ async function show(db: Client, id: string) {
   console.log(`  Length     ${r.duration ?? '—'}`);
   console.log(`  Tags       ${(() => { try { return JSON.parse(String(r.tags ?? '[]')).join(', '); } catch { return String(r.tags ?? ''); } })()}`);
   console.log(`  Contact    ${r.email ?? '—'}`);
+  // "needs chasing" for anything submitted before the phone field existed
+  console.log(`  Phone      ${r.phone ?? '— (submitted before this was asked)'}`);
   console.log('');
   console.log(`  Description`);
   console.log(

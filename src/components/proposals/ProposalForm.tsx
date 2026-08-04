@@ -329,6 +329,26 @@ export default function ProposalForm() {
           <FieldError message={errors.email} />
         </Field>
         <Field>
+          <Label className="block text-gray-900 font-semibold">
+            Contact Phone
+          </Label>
+          <div className="text-sm text-gray-500 mb-3">
+            For anything that needs a quicker answer than email. Never shown
+            publicly.
+          </div>
+          <Input
+            type="tel"
+            name="phone"
+            maxLength={LIMITS.phone.max}
+            autoComplete="tel"
+            placeholder="98XXXXXXXX"
+            aria-invalid={!!errors.phone}
+            onInput={() => clearError("phone")}
+            className={`${inputClass} ${border("phone")}`}
+          />
+          <FieldError message={errors.phone} />
+        </Field>
+        <Field>
           <Label className="block text-gray-900 font-semibold mb-3">
             Session length
           </Label>
@@ -542,6 +562,15 @@ export default function ProposalForm() {
             Add another speaker
           </button>
         </Fieldset>
+        <div className="rounded-xl border border-orange-200 bg-orange-50/60 px-5 py-4">
+          <p className="font-semibold text-gray-900">
+            BarCamp runs on the people who turn up, not on sponsors.
+          </p>
+          <p className="mt-1 text-gray-700">
+            Everyone buys a ticket, organisers included. They aren&apos;t live
+            yet, so grab yours when they are.
+          </p>
+        </div>
         <Button
           disabled={submitSuccess || isSubmitting}
           type="submit"

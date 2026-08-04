@@ -41,6 +41,7 @@ export const LIMITS = {
   speakerIntro: { max: 400 },
   url: { max: 300 },
   email: { max: 254 },
+  phone: { min: 7, max: 20 },
 } as const;
 
 /**
@@ -63,6 +64,7 @@ export interface ProposalSpeaker {
 
 export interface ProposalInput {
   email: string;
+  phone: string;
   duration: string;
   sessionCategory: string;
   categoryOther: string;
@@ -112,6 +114,7 @@ export function parseProposalForm(formData: FormData): ProposalInput {
 
   return {
     email: str(formData.get('email')),
+    phone: str(formData.get('phone')),
     duration: str(formData.get('duration')),
     sessionCategory: str(formData.get('session_category')),
     categoryOther: str(formData.get('category_other')),
@@ -148,6 +151,17 @@ export function parseTags(raw: string): string[] {
 
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 
+/**
+ * Deliberately permissive: a Nepali mobile, a landline with an area code, and a
+ * number from abroad all have to get through. It only rules out things that
+ * cannot be dialled — stray characters, or too few or too many digits.
+ */
+const isPhone = (s: string) => {
+  if (!/^\+?[\d\s\-()]+$/.test(s)) return false;
+  const digits = s.replace(/\D/g, '').length;
+  return digits >= 7 && digits <= 15;
+};
+
 /** Accepts only http(s) — rules out `javascript:` and other schemes an <input type="url"> allows. */
 const isHttpUrl = (s: string) => {
   try {
@@ -178,6 +192,11 @@ export function validateProposal(input: ProposalInput): ProposalErrors {
   if (!input.email) set('email', 'Contact email is required.');
   else if (!isEmail(input.email) || input.email.length > LIMITS.email.max) {
     set('email', 'Enter a valid email address.');
+  }
+
+  if (!input.phone) set('phone', 'Contact phone number is required.');
+  else if (input.phone.length > LIMITS.phone.max || !isPhone(input.phone)) {
+    set('phone', 'Enter a phone number we can reach you on.');
   }
 
   if (!(DURATIONS as readonly string[]).includes(input.duration)) {

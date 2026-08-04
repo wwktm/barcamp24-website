@@ -11,10 +11,17 @@ CREATE TABLE IF NOT EXISTS proposals (
   tags             TEXT NOT NULL DEFAULT '[]',  -- JSON array (SQLite has no array type)
   speakers         TEXT NOT NULL DEFAULT '[]',  -- JSON array of {name, photoUrl, profileLink, introduction}
   email            TEXT,                         -- submitter contact (PRIVATE — never render publicly)
+  phone            TEXT,                         -- submitter contact (PRIVATE — never render publicly)
   status           TEXT NOT NULL DEFAULT 'pending'  -- pending | accepted | rejected
 );
 
 CREATE INDEX IF NOT EXISTS idx_proposals_status ON proposals (status);
+
+-- `phone` arrived after the first submissions, so it has to be added to a table
+-- that already exists. Rows from before it keep NULL, which is what marks them
+-- as needing to be chased up by hand. Re-running is safe: the migration script
+-- treats "duplicate column" as already applied.
+ALTER TABLE proposals ADD COLUMN phone TEXT;
 
 -- Uploaded speaker photos, kept out of `proposals` so the row stays small:
 -- the build reads every accepted proposal, and dragging megabytes of image

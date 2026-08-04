@@ -61,8 +61,20 @@ if (dry) {
 
 const db = connect();
 for (const stmt of stmts) {
-  await db.execute(stmt);
-  console.log(`  ok  ${stmt.split('\n')[0]}…`);
+  const head = stmt.split('\n')[0];
+  try {
+    await db.execute(stmt);
+    console.log(`  ok    ${head}…`);
+  } catch (err: unknown) {
+    // ALTER TABLE ADD COLUMN has no IF NOT EXISTS, so a column that is already
+    // there is the normal outcome of re-running, not a failure.
+    const msg = err instanceof Error ? err.message : String(err);
+    if (/duplicate column name/i.test(msg)) {
+      console.log(`  skip  ${head}… (already applied)`);
+      continue;
+    }
+    throw err;
+  }
 }
 
 const { rows } = await db.execute(

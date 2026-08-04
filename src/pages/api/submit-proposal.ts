@@ -83,8 +83,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     const inserted = await db.execute({
       sql: `INSERT INTO proposals
-              (title, description, session_category, duration, tags, speakers, email)
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+              (title, description, session_category, duration, tags, speakers, email, phone)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         input.title,
         input.description,
@@ -93,6 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
         JSON.stringify(input.tags),
         JSON.stringify(stored),
         input.email,
+        input.phone,
       ],
     });
 
