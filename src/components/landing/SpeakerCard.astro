@@ -30,7 +30,9 @@ const tags = (speaker.tags ?? []).slice(0, 3);
       <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
     )}
 
-    <h3 class="font-display font-bold text-[18px] leading-[1.25] text-ink mt-3 line-clamp-3">{speaker.title}</h3>
+    {/* Uppercased in CSS, not in the text, so the real title is what gets read
+        out and indexed. Caps run wider, hence the slightly smaller size. */}
+    <h3 class="font-display font-bold text-[17px] uppercase tracking-[0.015em] leading-[1.28] text-ink mt-3 line-clamp-3">{speaker.title}</h3>
 
     {speaker.description && (
       <p class="text-soft text-[13px] leading-[1.5] mt-2.5 line-clamp-2">{speaker.description}</p>
