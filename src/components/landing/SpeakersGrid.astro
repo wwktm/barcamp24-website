@@ -14,7 +14,7 @@ const { speakers } = Astro.props;
   heading="Who's talking so far"
   sub="These ones are confirmed. Nothing else is, so if you've been putting off that pitch, now's a good time."
 >
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8">
-    {speakers.map((s) => <SpeakerCard speaker={s} />)}
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-6 mt-8">
+    {speakers.map((s, i) => <SpeakerCard speaker={s} index={i} />)}
   </div>
 </Section>

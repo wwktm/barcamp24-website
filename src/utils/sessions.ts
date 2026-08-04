@@ -29,6 +29,8 @@ export interface DisplaySpeaker {
   name: string;
   title: string;
   tagline: string;
+  description?: string;
+  tags?: string[];
   category?: string;
   duration?: string;
   link?: string;
@@ -67,7 +69,7 @@ export async function getAcceptedSpeakers(): Promise<DisplaySpeaker[]> {
   try {
     // `email` is read for de-duplication only — it is never rendered.
     const { rows } = await db.execute(
-      "SELECT id, title, session_category, duration, speakers, email FROM proposals WHERE status = 'accepted' ORDER BY created_at"
+      "SELECT id, title, description, tags, session_category, duration, speakers, email FROM proposals WHERE status = 'accepted' ORDER BY created_at"
     );
 
     const out = [...manual];
@@ -76,9 +78,18 @@ export async function getAcceptedSpeakers(): Promise<DisplaySpeaker[]> {
     for (const row of rows) {
       const talk = String(row.title ?? '').trim();
       const email = row.email ? String(row.email) : undefined;
-      // per-proposal, so every speaker on it inherits both
+      // per-proposal, so every speaker on it inherits these
       const category = String(row.session_category ?? '').trim() || undefined;
       const duration = String(row.duration ?? '').trim().toLowerCase() || undefined;
+      const description = String(row.description ?? '').trim() || undefined;
+      const tags = (() => {
+        try {
+          const parsed = JSON.parse(String(row.tags ?? '[]'));
+          return Array.isArray(parsed) ? parsed.map(String).filter(Boolean) : undefined;
+        } catch {
+          return undefined;
+        }
+      })();
 
       let submitted: Array<Record<string, string>> = [];
       try {
@@ -100,6 +111,8 @@ export async function getAcceptedSpeakers(): Promise<DisplaySpeaker[]> {
           name,
           title: talk,
           tagline: String(sp?.introduction ?? '').trim(),
+          description,
+          tags,
           category,
           duration,
           link: String(sp?.profileLink ?? '').trim() || undefined,
