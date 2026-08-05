@@ -6,6 +6,7 @@ import LeadStatement from '../components/landing/LeadStatement.astro';
 import Topics from '../components/landing/Topics.astro';
 import InviteCTA from '../components/landing/InviteCTA.astro';
 import SpeakersGrid from '../components/landing/SpeakersGrid.astro';
+import Partners from '../components/landing/Partners.astro';
 import Faq from '../components/landing/Faq.astro';
 import { getAcceptedSpeakers } from '../utils/sessions';
 
@@ -36,7 +37,6 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
       <>
         <div class={rule}></div>
         <Topics />
-        <InviteCTA />
       </>
     )}
 
@@ -46,6 +46,11 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
         <SpeakersGrid speakers={speakers} />
       </>
     )}
+
+    {callForSpeakersOpen && <InviteCTA />}
+
+    <div class={rule}></div>
+    <Partners />
 
     <div class={rule}></div>
     <Faq />

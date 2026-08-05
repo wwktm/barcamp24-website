@@ -1,0 +1,65 @@
+---
+import Section from '../common/Section.astro';
+import acem from '../../images/acem.png';
+import arbyte from '../../images/arbyte.svg';
+import eventsmo from '../../images/eventsmo-logo.png';
+
+interface Partner {
+  role: string;
+  name: string;
+  src: string;
+  href?: string;
+}
+
+const PARTNERS: Partner[] = [
+  {
+    role: 'Managed by',
+    name: 'Web Weekend Kathmandu',
+    src: 'https://wwktm.com/img/logo.png',
+    href: 'https://wwktm.com',
+  },
+  {
+    role: 'Associate partner',
+    name: 'Advanced College of Engineering and Management',
+    src: acem.src,
+  },
+  {
+    role: 'Logistics partner',
+    name: 'Arbyte',
+    src: arbyte.src,
+  },
+  {
+    role: 'Ticketing partner',
+    name: 'Events Mo',
+    src: eventsmo.src,
+    href: 'https://eventsmo.com',
+  },
+];
+---
+<Section
+  id="partners"
+  heading="Who helps make it happen"
+  sub="BarCamp is run by volunteers and held up by a handful of people and places that give us what we cannot buy."
+>
+  <ul class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line rounded-xl overflow-hidden mt-8 list-none p-0">
+    {PARTNERS.map((partner) => (
+      <li class="bg-card flex flex-col items-center text-center gap-4 px-5 py-7">
+        <p class="font-display font-semibold text-[10px] uppercase tracking-[0.16em] text-brand-deep">{partner.role}</p>
+        {partner.href ? (
+          <a
+            href={partner.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center grow"
+          >
+            <img src={partner.src} alt={partner.name} loading="lazy" class="max-h-12 w-auto max-w-[150px] object-contain" />
+          </a>
+        ) : (
+          <span class="flex items-center justify-center grow">
+            <img src={partner.src} alt={partner.name} loading="lazy" class="max-h-12 w-auto max-w-[150px] object-contain" />
+          </span>
+        )}
+      </li>
+    ))}
+  </ul>
+</Section>
