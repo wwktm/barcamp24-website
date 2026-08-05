@@ -3,16 +3,39 @@ import Section from '../common/Section.astro';
 import { SESSION_CATEGORIES } from '../../utils/proposal-validation';
 
 const FEATURED = 'Other';
+
+const COLUMNS = { base: 2, sm: 3, lg: 5 };
+
+/** How many cells the last item must cover to finish its row. */
+const spanFor = (columns: number) => {
+  const leftover = SESSION_CATEGORIES.length % columns;
+  return leftover === 0 ? 1 : columns - leftover + 1;
+};
+
+const SPANS: Record<string, Record<number, string>> = {
+  base: { 1: '', 2: 'col-span-2', 3: 'col-span-3', 4: 'col-span-4', 5: 'col-span-5' },
+  sm: { 1: 'sm:col-span-1', 2: 'sm:col-span-2', 3: 'sm:col-span-3', 4: 'sm:col-span-4', 5: 'sm:col-span-5' },
+  lg: { 1: 'lg:col-span-1', 2: 'lg:col-span-2', 3: 'lg:col-span-3', 4: 'lg:col-span-4', 5: 'lg:col-span-5' },
+};
+
+const lastSpan = [
+  SPANS.base[spanFor(COLUMNS.base)],
+  SPANS.sm[spanFor(COLUMNS.sm)],
+  SPANS.lg[spanFor(COLUMNS.lg)],
+].filter(Boolean);
+
+const lastIndex = SESSION_CATEGORIES.length - 1;
 ---
 <Section id="topics" heading="Talk about anything" sub="Not just tech. Bring your unique take on fitness and art, a rabbit-hole you fell down, or that use-case for AI you discovered.">
-  <div class="grid [grid-template-columns:repeat(auto-fill,minmax(150px,1fr))] gap-px bg-line border border-line rounded-xl overflow-hidden mt-7">
-    {SESSION_CATEGORIES.map((c) => (
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-line border border-line rounded-xl overflow-hidden mt-7">
+    {SESSION_CATEGORIES.map((c, i) => (
       <span
         class:list={[
           'px-[18px] py-4 font-display font-semibold text-[14.5px] flex items-center gap-2.5',
           c === FEATURED
             ? 'bg-gradient-to-l from-sky-100 to-orange-50 text-brand-deep'
             : 'bg-card',
+          i === lastIndex && lastSpan,
         ]}
       >
         <span class="w-[7px] h-[7px] rounded-sm bg-brand shrink-0"></span>{c}
