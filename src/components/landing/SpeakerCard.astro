@@ -32,13 +32,13 @@ const tags = (speaker.tags ?? []).slice(0, 3);
       <div class="relative w-24 h-24 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
         <span class="font-display font-bold text-[27px] text-ink/45">{initials}</span>
         {speaker.photo ? (
-          <Image src={speaker.photo} alt="" width={192} height={192} class="absolute inset-0 w-full h-full object-cover" />
+          <Image src={speaker.photo} alt="" width={192} height={192} class="absolute inset-0 w-full h-full object-cover object-top" />
         ) : speaker.photoUrl ? (
           <img
             src={speaker.photoUrl}
             alt=""
             loading="lazy"
-            class="absolute inset-0 w-full h-full object-cover"
+            class="absolute inset-0 w-full h-full object-cover object-top"
             onerror="this.remove()"
           />
         ) : null}
@@ -90,9 +90,9 @@ const tags = (speaker.tags ?? []).slice(0, 3);
         <div class="relative shrink-0 w-14 h-14 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
           <span class="font-display font-bold text-[16px] text-ink/45">{initials}</span>
           {speaker.photo ? (
-            <Image src={speaker.photo} alt="" width={112} height={112} class="absolute inset-0 w-full h-full object-cover" />
+            <Image src={speaker.photo} alt="" width={112} height={112} class="absolute inset-0 w-full h-full object-cover object-top" />
           ) : speaker.photoUrl ? (
-            <img src={speaker.photoUrl} alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover" onerror="this.remove()" />
+            <img src={speaker.photoUrl} alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-top" onerror="this.remove()" />
           ) : null}
         </div>
         <div class="min-w-0">
