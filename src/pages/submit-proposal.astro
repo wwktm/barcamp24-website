@@ -23,7 +23,7 @@ const cfsOpen = announcement.callForSpeakersOpen;
   </section>
 
   {cfsOpen ? (
-    <ProposalForm client:load />
+    <ProposalForm client:load ticketsUrl={announcement.ticketsUrl} />
   ) : (
     <section class="py-20">
       <div class="max-w-[940px] mx-auto px-[26px] text-center">

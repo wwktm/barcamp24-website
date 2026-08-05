@@ -61,7 +61,7 @@ function CharCount({ value, max }: { value: string; max: number }) {
   );
 }
 
-export default function ProposalForm() {
+export default function ProposalForm({ ticketsUrl }: { ticketsUrl?: string }) {
   const form = useRef<HTMLFormElement>(null);
 
   const [speakers, setSpeakers] =
@@ -567,8 +567,18 @@ export default function ProposalForm() {
             BarCamp runs on the people who turn up, not on sponsors.
           </p>
           <p className="mt-1 text-gray-700">
-            Everyone buys a ticket, organisers included. They aren&apos;t live
-            yet, so grab yours when they are.
+            Everyone buys a ticket, organisers included, whether or not this
+            proposal gets picked.{" "}
+            {ticketsUrl && (
+              <a
+                href={ticketsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-orange-700 underline decoration-orange-300 underline-offset-2 hover:decoration-orange-600"
+              >
+                Tickets are live now →
+              </a>
+            )}
           </p>
         </div>
         <Button
