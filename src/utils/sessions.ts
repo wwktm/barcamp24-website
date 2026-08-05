@@ -29,6 +29,7 @@ export interface DisplaySpeaker {
   name: string;
   title: string;
   tagline: string;
+  /** The full pitch. Shown in the session dialog, not on the card. */
   description?: string;
   tags?: string[];
   category?: string;
@@ -79,9 +80,9 @@ export async function getAcceptedSpeakers(): Promise<DisplaySpeaker[]> {
       const talk = String(row.title ?? '').trim();
       const email = row.email ? String(row.email) : undefined;
       // per-proposal, so every speaker on it inherits these
+      const description = String(row.description ?? '').trim() || undefined;
       const category = String(row.session_category ?? '').trim() || undefined;
       const duration = String(row.duration ?? '').trim().toLowerCase() || undefined;
-      const description = String(row.description ?? '').trim() || undefined;
       const tags = (() => {
         try {
           const parsed = JSON.parse(String(row.tags ?? '[]'));

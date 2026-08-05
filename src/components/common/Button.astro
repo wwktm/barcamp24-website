@@ -1,26 +1,43 @@
 ---
 interface Props {
   variant?: "primary" | "outline";
+  /** `lg` is for the one action a page most wants you to take. */
+  size?: "md" | "lg";
   href?: string;
   class?: string;
+  /** For links that leave the site. */
+  target?: string;
+  rel?: string;
 }
 
-const { variant = "primary", href, class: className = "" } = Astro.props;
+const {
+  variant = "primary",
+  size = "md",
+  href,
+  class: className = "",
+  target,
+  rel,
+} = Astro.props;
 
 const base =
-  "font-display font-bold text-[15px] rounded-full px-7 py-3.5 inline-flex gap-2 items-center no-underline cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400";
+  "font-display font-bold rounded-full inline-flex items-center no-underline cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400";
+
+const sizes = {
+  md: "gap-2 text-[15px] px-7 py-3.5",
+  lg: "gap-3.5 text-[17px] sm:text-[18px] px-9 py-4 sm:px-10 sm:py-[18px]",
+};
 
 const variants = {
   primary: "bg-brand text-white hover:bg-brand-deep",
   outline: "bg-transparent text-ink border-[1.5px] border-ink/35 hover:border-brand hover:text-brand",
 };
 
-const classes = [base, variants[variant], className].filter(Boolean).join(" ");
+const classes = [base, sizes[size], variants[variant], className].filter(Boolean).join(" ");
 ---
 
 {
   href ? (
-    <a href={href} class={classes}>
+    <a href={href} class={classes} target={target} rel={rel}>
       <slot />
     </a>
   ) : (

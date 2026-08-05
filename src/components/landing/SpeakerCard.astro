@@ -4,9 +4,11 @@ import type { DisplaySpeaker } from '../../utils/sessions';
 
 interface Props {
   speaker: DisplaySpeaker;
+  /** Ties the card's button to its dialog. */
+  id: string;
 }
 
-const { speaker } = Astro.props;
+const { speaker, id } = Astro.props;
 
 const initials = speaker.name
   .split(/\s+/)
@@ -16,67 +18,21 @@ const initials = speaker.name
   .join('');
 
 const DURATION_LABELS: Record<string, string> = {
-  lightning: 'Lightning talk',
-  regular: 'Full session',
+  lightning: '5 min lightning talk',
+  regular: '20 min session',
 };
 const durationLabel = speaker.duration ? DURATION_LABELS[speaker.duration] : undefined;
 
 // Three is what fits on one line at the narrowest card width.
 const tags = (speaker.tags ?? []).slice(0, 3);
 ---
-{/*
-  The tear is made by the card's own borders, so nothing has to be aligned.
-
-  The card is two stacked blocks: a body and a speaker stub. The body's bottom
-  corners and the stub's top corners are rounded by the same radius, so where
-  they meet the outline curves inward and straight back out. That pinch IS the
-  notch. Because it is the elements' own border-radius, the outline is
-  continuous by construction, and the background is clipped to the rounded box,
-  so the bite is genuinely transparent and the page shows through it.
-
-  Two earlier approaches are deliberately not used here. A mask needs
-  mask-composite to punch two holes on one element, and when that does not apply
-  the layers union and quietly cancel both holes out. Overlaying an arc on top
-  of a break in the border leaves a seam, because a 1px line and a 1px arc drawn
-  by different boxes never quite meet.
-*/}
-{/*
-  No hover shadow. A shadow is drawn outside the card's rectangle, so it never
-  reaches inside the notch — which left the bite lighter than the shadowed page
-  right next to it, and read as a patch instead of a hole. The lift and the
-  border warming carry the hover on their own.
-*/}
-<div class="ticket group relative h-full transition-transform duration-200 hover:-translate-y-1">
+<div class="ticket group relative h-full">
   <article class="relative flex flex-col h-full">
     <div class="ticket-edge body grow bg-card border border-line border-b-0 rounded-t-2xl p-5 pb-4 flex flex-col">
-      {speaker.category && (
-        <p class="font-display font-semibold text-[10.5px] uppercase tracking-[0.16em] text-brand-deep truncate">{speaker.category}</p>
-      )}
-
-      {/* Uppercased in CSS, not in the text, so the real title is what gets read
-          out and indexed. Caps run wider, hence the slightly smaller size. */}
-      <h3 class="font-display font-bold text-[17px] uppercase tracking-[0.015em] leading-[1.28] text-ink mt-3 line-clamp-3">{speaker.title}</h3>
-
-      {speaker.description && (
-        <p class="text-soft text-[13px] leading-[1.5] mt-2.5 line-clamp-2">{speaker.description}</p>
-      )}
-
-      {tags.length > 0 && (
-        <ul class="flex flex-wrap gap-1.5 mt-4 list-none p-0">
-          {tags.map((tag) => (
-            <li class="font-display text-[11px] font-medium text-soft bg-paper border border-line rounded-full px-2.5 py-1">{tag}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-
-    <div class="ticket-edge flex items-center gap-3 px-5 bg-card border border-line border-t-0 rounded-b-2xl stub">
-      {/* initials sit underneath; a photo covers them, and a dead remote URL
-          removes itself so the initials show through */}
-      <div class="relative shrink-0 w-11 h-11 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
-        <span class="font-display font-bold text-[13px] text-ink/45">{initials}</span>
+      <div class="relative w-24 h-24 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
+        <span class="font-display font-bold text-[27px] text-ink/45">{initials}</span>
         {speaker.photo ? (
-          <Image src={speaker.photo} alt="" width={88} height={88} class="absolute inset-0 w-full h-full object-cover" />
+          <Image src={speaker.photo} alt="" width={192} height={192} class="absolute inset-0 w-full h-full object-cover" />
         ) : speaker.photoUrl ? (
           <img
             src={speaker.photoUrl}
@@ -88,35 +44,127 @@ const tags = (speaker.tags ?? []).slice(0, 3);
         ) : null}
       </div>
 
-      <div class="min-w-0 grow">
-        {speaker.link ? (
-          <a
-            href={speaker.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block truncate font-display font-semibold text-[14px] text-ink hover:text-brand no-underline"
-          >{speaker.name}</a>
-        ) : (
-          <p class="truncate font-display font-semibold text-[14px] text-ink">{speaker.name}</p>
+      <div class="mt-4">
+        <p class="font-display font-bold text-[19px] leading-[1.2] text-ink">{speaker.name}</p>
+        {speaker.category && (
+          <p class="font-display font-semibold text-[10px] uppercase tracking-[0.16em] text-brand-deep mt-1.5">{speaker.category}</p>
         )}
-        {durationLabel && <p class="text-faint text-[11.5px] mt-0.5 truncate">{durationLabel}</p>}
       </div>
+
+      <h3 class="font-display font-semibold text-[13.5px] leading-[1.45] text-soft mt-4 line-clamp-3">{speaker.title}</h3>
+
+      {tags.length > 0 && (
+        <ul class="flex flex-wrap gap-1.5 mt-auto pt-4 list-none p-0">
+          {tags.map((tag) => (
+            <li class="font-display text-[9.5px] font-semibold uppercase tracking-[0.1em] text-faint bg-paper border border-line rounded-full px-2 py-[3px]">{tag}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <div class="ticket-edge flex items-center justify-between gap-3 px-5 bg-card border border-line border-t-0 rounded-b-2xl stub">
+      <p class="font-display font-semibold text-[10px] uppercase tracking-[0.16em] text-faint truncate">
+        {durationLabel ?? 'Session'}
+      </p>
+      <span class="shrink-0 font-display font-semibold text-[11px] uppercase tracking-[0.12em] text-brand group-hover:text-brand-deep">
+        Details
+      </span>
     </div>
     <div class="tear-rule"></div>
   </article>
+
+  <button
+    type="button"
+    class="card-open absolute inset-0 w-full h-full rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400"
+    data-opens={id}
+    aria-haspopup="dialog"
+  >
+    <span class="sr-only">Session details: {speaker.title} by {speaker.name}</span>
+  </button>
 </div>
+
+<dialog id={id} class="session-dialog" aria-labelledby={`${id}-title`}>
+  <div class="dialog-body bg-card border border-line border-b-0 rounded-t-2xl p-6 sm:p-7">
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex items-center gap-4 min-w-0">
+        <div class="relative shrink-0 w-14 h-14 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-l from-sky-100 to-orange-50 ring-1 ring-line">
+          <span class="font-display font-bold text-[16px] text-ink/45">{initials}</span>
+          {speaker.photo ? (
+            <Image src={speaker.photo} alt="" width={112} height={112} class="absolute inset-0 w-full h-full object-cover" />
+          ) : speaker.photoUrl ? (
+            <img src={speaker.photoUrl} alt="" loading="lazy" class="absolute inset-0 w-full h-full object-cover" onerror="this.remove()" />
+          ) : null}
+        </div>
+        <div class="min-w-0">
+          <p class="font-display font-bold text-[17px] leading-tight text-ink">{speaker.name}</p>
+          {speaker.category && (
+            <p class="font-display font-semibold text-[10px] uppercase tracking-[0.16em] text-brand-deep mt-1">{speaker.category}</p>
+          )}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        data-close
+        class="shrink-0 -mr-1 -mt-1 w-9 h-9 rounded-full flex items-center justify-center text-faint hover:text-ink hover:bg-paper transition-colors"
+        aria-label="Close"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+
+    <h2 id={`${id}-title`} class="font-display font-bold text-[21px] leading-[1.25] text-ink mt-5">{speaker.title}</h2>
+
+    {speaker.description && (
+      <p class="text-soft text-[14.5px] leading-[1.6] mt-3 whitespace-pre-line">{speaker.description}</p>
+    )}
+
+    {(speaker.tags ?? []).length > 0 && (
+      <ul class="flex flex-wrap gap-1.5 mt-5 list-none p-0">
+        {(speaker.tags ?? []).map((tag) => (
+          <li class="font-display text-[9.5px] font-semibold uppercase tracking-[0.1em] text-faint bg-paper border border-line rounded-full px-2 py-[3px]">{tag}</li>
+        ))}
+      </ul>
+    )}
+
+    {speaker.tagline && (
+      <p class="text-faint text-[13px] leading-[1.55] mt-4 pt-4 border-t border-line">
+        <span class="font-display font-semibold uppercase tracking-[0.14em] text-[10px] block mb-1.5">About the speaker</span>
+        {speaker.tagline}
+      </p>
+    )}
+
+  </div>
+
+  <div class="dialog-stub flex items-center justify-between gap-4 px-6 sm:px-7 bg-card border border-line border-t-0 rounded-b-2xl">
+    <p class="font-display font-semibold text-[10px] uppercase tracking-[0.16em] text-faint">
+      {durationLabel ?? 'Session'}
+    </p>
+    {speaker.link && (
+      <a
+        href={speaker.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="shrink-0 font-display font-semibold text-[12px] text-brand hover:text-brand-deep no-underline"
+      >Speaker profile →</a>
+    )}
+  </div>
+
+  <div class="dialog-tear"></div>
+</dialog>
 
 <style>
   .ticket {
     --notch-r: 10px;
-    --stub-h: 68px;
+    --stub-h: 46px;
   }
 
   .stub {
     height: var(--stub-h);
   }
 
-  /* the two radii that meet to form the notch */
   .body {
     border-bottom-left-radius: var(--notch-r);
     border-bottom-right-radius: var(--notch-r);
@@ -127,7 +175,6 @@ const tags = (speaker.tags ?? []).slice(0, 3);
     border-top-right-radius: var(--notch-r);
   }
 
-  /* sits on the seam between the two blocks, starting clear of the notch */
   .tear-rule {
     position: absolute;
     left: calc(var(--notch-r) + 4px);
@@ -136,18 +183,107 @@ const tags = (speaker.tags ?? []).slice(0, 3);
     border-top: 1px dashed theme('colors.line');
   }
 
-  /* set here rather than as a group-hover utility: Astro's scoping raises the
-     base rule above a utility's specificity and the utility would lose */
   .ticket:hover .ticket-edge {
     border-color: theme('colors.brand.DEFAULT / 40%');
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .ticket {
-      transition: none;
+  .ticket-edge {
+    transition: border-color 200ms;
+  }
+
+  .session-dialog {
+    --notch-r: 10px;
+    --dialog-stub-h: 58px;
+    width: min(560px, calc(100vw - 32px));
+    max-height: min(85vh, 760px);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: theme('colors.ink');
+    overflow: visible;
+  }
+
+  .session-dialog[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dialog-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-bottom-left-radius: var(--notch-r);
+    border-bottom-right-radius: var(--notch-r);
+  }
+
+  .dialog-body::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dialog-stub {
+    flex: 0 0 auto;
+    height: var(--dialog-stub-h);
+    border-top-left-radius: var(--notch-r);
+    border-top-right-radius: var(--notch-r);
+  }
+
+  .dialog-tear {
+    position: absolute;
+    left: calc(var(--notch-r) + 4px);
+    right: calc(var(--notch-r) + 4px);
+    bottom: var(--dialog-stub-h);
+    border-top: 1px dashed theme('colors.line');
+  }
+
+  .session-dialog::backdrop {
+    background: rgb(32 35 58 / 0.45);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .session-dialog[open] {
+      animation: dialog-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    .ticket:hover {
-      transform: none;
+    @keyframes dialog-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
     }
   }
 </style>
+
+<script>
+  const root = document.documentElement;
+
+  const lockScroll = () => {
+    const scrollbar = window.innerWidth - root.clientWidth;
+    root.style.overflow = 'hidden';
+    if (scrollbar > 0) root.style.paddingRight = `${scrollbar}px`;
+  };
+
+  const unlockScroll = () => {
+    root.style.overflow = '';
+    root.style.paddingRight = '';
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.card-open').forEach((button) => {
+    button.addEventListener('click', () => {
+      const dialog = document.getElementById(button.dataset.opens ?? '');
+      if (!(dialog instanceof HTMLDialogElement)) return;
+      dialog.showModal();
+      lockScroll();
+    });
+  });
+
+  document.querySelectorAll<HTMLDialogElement>('dialog.session-dialog').forEach((dialog) => {
+    dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener('close', unlockScroll);
+  });
+</script>

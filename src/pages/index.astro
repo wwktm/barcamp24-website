@@ -22,7 +22,12 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
 ---
 <Layout overlayHeader>
   <div class="bg-paper text-ink font-body">
-    <Hero copy={announcement.hero} chips={chips} showCta={callForSpeakersOpen} />
+    <Hero
+      copy={announcement.hero}
+      chips={chips}
+      showCta={callForSpeakersOpen}
+      ticketsUrl={announcement.ticketsUrl}
+    />
 
     <div class={rule}></div>
     <LeadStatement />
