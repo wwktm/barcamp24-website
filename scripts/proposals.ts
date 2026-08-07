@@ -8,11 +8,11 @@
  *   npm run proposals -- accept 3 7        they're coming -> shown on the site
  *   npm run proposals -- reject 4          not coming -> hidden
  *   npm run proposals -- reset 5           back to pending
- *   npm run proposals -- export [file]     accepted ones -> JSON + their photos
+ *   npm run proposals -- export [file|dir] accepted ones -> JSON + their photos
  *
  * Reads TURSO_DATABASE_URL / TURSO_AUTH_TOKEN from .env.
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { createClient, type Client } from '@libsql/client';
 
@@ -271,7 +271,21 @@ async function writePhotos(db: Client, dir: string): Promise<Map<string, string>
   return written;
 }
 
-async function exportAccepted(db: Client, file = 'accepted-sessions.json') {
+const isDir = (p: string) => {
+  try {
+    return statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
+};
+
+// A folder is the natural thing to hand over — JSON plus photos in one place —
+// so `export ../barcamp-data` means "put it in there" rather than "write a file
+// named barcamp-data".
+async function exportAccepted(db: Client, target = 'accepted-sessions.json') {
+  const file =
+    isDir(target) || target.endsWith('/') ? join(target, 'accepted-sessions.json') : target;
+
   const { rows } = await db.execute(
     "SELECT id, title, description, session_category, duration, tags, speakers, created_at FROM proposals WHERE status = 'accepted' ORDER BY created_at"
   );
@@ -304,6 +318,7 @@ async function exportAccepted(db: Client, file = 'accepted-sessions.json') {
     })(),
     submitted_at: r.created_at,
   }));
+  mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, JSON.stringify(sessions, null, 2) + '\n');
   console.log(
     `\n  exported ${sessions.length} accepted session(s) → ${file} (no emails included)`
