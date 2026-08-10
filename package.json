@@ -9,7 +9,7 @@
     "migrate": "tsx scripts/migrate.ts",
     "normalize-photos": "tsx scripts/normalize-photo-urls.ts",
     "build": "tsx scripts/materialize-photos.ts && astro build",
-    "dev": "astro dev",
+    "dev": "tsx scripts/materialize-photos.ts && astro dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "astro preview",
     "typecheck": "tsc"
