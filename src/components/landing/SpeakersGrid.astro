@@ -14,7 +14,22 @@ const { speakers } = Astro.props;
   heading="Who's talking so far"
   sub="These ones are confirmed. Nothing else is, so if you've been putting off that pitch, now's a good time."
 >
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-6 mt-8">
+  <div id="speakers-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-6 mt-8">
     {speakers.map((s, i) => <SpeakerCard speaker={s} id={`session-${i}`} />)}
   </div>
 </Section>
+
+{/* Inline and un-deferred so the order settles before first paint. Only the
+    cards move; each dialog is display:none and found by id, so it can stay put. */}
+<script is:inline>
+  (() => {
+    const grid = document.getElementById('speakers-grid');
+    if (!grid) return;
+    const cards = [...grid.querySelectorAll(':scope > .ticket')];
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+    for (const card of cards) grid.appendChild(card);
+  })();
+</script>

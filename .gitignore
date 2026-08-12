@@ -27,3 +27,6 @@ src/images/speakers/
 # `npm run proposals -- export` output
 accepted-sessions.json
 photos/
+
+# Playwright MCP snapshots from local browser testing
+.playwright-mcp/
