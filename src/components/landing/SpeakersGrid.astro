@@ -12,7 +12,7 @@ const { speakers } = Astro.props;
 <Section
   id="speakers"
   heading="Who's talking so far"
-  sub="These ones are confirmed. Nothing else is, so if you've been putting off that pitch, now's a good time."
+  sub="These ones have pre-committed. Nothing else is fixed, so if you've been putting off that pitch, now's a good time."
 >
   <div id="speakers-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-6 mt-8">
     {speakers.map((s, i) => <SpeakerCard speaker={s} id={`session-${i}`} />)}
