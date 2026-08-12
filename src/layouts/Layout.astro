@@ -1,6 +1,7 @@
 ---
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
+import HelpButton from "../components/layout/HelpButton.astro";
 import "../styles/style.css";
 import { LATEST_YEAR } from "../config";
 
@@ -50,5 +51,6 @@ const {
 		<Header overlay={overlayHeader} />
 		<slot />
 		<Footer />
+		<HelpButton />
 	</body>
 </html>

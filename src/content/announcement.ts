@@ -19,6 +19,8 @@ export interface Announcement {
   callForSpeakersOpen: boolean;
   /** Where the hero's ticket button goes. Leave empty to hide the button. */
   ticketsUrl: string;
+  /** Organisers' WhatsApp, country code first, digits only. Leave empty to hide the help button. */
+  whatsappNumber: string;
   event: { date: string; venue: { name: string; note?: string }; entry: string };
   hero: HeroCopy;
   /** Hand-added speakers; accepted proposals from the DB are appended to these. */
@@ -29,6 +31,8 @@ export const announcement: Announcement = {
   callForSpeakersOpen: true,
 
   ticketsUrl: 'https://eventsmo.com/en/event/barcamp-ktm-2026',
+
+  whatsappNumber: '9779863211795',
 
   event: {
     date: 'August 15, 2026',
