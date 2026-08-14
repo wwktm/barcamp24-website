@@ -4,7 +4,6 @@ import { announcement } from '../../content/announcement';
 const { startsAt, countdownFrom, date } = announcement.event;
 
 const UNITS = [
-  { key: 'days', label: 'Days' },
   { key: 'hours', label: 'Hours' },
   { key: 'minutes', label: 'Min' },
   { key: 'seconds', label: 'Sec' },
@@ -30,7 +29,6 @@ const UNITS = [
 <div class="dock" data-dock aria-hidden="true">
   <span class="dock-label">Doors open in</span>
   <span class="dock-time">
-    <span data-plain="days">--</span><span class="dock-sep">d</span>
     <span data-plain="hours">--</span><span class="dock-sep">:</span>
     <span data-plain="minutes">--</span><span class="dock-sep">:</span>
     <span data-plain="seconds">--</span>
@@ -228,12 +226,11 @@ const UNITS = [
     const target = new Date(root.dataset.startsAt).getTime();
     if (Number.isNaN(target)) return;
 
-    const KEYS = ['days', 'hours', 'minutes', 'seconds'];
+    const KEYS = ['hours', 'minutes', 'seconds'];
     const SPIN_MS = 460;
 
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const sr = root.querySelector('[data-countdown-sr]');
-    const daysLabel = root.querySelector('[data-label="days"]');
     const dock = document.querySelector('[data-dock]');
     const pad = (n) => String(n).padStart(2, '0');
 
@@ -323,19 +320,17 @@ const UNITS = [
       }
 
       const s = Math.floor(left / 1000);
-      const days = Math.floor(s / 86400);
-      const hours = Math.floor((s % 86400) / 3600);
+      // Total hours, not hours-within-a-day: with no days column, 25 hours left
+      // has to read 25 rather than 01.
+      const hours = Math.floor(s / 3600);
 
-      put('days', String(days));
       put('hours', pad(hours));
       put('minutes', pad(Math.floor((s % 3600) / 60)));
       put('seconds', pad(s % 60));
 
-      if (daysLabel) daysLabel.textContent = days === 1 ? 'Day' : 'Days';
-
       // Announced once a minute at most; a per-second live region is unusable.
       if (sr && s % 60 === 0) {
-        sr.textContent = `${days} day${days === 1 ? '' : 's'} and ${hours} hours until doors open.`;
+        sr.textContent = `${hours} hours and ${Math.floor((s % 3600) / 60)} minutes until doors open.`;
       }
     };
 
