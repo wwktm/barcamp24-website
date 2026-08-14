@@ -47,7 +47,7 @@ export const announcement: Announcement = {
   event: {
     date: 'August 15, 2026',
     startsAt: '2026-08-15T10:00:00+05:45',
-    countdownFrom: '2026-08-14T22:00:00+05:45',
+    countdownFrom: '2026-08-14T10:00:00+05:45',
     venue: { name: 'IIMS College, Naxal', note: '' },
     entry: 'Free-ish, community-run',
   },
