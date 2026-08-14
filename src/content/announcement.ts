@@ -29,6 +29,8 @@ export interface Announcement {
     /** When the countdown lets itself be seen. Checked in the browser on every
      *  load, so it appears on its own at this moment with nothing to deploy. */
     countdownFrom: string;
+    /** Shown beside the date. Doors to close, as people should read it. */
+    hours: string;
     venue: { name: string; note?: string };
     entry: string;
   };
@@ -48,6 +50,7 @@ export const announcement: Announcement = {
     date: 'August 15, 2026',
     startsAt: '2026-08-15T10:00:00+05:45',
     countdownFrom: '2026-08-14T10:00:00+05:45',
+    hours: '10 AM – 4 PM',
     venue: { name: 'IIMS College, Naxal', note: '' },
     entry: 'Free-ish, community-run',
   },

@@ -13,6 +13,7 @@ import { getAcceptedSpeakers } from '../utils/sessions';
 const { event, callForSpeakersOpen } = announcement;
 const chips = [
   { icon: 'calendar' as const, label: event.date },
+  { icon: 'clock' as const, label: event.hours },
   { icon: 'pin' as const, label: event.venue.name },
 ];
 
