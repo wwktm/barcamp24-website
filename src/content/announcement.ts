@@ -21,7 +21,17 @@ export interface Announcement {
   ticketsUrl: string;
   /** Organisers' WhatsApp, country code first, digits only. Leave empty to hide the help button. */
   whatsappNumber: string;
-  event: { date: string; venue: { name: string; note?: string }; entry: string };
+  event: {
+    date: string;
+    /** Doors, as a fixed instant. The +05:45 offset is what keeps every visitor
+     *  counting to the same moment rather than to 10am wherever they happen to be. */
+    startsAt: string;
+    /** When the countdown lets itself be seen. Checked in the browser on every
+     *  load, so it appears on its own at this moment with nothing to deploy. */
+    countdownFrom: string;
+    venue: { name: string; note?: string };
+    entry: string;
+  };
   hero: HeroCopy;
   /** Hand-added speakers; accepted proposals from the DB are appended to these. */
   speakers: Speaker[];
@@ -36,6 +46,8 @@ export const announcement: Announcement = {
 
   event: {
     date: 'August 15, 2026',
+    startsAt: '2026-08-15T10:00:00+05:45',
+    countdownFrom: '2026-08-14T22:00:00+05:45',
     venue: { name: 'IIMS College, Naxal', note: '' },
     entry: 'Free-ish, community-run',
   },

@@ -1,5 +1,6 @@
 ---
 import Button from '../common/Button.astro';
+import Countdown from './Countdown.astro';
 import type { HeroCopy } from '../../content/announcement';
 
 export type ChipIcon = 'calendar' | 'pin';
@@ -58,6 +59,9 @@ const MIC_ICON =
       ))}
     </h1>
     {copy.sub && <p class="rise d3 font-body text-soft text-[19px] max-w-[54ch] mx-auto my-7">{copy.sub}</p>}
+    <div class="rise d3 flex justify-center">
+      <Countdown />
+    </div>
     <div class="rise d4 flex gap-3 justify-center flex-wrap">
       {ticketsUrl && (
         <Button size="lg" href={ticketsUrl} target="_blank" rel="noopener noreferrer">

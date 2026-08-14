@@ -1,0 +1,376 @@
+---
+import { announcement } from '../../content/announcement';
+
+const { startsAt, countdownFrom, date } = announcement.event;
+
+const UNITS = [
+  { key: 'days', label: 'Days' },
+  { key: 'hours', label: 'Hours' },
+  { key: 'minutes', label: 'Min' },
+  { key: 'seconds', label: 'Sec' },
+];
+---
+<div class="countdown" data-starts-at={startsAt} data-countdown-from={countdownFrom} data-state="pending">
+  <p class="sr-only" data-countdown-sr>Doors open {date} at 10:00 AM Nepal time.</p>
+
+  <div class="countdown-row" aria-hidden="true">
+    {UNITS.map((u) => (
+      <div class="unit">
+        <span class="num-slot">
+          <span class="num-strip" data-strip={u.key}><span class="num">--</span></span>
+        </span>
+        <span class="lbl" data-label={u.key}>{u.label}</span>
+      </div>
+    ))}
+  </div>
+
+  <p class="live" aria-hidden="true">Happening now</p>
+</div>
+
+<div class="dock" data-dock aria-hidden="true">
+  <span class="dock-label">Doors open in</span>
+  <span class="dock-time">
+    <span data-plain="days">--</span><span class="dock-sep">d</span>
+    <span data-plain="hours">--</span><span class="dock-sep">:</span>
+    <span data-plain="minutes">--</span><span class="dock-sep">:</span>
+    <span data-plain="seconds">--</span>
+  </span>
+</div>
+
+<style>
+  /* Hidden until the browser says the reveal time has passed. Kept out of the
+     layout entirely rather than made invisible, so the hero closes the gap. */
+  .countdown {
+    display: none;
+    margin: 1.75rem 0;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.875rem 1.25rem 0.75rem;
+    border: 1px solid theme('colors.line');
+    border-radius: 1rem;
+    /* Sits over the animated canvas, so it needs its own surface to stay readable. */
+    background: rgb(255 255 255 / 0.72);
+    backdrop-filter: blur(10px);
+    box-shadow:
+      0 1px 2px rgb(32 35 58 / 0.04),
+      0 8px 24px rgb(32 35 58 / 0.06);
+  }
+
+  .countdown[data-revealed] {
+    display: inline-flex;
+  }
+
+  .countdown-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 3.25rem;
+  }
+
+  /* A one-digit window onto the strip. The height has to match a single line
+     exactly, or the outgoing digit stays visible below the incoming one. */
+  .num-slot {
+    display: block;
+    overflow: hidden;
+    font-size: 30px;
+    height: 1.05em;
+  }
+
+  .num-strip {
+    display: block;
+    will-change: transform;
+  }
+
+  .num {
+    display: block;
+    font-family: theme('fontFamily.display');
+    font-weight: 700;
+    font-size: inherit;
+    line-height: 1.05;
+    color: theme('colors.ink');
+    /* Keeps the row from twitching as the seconds tick over. */
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  .lbl {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: theme('fontFamily.display');
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: theme('colors.faint');
+  }
+
+  .live {
+    font-family: theme('fontFamily.display');
+    font-weight: 700;
+    font-size: 20px;
+    color: theme('colors.brand.deep');
+  }
+
+  .countdown[data-state='pending'] .live {
+    display: none;
+  }
+
+  .countdown[data-state='live'] .countdown-row {
+    display: none;
+  }
+
+  /* Takes over once the hero panel has scrolled past, so the time stays a
+     glance away without a second copy ever being on screen at the same time. */
+  .dock {
+    position: fixed;
+    z-index: 40;
+    left: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid theme('colors.line');
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 0.86);
+    backdrop-filter: blur(10px);
+    box-shadow:
+      0 1px 2px rgb(32 35 58 / 0.04),
+      0 8px 24px rgb(32 35 58 / 0.07);
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      opacity 320ms ease,
+      transform 320ms ease,
+      visibility 0s linear 320ms;
+  }
+
+  .dock[data-visible] {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .dock-label {
+    font-family: theme('fontFamily.display');
+    font-weight: 600;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: theme('colors.faint');
+  }
+
+  .dock-time {
+    font-family: theme('fontFamily.display');
+    font-weight: 700;
+    font-size: 15px;
+    color: theme('colors.ink');
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  .dock-sep {
+    color: theme('colors.faint');
+    margin: 0 1px;
+  }
+
+  /* The label is the first thing to go when the pill would crowd the screen. */
+  @media (max-width: 400px) {
+    .dock-label {
+      display: none;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .countdown {
+      padding: 1rem 1.75rem 0.875rem;
+    }
+
+    .countdown-row {
+      gap: 1.75rem;
+    }
+
+    .num-slot {
+      font-size: 36px;
+    }
+
+    .unit {
+      min-width: 3.75rem;
+    }
+
+    .dock {
+      left: 1.5rem;
+      bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dock {
+      transition: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('.countdown');
+    if (!root) return;
+
+    const target = new Date(root.dataset.startsAt).getTime();
+    if (Number.isNaN(target)) return;
+
+    const KEYS = ['days', 'hours', 'minutes', 'seconds'];
+    const SPIN_MS = 460;
+
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const sr = root.querySelector('[data-countdown-sr]');
+    const daysLabel = root.querySelector('[data-label="days"]');
+    const dock = document.querySelector('[data-dock]');
+    const pad = (n) => String(n).padStart(2, '0');
+
+    // The hero wraps this component in an entrance animation, and its forwards
+    // fill leaves an identity transform behind — enough to make that wrapper the
+    // containing block, which would pin the dock to the hero instead of the
+    // viewport. Re-parenting to body keeps `fixed` meaning fixed.
+    if (dock && dock.parentElement !== document.body) document.body.appendChild(dock);
+
+    const cells = {};
+    for (const key of KEYS) {
+      cells[key] = {
+        strip: root.querySelector(`[data-strip="${key}"]`),
+        plain: [...document.querySelectorAll(`[data-plain="${key}"]`)],
+        last: null,
+        busy: null,
+      };
+    }
+
+    /**
+     * Drops the next digit in underneath the current one and slides the whole
+     * strip up by exactly one line, so both are on screen together and the
+     * movement reads as a cylinder turning rather than a swap.
+     */
+    const spin = (cell, value) => {
+      const strip = cell.strip;
+      const current = strip.lastElementChild;
+
+      // A change landing mid-spin settles the previous one first, so the strip
+      // never carries more than the two digits the window can show.
+      if (cell.busy) cell.busy();
+
+      // Cloned, never constructed: Astro scopes this component's CSS to a
+      // data-astro-cid attribute, and a fresh createElement would miss it and
+      // render in the body font at the wrong height, which throws the travel
+      // distance off and leaves digits stranded outside the window.
+      const next = current.cloneNode(false);
+      next.textContent = value;
+      strip.appendChild(next);
+
+      const step = current.getBoundingClientRect().height;
+      strip.style.transition = 'none';
+      strip.style.transform = 'translateY(0)';
+      void strip.offsetWidth;
+      strip.style.transition = `transform ${SPIN_MS}ms cubic-bezier(0.22, 0.61, 0.36, 1)`;
+      strip.style.transform = `translateY(-${step}px)`;
+
+      const settle = () => {
+        clearTimeout(fallback);
+        strip.removeEventListener('transitionend', settle);
+        strip.style.transition = 'none';
+        strip.style.transform = 'translateY(0)';
+        while (strip.firstElementChild !== next) strip.firstElementChild.remove();
+        cell.busy = null;
+      };
+      // transitionend does not fire in a background tab, so never rely on it alone.
+      const fallback = setTimeout(settle, SPIN_MS + 90);
+      strip.addEventListener('transitionend', settle);
+      cell.busy = settle;
+    };
+
+    const put = (key, value) => {
+      const cell = cells[key];
+      if (cell.last === value) return;
+      cell.last = value;
+
+      for (const node of cell.plain) node.textContent = value;
+
+      if (!cell.strip) return;
+      if (still) {
+        cell.strip.lastElementChild.textContent = value;
+        return;
+      }
+      spin(cell, value);
+    };
+
+    let timer;
+    const tick = () => {
+      const left = target - Date.now();
+
+      if (left <= 0) {
+        root.dataset.state = 'live';
+        if (sr) sr.textContent = 'BarCamp Kathmandu is happening now.';
+        if (dock) dock.removeAttribute('data-visible');
+        clearInterval(timer);
+        return;
+      }
+
+      const s = Math.floor(left / 1000);
+      const days = Math.floor(s / 86400);
+      const hours = Math.floor((s % 86400) / 3600);
+
+      put('days', String(days));
+      put('hours', pad(hours));
+      put('minutes', pad(Math.floor((s % 3600) / 60)));
+      put('seconds', pad(s % 60));
+
+      if (daysLabel) daysLabel.textContent = days === 1 ? 'Day' : 'Days';
+
+      // Announced once a minute at most; a per-second live region is unusable.
+      if (sr && s % 60 === 0) {
+        sr.textContent = `${days} day${days === 1 ? '' : 's'} and ${hours} hours until doors open.`;
+      }
+    };
+
+    const start = () => {
+      root.setAttribute('data-revealed', '');
+      tick();
+      timer = setInterval(tick, 1000);
+    };
+
+    // Evaluated fresh in every visitor's browser, so the countdown appears by
+    // itself at the configured moment with nothing deployed that evening.
+    const revealAt = new Date(root.dataset.countdownFrom).getTime();
+    if (Number.isNaN(revealAt) || Date.now() >= revealAt) {
+      start();
+    } else {
+      const wait = revealAt - Date.now();
+      // setTimeout tops out around 24.8 days; past that it fires immediately.
+      if (wait < 2147483647) setTimeout(start, wait);
+    }
+
+    // The dock stands in for the hero panel exactly while that panel is off screen.
+    if (dock && 'IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([entry]) => {
+          // A hidden panel reads as "not intersecting", so the reveal has to be
+          // part of the test or the dock would show up before its time.
+          const showing = root.hasAttribute('data-revealed');
+          if (showing && !entry.isIntersecting && root.dataset.state === 'pending') {
+            dock.setAttribute('data-visible', '');
+          } else {
+            dock.removeAttribute('data-visible');
+          }
+        },
+        { threshold: 0 }
+      ).observe(root);
+    }
+  })();
+</script>
