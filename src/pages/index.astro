@@ -17,8 +17,9 @@ const chips = [
   { icon: 'pin' as const, label: event.venue.name },
 ];
 
-// accepted proposals show up as soon as they're accepted, while the call is open
-const speakers = callForSpeakersOpen ? await getAcceptedSpeakers() : [];
+// Deliberately not tied to the call being open: once it closes, this stops being
+// a line-up and becomes the record of who actually spoke.
+const speakers = await getAcceptedSpeakers();
 
 const rule = 'h-px bg-line max-w-[940px] mx-auto';
 ---

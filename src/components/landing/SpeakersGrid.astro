@@ -2,17 +2,21 @@
 import Section from '../common/Section.astro';
 import SpeakerCard from './SpeakerCard.astro';
 import type { DisplaySpeaker } from '../../utils/sessions';
+import { announcement } from '../../content/announcement';
 
 interface Props {
   speakers: DisplaySpeaker[];
 }
 
 const { speakers } = Astro.props;
+const { eventOver } = announcement;
 ---
 <Section
   id="speakers"
-  heading="Who's talking so far"
-  sub="These ones have pre-committed. Nothing else is fixed, so if you've been putting off that pitch, now's a good time."
+  heading={eventOver ? 'Who spoke' : "Who's talking so far"}
+  sub={eventOver
+    ? 'Every one of them put their hand up and stood in front of a room. Tap any of them to read what they talked about.'
+    : "These ones have pre-committed. Nothing else is fixed, so if you've been putting off that pitch, now's a good time."}
 >
   <div id="speakers-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-5 gap-y-6 mt-8">
     {speakers.map((s, i) => <SpeakerCard speaker={s} id={`session-${i}`} />)}

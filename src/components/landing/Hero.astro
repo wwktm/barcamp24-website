@@ -97,12 +97,14 @@ const MIC_ICON =
         </Button>
       )}
     </div>
-    <div class="rise d4 mt-6">
-      <a
-        href="/#topics"
-        class="font-display font-semibold text-[15px] text-soft hover:text-brand no-underline inline-flex items-center gap-1.5 transition-colors"
-      >Browse topics <span aria-hidden="true">↓</span></a>
-    </div>
+    {showCta && (
+      <div class="rise d4 mt-6">
+        <a
+          href="/#topics"
+          class="font-display font-semibold text-[15px] text-soft hover:text-brand no-underline inline-flex items-center gap-1.5 transition-colors"
+        >Browse topics <span aria-hidden="true">↓</span></a>
+      </div>
+    )}
   </div>
 </header>
 

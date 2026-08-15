@@ -2,6 +2,7 @@
 import { announcement } from '../../content/announcement';
 
 const { startsAt, countdownFrom, date } = announcement.event;
+const { eventOver, nextUp } = announcement;
 
 const UNITS = [
   { key: 'hours', label: 'Hours' },
@@ -9,31 +10,44 @@ const UNITS = [
   { key: 'seconds', label: 'Sec' },
 ];
 ---
-<div class="countdown" data-starts-at={startsAt} data-countdown-from={countdownFrom} data-state="pending">
-  <p class="sr-only" data-countdown-sr>Doors open {date} at 10:00 AM Nepal time.</p>
-
-  <div class="countdown-row" aria-hidden="true">
-    {UNITS.map((u) => (
-      <div class="unit">
-        <span class="num-slot">
-          <span class="num-strip" data-strip={u.key}><span class="num">--</span></span>
-        </span>
-        <span class="lbl" data-label={u.key}>{u.label}</span>
-      </div>
-    ))}
+{eventOver ? (
+  <div class="countdown" data-revealed>
+    <p class="live">That's a wrap for {date.split(',')[1]?.trim() ?? 'this year'}</p>
+    <p class="wrap-note">Thanks to everyone who turned up, spoke, and argued. See you next year.</p>
+    <p class="next-up">
+      {nextUp.label}{' '}
+      <a href={nextUp.href} target="_blank" rel="noopener noreferrer">{nextUp.linkText}</a>
+    </p>
   </div>
+) : (
+  <>
+    <div class="countdown" data-starts-at={startsAt} data-countdown-from={countdownFrom} data-state="pending">
+      <p class="sr-only" data-countdown-sr>Doors open {date} at 10:00 AM Nepal time.</p>
 
-  <p class="live" aria-hidden="true">Happening now</p>
-</div>
+      <div class="countdown-row" aria-hidden="true">
+        {UNITS.map((u) => (
+          <div class="unit">
+            <span class="num-slot">
+              <span class="num-strip" data-strip={u.key}><span class="num">--</span></span>
+            </span>
+            <span class="lbl" data-label={u.key}>{u.label}</span>
+          </div>
+        ))}
+      </div>
 
-<div class="dock" data-dock aria-hidden="true">
-  <span class="dock-label">Doors open in</span>
-  <span class="dock-time">
-    <span data-plain="hours">--</span><span class="dock-sep">:</span>
-    <span data-plain="minutes">--</span><span class="dock-sep">:</span>
-    <span data-plain="seconds">--</span>
-  </span>
-</div>
+      <p class="live" aria-hidden="true">Happening now</p>
+    </div>
+
+    <div class="dock" data-dock aria-hidden="true">
+      <span class="dock-label">Doors open in</span>
+      <span class="dock-time">
+        <span data-plain="hours">--</span><span class="dock-sep">:</span>
+        <span data-plain="minutes">--</span><span class="dock-sep">:</span>
+        <span data-plain="seconds">--</span>
+      </span>
+    </div>
+  </>
+)}
 
 <style>
   /* Hidden until the browser says the reveal time has passed. Kept out of the
@@ -113,6 +127,40 @@ const UNITS = [
     font-weight: 700;
     font-size: 20px;
     color: theme('colors.brand.deep');
+  }
+
+  .wrap-note {
+    margin-top: 0.375rem;
+    font-family: theme('fontFamily.body');
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: theme('colors.soft');
+    max-width: 42ch;
+    text-align: center;
+  }
+
+  /* Sits below the thanks, separated by a rule, so the next event reads as a
+     pointer onward rather than part of the sign-off. */
+  .next-up {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid theme('colors.line');
+    width: 100%;
+    text-align: center;
+    font-family: theme('fontFamily.display');
+    font-weight: 600;
+    font-size: 14px;
+    color: theme('colors.ink');
+  }
+
+  .next-up a {
+    color: theme('colors.brand.DEFAULT');
+    text-decoration: none;
+  }
+
+  .next-up a:hover {
+    color: theme('colors.brand.deep');
+    text-decoration: underline;
   }
 
   .countdown[data-state='pending'] .live {

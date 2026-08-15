@@ -17,6 +17,10 @@ export interface HeroCopy {
 export interface Announcement {
   /** Flip to false to close submissions and hide the proposal CTAs. */
   callForSpeakersOpen: boolean;
+  /** The day has been and gone. Says so in the hero and drops the countdown. */
+  eventOver: boolean;
+  /** What to point people at next. Shown in the hero once the event is over. */
+  nextUp: { label: string; href: string; linkText: string };
   /** Where the hero's ticket button goes. Leave empty to hide the button. */
   ticketsUrl: string;
   /** Organisers' WhatsApp, country code first, digits only. Leave empty to hide the help button. */
@@ -40,11 +44,18 @@ export interface Announcement {
 }
 
 export const announcement: Announcement = {
-  callForSpeakersOpen: true,
+  callForSpeakersOpen: false,
+  eventOver: true,
 
-  ticketsUrl: 'https://eventsmo.com/en/event/barcamp-ktm-2026',
+  nextUp: {
+    label: 'AI Conf is coming back.',
+    href: 'https://aiconf.asia',
+    linkText: 'aiconf.asia',
+  },
 
-  whatsappNumber: '9779863211795',
+  ticketsUrl: '',
+
+  whatsappNumber: '',
 
   event: {
     date: 'August 15, 2026',

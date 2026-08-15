@@ -27,8 +27,14 @@ const cfsOpen = announcement.callForSpeakersOpen;
   ) : (
     <section class="py-20">
       <div class="max-w-[940px] mx-auto px-[26px] text-center">
-        <h2 class="font-display font-bold text-section-h text-ink">Submissions aren't open yet</h2>
-        <p class="text-soft mt-3">The call for speakers hasn't opened. Check back soon — or watch the homepage for the announcement.</p>
+        <h2 class="font-display font-bold text-section-h text-ink">
+          {announcement.eventOver ? `BarCamp ${LATEST_YEAR} is done` : "Submissions aren't open yet"}
+        </h2>
+        <p class="text-soft mt-3">
+          {announcement.eventOver
+            ? 'The talks have been given and the room has emptied. Submissions open again when next year is announced.'
+            : "The call for speakers hasn't opened. Check back soon — or watch the homepage for the announcement."}
+        </p>
         <a href="/" class="inline-block mt-6 font-display font-semibold text-brand hover:text-brand-deep no-underline">← Back to home</a>
       </div>
     </section>
