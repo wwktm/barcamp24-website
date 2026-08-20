@@ -10,7 +10,7 @@ import Partners from '../components/landing/Partners.astro';
 import Faq from '../components/landing/Faq.astro';
 import { getAcceptedSpeakers } from '../utils/sessions';
 
-const { event, callForSpeakersOpen } = announcement;
+const { event, callForSpeakersOpen, afterwards } = announcement;
 const chips = [
   { icon: 'calendar' as const, label: event.date },
   { icon: 'clock' as const, label: event.hours },
@@ -30,6 +30,8 @@ const rule = 'h-px bg-line max-w-[940px] mx-auto';
       chips={chips}
       showCta={callForSpeakersOpen}
       ticketsUrl={announcement.ticketsUrl}
+      photosUrl={afterwards.photosUrl}
+      feedbackUrl={afterwards.feedbackUrl}
     />
 
     <div class={rule}></div>

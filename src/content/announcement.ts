@@ -23,6 +23,8 @@ export interface Announcement {
   nextUp: { label: string; href: string; linkText: string };
   /** Where the hero's ticket button goes. Leave empty to hide the button. */
   ticketsUrl: string;
+  /** Shown in the hero once the event is over. Leave a URL empty to hide its button. */
+  afterwards: { photosUrl: string; feedbackUrl: string };
   /** Organisers' WhatsApp, country code first, digits only. Leave empty to hide the help button. */
   whatsappNumber: string;
   event: {
@@ -54,6 +56,11 @@ export const announcement: Announcement = {
   },
 
   ticketsUrl: '',
+
+  afterwards: {
+    photosUrl: 'https://drive.google.com/drive/folders/1sYVZzET5Az1kNjVAjoTngq7f41zRIXqo?usp=sharing',
+    feedbackUrl: 'https://forms.gle/t7qamqNp75x32XKa7',
+  },
 
   whatsappNumber: '',
 
